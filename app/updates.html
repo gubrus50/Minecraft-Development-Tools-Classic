@@ -1,0 +1,214 @@
+<head>
+<script src="scripts/jQuery v3-3-1.js"></script><script>$(document).ready(function(){document.onselectstart=function(){return false};document.onmousedown=function(){return false}});</script>
+<!-- Receive data about the recent update of the Minecraft-DT project -->
+<script id="script" src="scripts/version.js"></script>
+<style>
+
+.box { border: 2px solid gray; padding: 10px 10px; background: black; opacity: 0.5; margin-top: -2px }
+
+.title { 
+	background: black;
+	opacity: 0.5;
+	border-radius: 2.5px 2.5px 0px 0px;
+	border: 2px solid  gray;
+	border-bottom: 0;
+	height: 40px;
+	margin-top: 20px;
+}
+
+ul {
+	background: black;
+	opacity: 0.5;
+	margin-top: -1px;
+	border: 2px solid gray;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+
+.note {
+	background: black;
+	opacity: 0.5;
+	margin-top: -16px;
+	border-radius: 0px 0px 5px 5px;
+	border: 2px solid gray;
+	border-top: 0
+}
+
+section, h2 { margin-left: 10px; margin-top: 5px}
+
+.ulBorder { 
+	border-radius: 0px 0px 2.5px 2.5px;
+	border-bottom: 2px solid gray
+}
+
+
+a { color: lightGray }
+
+body {
+    scrollbar-face-color: #2b2b33;
+    scrollbar-arrow-color: #9e9e9e;
+    scrollbar-track-color: #24242b;
+    scrollbar-corner-color: #24242b;
+    scrollbar-shadow-color: #24242b;
+    scrollbar-3dlight-color: #24242b;
+    scrollbar-highlight-color: #24242b;
+    scrollbar-darkshadow-color: #24242b;
+    scrollbar-lightshadow-color: #24242b;
+}
+
+.backgroundImage {
+	position: fixed;
+	left: 0;
+	top: -60px;
+	width: 100%;
+	height: 150%;
+	background-position: center center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.backgorundImage, img {
+	width: 100%;
+}
+
+</style>
+</head>
+
+<!-- display -->
+<body onmousewheel="if(window.event.ctrlKey){return false}">
+<script type="text/javascript">
+
+var i=5;
+var del = 500;
+var fad = 2000;
+
+window.onload = function() {
+	
+	$("img").hide();
+	img = document.getElementsByTagName("img")[0];
+	$(img).show();
+
+	setInterval(function(){
+		i++; if (i>5){ i=0 }
+
+		if ((i+1)>5) {
+			$(".backgroundImage").css("background-image", "url('images/bg1.jpg')");
+		} else {
+			$(".backgroundImage").css("background-image", "url('images/bg"+(i+1)+".jpg')");	
+		}
+
+		img = document.getElementsByTagName("img")[i];
+		$(img).delay(del).fadeOut(fad);
+
+		if ((i+1)>5) {
+			img = document.getElementsByTagName("img")[0];
+		} else {
+			img = document.getElementsByTagName("img")[(i+1)];
+		}
+
+		img = document.getElementsByTagName("img")[(i+1)];
+		$(img).delay(del+1500).fadeIn(fad);
+
+	}, 20000);
+}
+
+</script>
+
+<div class="backgroundImage">
+	<img src="images/bg1.jpg" />
+	<img src="images/bg2.jpg" />
+	<img src="images/bg3.jpg" />
+	<img src="images/bg4.jpg" />
+	<img src="images/bg5.jpg" />
+	<img src="images/bg6.jpg" />
+</div>
+
+<div style="background:black;opacity:0.6;position:fixed;top:0px;left:0px;width:100%;height:100%"></div>
+<div style="font-family:calibri;width:99.25%;word-wrap:break-word;color:#fff;opacity:0.8;margin:-10px 6px 12px 4px">
+
+<div class="title"></div>
+<ul></ul>
+<div class="note">
+	<br/>
+	<section>
+		<b>Notes</b>
+		<p>
+			<a target="_blank" style="color: lightblue; cursor: pointer" href="' + checkLink + '">
+				<u>Inspect Minecraft-DT project on github.com</u>
+			</a>
+			<br/>
+			<a target="_blank" style="color: lightblue; cursor: pointer" href="' + downloadLink + '">
+				<u>Download released version</u>
+			</a>
+		</p>
+	</section>
+	</br>
+</div>
+
+<div class="title" style="display:none"></div>
+<ul id="aboutNewRelease" class="ulBorder" style="display:none"></ul>
+
+<script type="text/javascript">
+var online = navigator.onLine; // Receive information about the connection with the wifi
+var lpInfo = document.getElementsByTagName('ul')[0];
+var content = document.getElementsByTagName('section')[0];
+var header = document.getElementsByClassName('title')[0];
+var head = document.getElementsByTagName('head')[0];
+
+var newReleaseTitle = $(".title")[1];
+var newRelease = $(".ulBorder")[0];
+
+lpInfo.innerHTML = "<br/>...<br/><br/>";
+header.innerHTML = "<br/>...<br/><br/>";
+
+if (online == true) { // Check if user is connected to the wifi
+	updatePublishedVersion();
+	header.innerHTML = '<h2>CHECKING FOR UPDATES</h2>';
+	
+	function downloadUpdates() {
+		var currentVersion = updateCurrentVersion(releasedVersion);
+		script = document.getElementById('script');
+		jQuery("#script").remove();
+		script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = 'https://rawgit.com/gubrus50/Minecraft-DT/master/app/scripts/version.js?cachebuster='+ new Date().getTime();
+		head.appendChild(script);
+		var checkLink = 'https://github.com/gubrus50/Minecraft-DT';
+		var downloadLink = 'https://github.com/gubrus50/Minecraft-DT/archive/master.zip';
+		setTimeout(function() { 
+
+			var publishedVersion = updatePublishedVersion(releasedVersion);
+			if (currentVersion < publishedVersion) { header.innerHTML = "<h2>NEW RELEASE HAS BEEN DISCOVERED</h2>";
+			} else { header.innerHTML = "<h2>NEW RELEASE HAS NOT BEEN DISCOVERED</h2>" }
+			lpInfo.innerHTML = '<br/>\
+				<li>Your current version of the application is - ' + currentVersion + '</li><br/>\
+				<li>The released version of the application is - ' + publishedVersion + '</li><br/>';
+			
+			function downloadRelease() {
+				$(".title").css("display", "block");
+				$(".ulBorder").css("display", "block");
+				newRelease.innerHTML += "<br/>...<br/><br/>";
+				setTimeout(function() {
+				  newReleaseTitle.innerHTML = "<h2>DOWNLOADING DOCUMENTATION</h2>";
+				  setTimeout(function() {
+					newReleaseTitle.innerHTML = "<h2>THE DOCUMENTATION</h2>";
+					updateDocumentation(); // function from version.js from Minecraft-DT at github.com
+				  }, 2000);
+				}, 1000);
+			} setTimeout(downloadRelease, 1000);
+		}, 1000);
+	} setTimeout(downloadUpdates, 2000);
+} else {
+	// Display an error message when the user is not connected to the wifi
+	header.innerHTML = '<h2>CHECKING FOR UPDATES</h2>';
+	lpInfo.innerHTML = "<br/>...<br/><br/>";
+	setTimeout(function() {
+	  header.innerHTML = '<h2>UPS... SOMETHING WENT WRONG</h2>';
+	  lpInfo.innerHTML = '<br/><li>ERROR - Please check your internet connection</li><br/>';
+	}, 3000);
+}
+
+</script>
+</div>
+</body>

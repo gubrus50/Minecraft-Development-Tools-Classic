@@ -1,0 +1,79 @@
+@font-face{
+	font-family: "SilkscreenNormal";
+	src: url("slkscr.ttf"),url("slkscr.eot");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "Minecraft-Regular";
+	src: url("Minecraft-Regular.eot"),url("Minecraft-Regular.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-Bold";
+	src: url("Minecraft-Bold.eot"),url("Minecraft-Bold.otf");
+}
+
+@font-face{
+font-family: "Minecraft-Italic";
+src: url("Minecraft-Italic.eot"),url("Minecraft-Italic.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-BoldItalic";
+	src: url("Minecraft-BoldItalic.eot"),url("Minecraft-BoldItalic.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-Bold";
+	src: url("Minecraft-Bold.eot"),url("Minecraft-Bold.otf");
+}
+
+@font-face{
+	font-family: "minecraftiaregular";
+	src: url("minecraftia-webfont.eot"),url("minecraftia-webfont.otf");
+}
+
+@font-face{
+	font-family: "minecraftru";
+	src: url("ru-webfont.eot"),url("ru-webfont-Bold.otf");
+}
+
+body{
+	text-align: center;
+	font-size: 31.5px !important;
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'minecraftiaregular', 'minecraftru', Arial, 'Sans serif';
+}
+
+::selection {
+    background-color: rgba(0,0,0,0.2);
+    color: #fff;
+}
+
+div{
+	white-space: nowrap !important;
+	margin-left: 11px !important;
+	margin-top: -2px !important;
+	width: 362px !important;
+	height: 46px !important;
+	overflow: hidden !important;
+	text-overflow: ellipsis;
+}
+
+div > div { left: 10px; }
+
+*:focus {
+    outline: none;
+}
+
+a{
+	text-decoration: none;
+	color: inherit;
+}
+
+.input {
+	position: fixed;
+}

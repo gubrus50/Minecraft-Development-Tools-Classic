@@ -1,0 +1,173 @@
+<html>
+<head>
+
+<title>Minecraft-DT</title>
+<meta http-equiv="x-ua-compatible" content="IE=9"/>
+<script src="app/scripts/jQuery v3-3-1.js"></script>
+
+<HTA:APPLICATION 
+	ID="Minecraft-DT"
+	APPLICATIONNAME="Minecraft-DT" 
+	SYSMENU="yes" 
+	MAXIMIZEBUTTON="no"
+	BORDER="none"
+	BORDERSTYLE="normal"
+	NAVIGABLE="yes"
+	ICON="app/images/mdt_ico.ico"
+	CONTEXTMENU="no"
+>
+
+
+</head>
+<body SCROLL="no" bgcolor="white">
+<script type="text/javascript">
+var obj=document.body;
+// bind mousewheel event on the mouseWheel function
+if(obj.addEventListener)
+{
+    obj.addEventListener('DOMMouseScroll',mouseWheel,false);
+    obj.addEventListener("mousewheel",mouseWheel,false);
+}
+else obj.onmousewheel=mouseWheel;
+
+function mouseWheel(e)
+{
+    // disabling ctrl+scroll funcionality
+    e=e?e:window.event;
+    if(e.ctrlKey)
+    {
+        if(e.preventDefault) e.preventDefault();
+        else e.returnValue=false;
+        return false;
+    }
+}
+</script>
+
+<br />
+<div id="grip" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: default; background-color: #2b2b33">
+    <center>
+        <div id="dis" style="margin-top: 38px; font-family: Calibri; color: #fff; opacity: 0.8"><i>Importing files please wait</i></div>
+    </center>
+</div>
+
+<script type="text/vbscript">
+
+' This VBS script checks if tools exist in the folder MDT-tools which is located at %appdata%
+' If it managed to identify the folder as a tool project, it will include it to the config.js
+' which will be then be executed when the application Minecraft-DT.hta will launch.
+
+Set sh = CreateObject("WScript.Shell")
+MDTT = sh.ExpandEnvironmentStrings("%APPDATA%\MDT-tools\")
+
+Set oFSO = CreateObject("Scripting.FileSystemObject")
+Set config = oFSO.OpenTextFile(MDTT & "config.js",2,true)
+
+config.Write "jQuery( document ).ready( function() {"
+config.WriteBlankLines(2)
+config.Write "	animated=""true"","
+config.WriteBlankLines(1)
+
+i = 3
+setTools oFSO.GetFolder(MDTT)
+Sub setTools(MDTT)
+	
+	For Each subFolder in MDTT.SubFolders
+		
+		If (oFSO.FileExists(MDTT & "\" & subFolder.Name & "\run.hta")) Then
+
+			If i = 3 Then
+				config.WriteBlankLines(1)
+				config.Write "	block();"
+				config.WriteBlankLines(1)
+				i = 0
+			End If
+			
+			tool = ("	toolName=""" & subFolder.Name & """, imp();")
+			config.Write tool
+			config.WriteBlankLines(1)
+			setTools subFolder
+			
+			i = i + 1
+		
+		End If
+
+	Next	
+	
+End Sub
+
+config.WriteBlankLines(1)
+config.Write "	readyApplication();"
+config.WriteBlankLines(2)
+config.Write "});"
+</script>
+
+
+<script>
+
+/*  window.onload = function()
+
+    This function will append the events for grip object
+    which will make it an grabable object.
+
+    This means that the user now has an full control over
+    the object grip positioning.
+
+    Now the user can move the object anyware on the desktop
+    display.
+
+*/
+
+/** NOT NEEDED
+window.onload = function () {
+    var grip = document.getElementById('grip'),
+        oX, oY,
+        mouseDown = function (e) {
+            if (e.offsetY + e.offsetX < 0) return;
+            oX = e.screenX;
+            oY = e.screenY;
+            window.addEventListener('mousemove', mouseMove);
+            window.addEventListener('mouseup', mouseUp);
+        },
+        mouseMove = function (e) {
+            window.moveTo(screenX + e.screenX - oX, screenY + e.screenY - oY);
+            oX = e.screenX;
+            oY = e.screenY;
+        },
+        gripMouseMove = function (e) {
+            this.style.cursor = (e.offsetY + e.offsetX > -1);
+        },
+        mouseUp = function (e) {
+            window.removeEventListener('mousemove', mouseMove);
+            window.removeEventListener('mouseup', mouseUp);
+        };
+    grip.addEventListener('mousedown', mouseDown);
+    grip.addEventListener('mousemove', gripMouseMove);
+}
+*/
+
+// Set size of the application
+window.resizeTo(300,100);
+// Move the application to the centre of the desktop
+window.moveTo((screen.width - 300) / 2, (screen.height - 100) / 2);
+/* Wait coupple seconds to properly receive the data and to add 
+an animation effect that shows the user that the application
+is doing some progress */
+$(document).ready(function() {
+    jQuery(document).ready(function() {
+		setTimeout(function() {
+			setTimeout(function() {
+				document.location.href = 'Minecraft-DT.hta';
+			}, 3000);
+			document.getElementById('dis').innerHTML = '<i>Launching application</i>';
+		}, 2000);
+	});
+});
+
+$("img").mousedown(function(){return false}); // Disables image selection
+$(document).ready(function() {
+	document.onselectstart = function() {return false}; // Disables selection
+});
+</script>
+
+</body>
+</html>

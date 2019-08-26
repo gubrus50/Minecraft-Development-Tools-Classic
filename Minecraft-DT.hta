@@ -1,0 +1,592 @@
+<html>
+<head>
+
+<title>Minecraft-DT</title>
+<meta http-equiv="x-ua-compatible" content="IE=9" />
+<script src="app/scripts/jQuery v3-3-1.js"></script>
+
+<HTA:APPLICATION 
+	ID="Minecraft-DT"
+	APPLICATIONNAME="Minecraft-DT" 
+	SYSMENU="yes" 
+	MAXIMIZEBUTTON="no"
+	BORDER="none"
+	BORDERSTYLE="normal"
+	NAVIGABLE="yes"
+	ICON="app/images/mdt_ico.ico"
+	CONTEXTMENU="no"
+>
+
+<style type="text/css"> 
+
+body { 
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+
+    scrollbar-face-color: #587358;
+    scrollbar-arrow-color: #efefef;
+    scrollbar-track-color: #587358;
+    scrollbar-corner-color: #587358;
+    scrollbar-shadow-color: #587358;
+    scrollbar-3dlight-color: #587358;
+    scrollbar-highlight-color: #587358;
+    scrollbar-darkshadow-color: #587358;
+    scrollbar-lightshadow-color: #587358;
+}
+
+@font-face{font-family:SilkscreenNormal;src:url(app/styles/slkscr.ttf),url(app/styles/slkscr.eot);font-weight:400;font-style:normal;}
+
+.btn {
+	height: 40px;
+	width: 390px;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	background: url('app/images/btn1.png') no-repeat;
+	font-family: SilkscreenNormal;
+	line-height: 26px;
+	padding-top: 2px;
+	border: 0px;
+}
+
+.btn:hover {
+	background: url('app/images/btn2.png') no-repeat;
+}
+
+.btn2 {
+	height: 90px;
+	width: 60px;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	background: url('app/images/btn3.png') no-repeat;
+	font-family: SilkscreenNormal;
+	line-height: 26px;
+	padding-top: 2px;
+	border: 0px;
+}
+
+.btn2:hover {
+	background: url('app/images/btn4.png') no-repeat;
+}
+
+#parent div {
+    display:none;
+    position: absolute;
+    top: 100px;
+    left: 0px;
+}
+
+#parent div:first-child {
+    display: block;
+}
+
+#parent > div {
+    width: 1000px;
+    height: 250px;
+}
+
+.box{position: relative}
+
+
+i {
+	border: solid rgba(255, 255, 255, 0.5);
+	border-width: 0 10px 10px 0;
+	display: inline-block;
+	padding: 15px;
+	margin-top: 170px;
+}
+
+i:hover {
+	border: solid rgba(255, 255, 255, 0.7);
+	border-width: 0 10px 10px 0;
+	display: inline-block;
+	padding: 15px;
+	margin-top: 170px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+	margin-left: 85px;
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+	margin-right: 85px;
+}
+
+.btnSlideRight {
+	position: absolute; 
+	top: 32px; 
+	right: 0px; 
+	height: 383px; 
+	width: 200px;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#c0000000',GradientType=1 ); /* IE6-9 */
+}
+
+.btnSlideRight:hover {filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#e0000000',GradientType=1 )}
+
+.btnSlideLeft {
+	position: absolute; 
+	top: 32px; 
+	left: 0px; 
+	height: 383px; 
+	width: 200px;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c0000000', endColorstr='#00000000',GradientType=1 ); /* IE6-9 */
+}
+
+.btnSlideLeft:hover {filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0000000', endColorstr='#00000000',GradientType=1 )}
+
+a {cursor: default}
+p {cursor: default}
+
+#return {
+	border-width: 6px 10px 6px 0px;
+	border-color: transparent #fff;
+	font-family: Calibri;
+	border-style: solid;
+	position: absolute;
+	opacity: 0.8;
+	height: 0px;
+	width: 0px;
+	top: -6px;
+	left: 11px;
+}
+
+#return {opacity: 0.5}
+#return:hover {opacity: 0.8}
+
+#close {
+	position: absolute;
+	right: 2px;
+	top: 2px;
+	width: 10px;
+	height: 20px;
+	opacity: 0.5;
+	color: #fff;
+}
+
+#close:hover {
+	opacity: 0.8;
+}
+
+#close:before, #close:after {
+	position: absolute;
+	left: 0;
+	content: ' ';
+	height: 15px;
+	width: 2px;
+	background-color: #fff;
+}
+
+#close:before {
+	transform: rotate(45deg);
+}
+
+#close:after {
+	transform: rotate(-45deg);
+}
+
+#hide {
+	position: absolute;
+	right: 2px;
+	top: 8px;
+	width: 10px;
+	height: 20px;
+	opacity: 0.45;
+	color: #fff;
+}
+
+#hide:hover {
+	opacity: 0.5;
+}
+
+#hide:before {
+	position: absolute;
+	left: 0;
+	content: ' ';
+	height: 12px;
+	width: 2px;
+	background-color: #fff;
+}
+
+#hide:before {
+	transform: rotate(90deg);
+}
+
+#description {
+	position: absolute;
+	left: 10px;
+	bottom: 6px;
+	width: 505px;
+	height: 86px;
+	border-right: 0px;
+	border: 2px solid black;
+	background-color: rgba(0, 0, 0, 0.4);
+	overflow-y: scroll;
+	overflow: auto;
+	float: left;
+}
+
+#innerDescription {
+	height: auto;
+	width: 100.2%;
+	border: 0px;
+}
+
+.page_counter {
+	color: #fff;
+	opacity: 0.55;
+	font-size: 25px;
+	font-family: SilkscreenNormal;
+	cursor: default;
+	position: absolute;
+	bottom: 101px;
+	left: 0; 
+	width: 100%;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#c0000000', GradientType=0 );
+	height: 70px;
+}
+</style>  
+
+<script type="text/javascript">
+// Set size of the application
+window.resizeTo(988,518);
+// Move the application to the centre of the desktop
+window.moveTo((screen.width - 988) / 2, (screen.height - 518) / 2);
+</script>
+<script type="text/vbscript">
+' Set variable MDTT to the location of folder MDT-tools
+Set sh = CreateObject("WScript.Shell")
+Dim MDTT : MDTT = Replace(sh.ExpandEnvironmentStrings("%APPDATA%\MDT-tools\"),"\","/")
+</script>
+
+<!-- <Custom-Bar=Functions> 
+
+	CONTAINS:
+		functions:
+			- closewWindow()
+			- _jsMinWin()
+
+	**function closeWindow() closes the application
+	**function _jsMinWin() Minimises the application
+
+-->
+
+<CUSTOM-BAR=FUNCTIONS>
+	<script name="Close Window" type="text/vbscript">
+	Sub closeWindow()
+
+	    Window.Close
+		
+	End Sub
+	</script>
+	<script name="Minimize Window" type="text/javascript">
+	function _jsMinWin() {
+		try {
+			// actives element id "HHCtrMini..." which will minimise the application
+			HHCtrlMinimizeWindowObject.Click();
+		}
+		catch (err) {
+			alert(err.message); // Execute errors
+		}
+	}
+	</script>
+	<object hidden="hidden" id="HHCtrlMinimizeWindowObject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+		<param name="command" value="minimize" />
+	</object>
+</CUSTOM-BAR=FUNCTIONS>
+
+</head>  
+<body SCROLL="no" onload="startTimer()" onmousewheel="if(window.event.ctrlKey){return false}" bgcolor="#fff">
+<!-- This division is just an border for the application -->
+<div style="margin-left: -6.6px; margin-top: -8px; width: 984px; height: 516px; border: 1px solid #2b2b33">
+
+	<!-- <custom-bar>
+	
+		This tag is the title bar for the application.
+		User can use it to move the application around the desktop display.
+		
+		LINKS-TO:
+			scripts:
+			  	- mdt-functions
+			tags:
+				- <CUSTOM-BAR=FUNCTIONS>
+
+		CONTAINS:
+			app_functions:
+				- closeWindow();
+				- _jsMinWin();
+			scripts:
+				mdt-functions:
+						functions:
+							- readyApplication();
+			elements:
+				- id "grip" which allows user to move the application
+				- id "return" which allows user to get back to the controll pannel / menu / main page
+				- id "bar-block-close" which ends the application
+				- id "bar-block-hide" which minimises the application
+
+	-->
+
+	<CUSTOM-BAR>
+		<div id="grip" style="height: 30px; width: 99.96%; background-image: url('app/images/bricks.jpg'); border-bottom: 2px solid #3a3845">
+			<p id="return" onclick="readyApplication()"></p>
+			<p style="position: absolute; left: 32px; top: -10px; font-family: Calibri; opacity: 0.8; color: #fff">Minecraft-DT</p>
+
+			<div id="bar-block-close" style="opacity: 0; background: red; position: absolute; top: 0px; right: 0px; width: 38px; height: 32px" onmouseover="document.getElementById('close').style.opacity='0.8'; document.getElementById('bar-block-close').style.opacity='0.3'" onmouseout="document.getElementById('close').style.opacity='0.5'; document.getElementById('bar-block-close').style.opacity='0'" onclick="closeWindow()"></div>
+
+			<div style="position: absolute; right: 8px; top: 6px; height: 20px; width: 20px" onmouseover="document.getElementById('close').style.opacity='0.8'; document.getElementById('bar-block-close').style.opacity='0.3'" onmouseout="document.getElementById('close').style.opacity='0.5'; document.getElementById('bar-block-close').style.opacity='0'" onclick="closeWindow()"><a href="#" id="close"></a></div>
+			
+			<div id="bar-block-hide" style="opacity: 0; background: black; position: absolute; top: 0px; right: 38px; width: 38px; height: 32px" onmouseover="document.getElementById('hide').style.opacity='0.8'; document.getElementById('bar-block-hide').style.opacity='0.3'" onmouseout="document.getElementById('hide').style.opacity='0.5'; document.getElementById('bar-block-hide').style.opacity='0'" onclick="_jsMinWin()"></div>
+
+			<div style="position: absolute; right: 46px; top: 3px; height: 20px; width: 20px" onmouseover="document.getElementById('hide').style.opacity='0.8'; document.getElementById('bar-block-hide').style.opacity='0.3'" onmouseout="document.getElementById('hide').style.opacity='0.5'; document.getElementById('bar-block-hide').style.opacity='0'" onclick="_jsMinWin()"><a href="#" id="hide"></a></div>
+		</div>
+	</CUSTOM-BAR>
+
+	<!-- <inner-display>
+		
+		This tag is the controll pannel / menu / main page of the application
+
+		It contains fake page generated by function block() from mdt-functions.js
+		and in its fake page it contains the tools from MDTT folder (
+
+			MDTT = Minecraft-Developing-Tool-Tools folder path
+			folder-path: %appdata%/MDT-tools 
+
+		)
+
+		LINKS-TO:
+			scripts:
+				mdt-functions
+
+		CONTAINS:
+			scripts:
+				mdt-functions:
+						functions:
+							- openFakePage(page);
+							- block()
+							- play();
+
+			app_functions:
+				- nextSlide();
+				- prevSlide();
+
+			elements:
+				- id "logo" which is when pressed, it would run function openFakePage(page) 
+
+				- id "parent" which will include the fake pages made by using function block(),
+					 which each contains the tools
+
+			 	- class "page_counter" is for conter of fake pages made by function block(),
+
+			 			**The counter is linked to function setCounter()
+
+			 			**Function setCOunter() is linked in function readyApplication() 
+			 			  which is located in mdt-functions.js
+
+			 			**The counter appears only when there are more than 1 fake pages 
+			 			  created byfunction block()
+
+			 	- id "btnSlideRight" which when clicked its tag "a", it would switch the 
+			 		 fake page of the function block() to the right side ( basically next page of slide )
+
+			 	- id "btnSlideLest" which when clicked its tag "a", it would witch the
+			 		 fake page of the function block() to the lest side ( basically previous page of slide )
+
+	-->
+
+	<INNER-DISPLAY>
+		<INNER-BACKGROUND>
+			<div style="background: #2b2b33; position: absolute; width: 985.5px; height: 382.5px; top: 32.5px">
+				<img src="app/images/bg0.gif" width="100%" height="100%" />
+			</div>
+		</INNER-BACKGROUND>
+
+		<center>
+
+			<img id="logo" onclick="play(); openFakePage('about-mdt')" src="app/images/logo_icon.png" style="position: relative; top: 20px" onmouseover="this.src='app/images/logo_icon_hover.png'; this.style.width='610px'; this.style.height='126px'" onmouseout="this.src='app/images/logo_icon.png'; this.style.width='585px'; this.style.height='101px'" width="585px" height="101px" style="display: none; margin-top: 25px" />
+
+			<div id="parent"></div>
+
+
+			<div class="page_counter">
+				<center>
+					<div id="counter" style="margin-top: 10px"></div>
+				</center>
+			</div>
+
+
+			<a onclick="play(); nextSlide()" onmouseout="document.getElementById('r_btn').style.borderColor='rgba(255, 255, 255, 0.5)'" onmouseover="document.getElementById('r_btn').style.borderColor='rgba(255, 255, 255, 0.7)'"><div class="btnSlideRight"><i id="r_btn" class="right"></i></div></a>
+			<a onclick="play(); prevSlide()" onmouseout="document.getElementById('l_btn').style.borderColor='rgba(255, 255, 255, 0.5)'" onmouseover="document.getElementById('l_btn').style.borderColor='rgba(255, 255, 255, 0.7)'"><div class="btnSlideLeft"><i id="l_btn" class="left"></i></div></a>
+			<script>
+			var page = 1;
+			function setCounter() {
+	   		 	if (pages > 1) {
+	   		 		document.getElementById('counter').innerHTML = '>> ' + page + '-' + pages + ' <<<';
+	   		 	} else { document.getElementById('counter').innerHTML = ' ' }
+			}
+
+			var fadeTime = "200";
+			var pause = 'false';
+
+
+			function nextSlide() { 
+				if (animated == 'true') {
+					if (pause == 'false') {
+						if (page < pages) {
+							pause = 'true'; page++;
+							setCounter();
+
+							var divs = $('#parent div');
+							now = divs.filter(':visible');
+							next = now.next().length ? now.next() : divs.first();
+							
+							Number(fadeTime);
+							now.fadeOut(fadeTime);
+							next.delay(fadeTime*2).fadeIn(fadeTime);
+							setTimeout(function(){ pause = 'false' }, fadeTime*4);
+						}
+					}
+				} else {
+					if (page < pages) {
+						page++; setCounter();
+
+						var divs = $('#parent div');
+						now = divs.filter(':visible');
+						next = now.next().length ? now.next() : divs.first();
+						
+						Number(0);
+						now.fadeOut(0);
+						next.fadeIn(0);
+					}
+				}
+			}
+
+			function prevSlide() {
+				if (animated == 'true') {
+					if (pause == 'false') {
+						if (page > 1) {
+							pause = 'true'; page--;
+							setCounter();
+							
+							var divs = $('#parent div');
+							now = divs.filter(':visible');
+							prev = now.prev().length ? now.prev() : divs.last();
+
+							Number(fadeTime);
+							now.fadeOut(fadeTime);
+							prev.delay(fadeTime*2).fadeIn(fadeTime);
+							setTimeout(function(){ pause = 'false' }, fadeTime*4);
+						}
+					}
+				} else {
+					if (page > 1) {
+						page--; setCounter();
+
+						var divs = $('#parent div');
+						now = divs.filter(':visible');
+						prev = now.prev().length ? now.prev() : divs.last();
+
+						Number(0);
+						now.fadeOut(0);
+						prev.fadeIn(0);
+					}
+				}
+			}
+			</script>
+		</center>
+	</INNER-DISPLAY>
+
+	<!-- <bottom-division> 
+
+		This is a tag which is separated from the controll pannel / menu / main page
+		(basically a division)
+	
+		LINKS-TO:
+			scripts:
+				- mdt-functions
+
+		CONTAINS:
+			scripts:
+				mtd-functions:
+						- play();
+						- viewTools();
+						- setDescription();
+
+			elements:
+				- class "btn"(1) which is a button that when active, it opens 
+				    	explorer-MDTT-folder were tools are being stored.
+
+				- class "btn"(2) which is a button that when active, it creates
+						fake page using function openFakePage(page).
+
+				- id "run" which is a button that when active, it opens the tool
+					 that the user has selected.
+
+				- id "description" which contains id "innerDescription" were the
+					 description about the selected tool will appear in.
+
+	-->
+
+	<BOTTOM-DIVISION>
+		<div style="background: url('app/images/bricks.jpg') no-repeat; position: absolute; width: 987px; height: 102px; bottom: 0; border-top: 1px solid #2b2b33"></div>
+		
+		<button class="btn" onclick="play(); viewTools()" style="position: absolute; bottom: 56px; right: 11px; border-right: 2px solid black">MY TOOLS</button>
+		<button class="btn" onclick="play(); openFakePage('updates')" style="position: absolute; bottom: 6.8px; right: 11px; border-right: 2px solid black">CHECK FOR UPDATES</button>
+		<button id="run" class="btn2" onclick="play()" style="position: absolute; bottom: 6px; right: 41.6%; border: 2px solid black; border-left: 0px">RUN</button>
+		
+		<div id="description">
+			<iframe id="innerDescription" onmousewheel="if(window.event.ctrlKey){return false}" src="app/description.html" onload="setDescription()">
+			</iframe>
+		</div>
+	</BOTTOM-DIVISION>
+</div>
+
+
+<!-- <launcher-progress> 
+
+	LINKS-TO:
+		scripts:
+			mdt-functions
+
+	CONTAINS:
+		scripts:
+			mdt-functions:
+				- readyApplication();
+				- openFakePage(page);
+
+	This is a dummy type tag.
+	It is used for storing and displaying the fake pages created by
+	the function: openFakePage(page); which are located in mdt-functions.js
+
+	Before the application fully loads its elements, this tag would be displayed, informing
+	the user that the application is still loading, after that, the message would be removed
+	by function readyApplication(); which is located in mdt-functions.js
+
+-->
+
+<LAUNCHER-PROGRESS>
+	<div id="loadscreen" style="background: #2b2b33; position: absolute; width: 985.5px; height: 382.5px; top: 32.5px; left: 0; opacity: 1">
+		<div style="height: 100%; width: 100%; background: url('app/images/offline_body.gif'); opacity: 0.01"></div>
+    	<div id="lp-info" style="position: absolute; top: 48%; left: 43.5%; font-family: Calibri; color: #fff; opacity: 0.8">Launching application</div>
+	</div>
+</LAUNCHER-PROGRESS>
+
+
+
+<!-- Include mdt-functions.js to the application -->
+<script src="app/scripts/mdt-functions.js"></script>
+<!-- This script includes config.js to the application from %appdata%\MDT-tools folder -->
+<script type="text/javascript">
+var script = document.createElement('script');
+script.src = MDTT + 'config.js';
+document.getElementsByTagName('head')[0].appendChild(script);
+</script>
+
+</body>  
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sign Editor</title>
+<meta http-equiv="x-ua-compatible" content="IE=9" />
+<script type="text/javascript" src="scripts/jQuery v3-3-1.js"></script>
+<style>
+
+@font-face{
+	font-family: "SilkscreenNormal";
+	src: url("styles/slkscr.ttf"),url("styles/slkscr.eot");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face{
+	font-family: "Minecraft-Regular";
+	src: url("styles/Minecraft-Regular.eot"),url("styles/Minecraft-Regular.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-Italic";
+	src: url("styles/Minecraft-Italic.eot"),url("styles/Minecraft-Italic.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-BoldItalic";
+	src: url("styles/Minecraft-BoldItalic.eot"),url("styles/Minecraft-BoldItalic.otf");
+}
+
+@font-face{
+	font-family: "Minecraft-Bold";
+	src: url("styles/Minecraft-Bold.eot"),url("styles/Minecraft-Bold.otf");
+}
+
+
+
+body{
+    scrollbar-face-color: #2b2b33;
+    scrollbar-arrow-color: #9e9e9e;
+    scrollbar-track-color: #24242b;
+    scrollbar-corner-color: #24242b;
+    scrollbar-shadow-color: #24242b;
+    scrollbar-3dlight-color: #24242b;
+    scrollbar-highlight-color: #24242b;
+    scrollbar-darkshadow-color: #24242b;
+    scrollbar-lightshadow-color: #24242b;
+	-ms-user-select: none;
+}
+
+.display {
+  float: left;
+  width: 685px;
+  height: 383.5px;
+}
+
+.settings {
+  float: left;
+  background-image: url("images/ui1.jpg");
+  box-shadow: 0px 0px 15px 3px black;
+  background-size: 128px 128px;
+  width: 300px;
+  height: 383.5px;
+}
+
+.sign {
+	background-image: url("images/blank_sign.png");
+	background-size: 400px 200px;
+	background-repeat: no-repeat;
+	width: 400px;
+	height: 200px;
+	margin-top: 85px;
+	margin-left: 140px;
+	border: 1px solid #5e4f32;
+}
+
+.sign-commands {
+	opacity: 0.75;
+	border-radius: 5px;
+	margin-left: 6px;
+	margin-top: 10px;
+	width: 280.5px;
+	height: 66px;
+	box-shadow: 0px 0px 0px 1px #3b3b47;
+	font-family: Minecraft-Italic;
+	border-top: 2px solid #7e7e85;
+	border-left: 2px solid #7e7e85;
+	border-bottom: 2px solid #2a2a30;
+	border-right: 2px solid #2b2b33;
+	background-image: url("images/btn_background.png");
+	color: #fff;
+}
+
+#buttons {
+	margin-left: 6.5px;
+	margin-top: 10px;
+}
+
+input[type="button"] {
+	background-image: url("images/btn5.png");
+	background-size: 67px 34px;
+	background-repeat: no-repeat;
+	border: 1px solid #3b3b47;
+	height: 35px;
+	width: 69px;
+	color: #2e2e38;
+	font-family: SilkscreenNormal;
+	color: #fff;
+}
+
+input[type="button"]:hover { background-image: url("images/btn6.png") }
+
+input[type="button"][active="true"] {
+	background-image: url("images/btn7.png");
+}
+
+.gradient {
+	position: absolute; 
+	top: 0; 
+	left: 0;
+}
+
+.sl {
+	float: left;
+	width: 25px;
+	height: 12.5px;
+	border: 1px solid lightGray;
+	margin: 2.5px; 2.5px; 2.5px; 2.5px;
+}
+
+.sl[active="true"] { background-color: lightGray }
+
+.commands { display: none; margin-left: 1.5px }
+.commands[active="true"] { display: block }
+
+
+div#theRibbon{
+	position: absolute;
+	top: -1px;
+	left: 456px;
+	padding: 10px;
+	min-width: 350px;
+	border-radius: 2px 2px 20px 20px;
+	background-image: url("images/ui1.jpg");
+	box-shadow: 1px 1px 15px 3px rgba(0,0,0,0.5);
+	opacity: 0.9;
+	background-size: 128px 128px;
+}
+
+div#theRibbon > button, div#theRibbon > div{
+	opacity: 0.75;
+	border-radius: 0px;
+	margin-left: 2px;
+	height: 28px;
+	box-shadow: 0px 0px 0px 1px #3b3b47;
+	font-family: Minecraft-Italic;
+	border-top: 2px solid #7e7e85;
+	border-left: 2px solid #7e7e85;
+	border-bottom: 2px solid #2a2a30;
+	border-right: 2px solid rgba(0,0,0,0);
+	border-radius: 3px;
+	background-image: url("images/btn_background.png");
+	color: #fff;
+}
+
+div#theRibbon > button:hover, div#theRibbon > div:hover{
+	opacity: 1;
+}
+
+div#theRibbon > div > div{
+	background-color: gray;
+	margin: 2px 0px 0px 2px;
+	height: 15px;
+	width: 38px;
+	opacity: 0.8;
+	border-radius: 1px 1px 7px 1px;
+	border: 1px solid #3b3b47;
+	border-top: 2px solid rgba(12,12,12,0.7);
+	border-left: 2px solid rgba(12,12,12,0.7);
+}
+
+div#theRibbon > div > div:active{
+	opacity: 1;
+}
+
+div#theRibbon > div{
+	height: 23.5px;
+	width: 44px;
+	position: absolute;
+	top: 10px;
+	right: 14px;
+}
+
+iframe#theWYSIWYG{
+	white-space: pre;
+	border: 0px;
+	margin-top: 3px;
+	height: 200px;
+	width: 400px;
+}
+
+
+#foreColorTable {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 990px;
+	height: 385px;
+	background: rgba(0, 0, 0, 0.6)
+}
+
+#foreColorTable > div {
+	background: #2b2b33;
+	border: 1px solid #494654;
+	width: 495px;
+	height: 200px;
+	color: #fff;
+	left: 247.5px;
+	top: 92px;
+	position: absolute;
+	text-align: center;
+	font-family: calibri;
+}
+
+
+td#foreColorTable, th#foreColorTable {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 3px;
+  border: 0px;
+}
+
+.fctColorBox{
+	width: 15px;
+    height: 17px;
+    background-color: gray;
+    border: 2px solid #494654;
+    border-radius: 2px;
+    box-shadow: inset 0px 0px 1px 1px #878297;
+    opacity: 0.7;
+}
+.fctColorBox:hover{
+	opacity: 1;
+}
+
+</style>
+
+<script type="text/javascript">
+
+window.onload = function() {
+
+	scr = document.createElement("script");
+	css = document.createElement("link");
+	editor.head.appendChild(css);
+	editor.head.appendChild(scr);
+
+	$(iframe).contents().find("link").attr({
+		"rel": "stylesheet",
+		"href": "styles/theWYSIWYG.css"
+	});
+
+	$(iframe).contents().find("script").attr({
+		"type": "text/javascript",
+		"src": "scripts/theWYSIWYG.js"
+	});
+
+	$(iframe).contents().find("body").attr({
+		"contenteditable": "false",
+		"spellcheck": "false",
+		"frameborder": "0",
+		"scrolling": "no"
+	});
+
+	// Sets everything to default
+	resetSignEditor();
+}
+</script>
+
+<body>
+
+<div class="gradient">
+
+<div class="settings" onselectstart="return false">
+	<form id="buttons">
+		<input id="i" class="btn" type="button" value="I" name="Top Left Sign" active="true" />
+		<input id="ii" class="btn" type="button" value="II" name="Top Right Sign" active="false" />
+		<input id="iii" class="btn" type="button" value="III" name="Bottom Left Sign" active="false" />
+		<input id="iv" class="btn" type="button" value="IV" name="Bottom Right Sign" active="false" />
+	</form>
+	<form class="commands" active="true">
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+	</form>
+	<form class="commands" active="false">
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+	</form>
+	<form class="commands" active="false">
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+	</form>
+	<form class="commands" active="false">
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+		<textarea class="sign-commands"></textarea>
+	</form>
+</div>
+
+<div class="display" onselectstart="return false">
+	<div class="sign">
+		<iframe id="theWYSIWYG" name="theWYSIWYG">
+			<param name="wmode" value="opaque">
+		</iframe>
+	</div>
+	<center>
+		<div name="sign-location" style="width: 70px; margin-top: 25px;">
+			<div class="sl" active="true"></div>
+			<div class="sl" active="false"></div>
+			<div class="sl" active="false"></div>
+			<div class="sl" active="false"></div>
+		</div>
+	</center>
+</div>
+
+<div id="theRibbon" onselectstart="return false">
+	<button id="boldButton" title="Bold" style="border-radius: 2px 2px 2px 10px"><b>B</b></button>
+	<button id="italicButton" title="Italic"><em>I</em></button>
+	<button id="underlineButton" title="Underline"><u>U</u></button>
+	<button id="strikeButton" title="Strike Through"><s>abc</s></button>
+	<button id="obfuscateButton" title="Obfuscate"><u><strike>]</strike></u>!&<b>ł</b></button>
+	<button id="undoObfuscateButton" title="Undo Obfuscate">Undo <u><strike>]</strike></u>!&<b>ł</b></button>
+	<div type="color" id="fontColorButton" title="Change Font Color" style="border-radius: 2px 2px 10px 2px">
+		<div id="fcbColor"></div>
+	</div>
+</div>
+
+
+<div id="foreColorTable" onmousedown="return false">
+	<div>
+		<h2>Fore Color Table</h2>
+		<p>You must select a color from the folowing table<br/>
+		in order to apply it onto your selection.</p>
+		<center>
+			<table>
+			  <tr>
+			  	<td><div class="fctColorBox" style="background: #AAAAAA" onclick="setColor('#AAAAAA')"></div></td>
+				<td><div class="fctColorBox" style="background: #000000" onclick="setColor('#000000')"></div></td>
+			    
+			    <td><div class="fctColorBox" style="background: #A90400" onclick="setColor('#A90400')"></div></td>
+			    <td><div class="fctColorBox" style="background: #0000B2" onclick="setColor('#0000B2')"></div></td>
+			    
+			    <td><div class="fctColorBox" style="background: #A900B2" onclick="setColor('#A900B2')"></div></td>
+			    <td><div class="fctColorBox" style="background: #13AAAB" onclick="setColor('#13AAAB')"></div></td>
+			    
+			    <td><div class="fctColorBox" style="background: #FEAC00" onclick="setColor('#FEAC00')"></div></td>
+			    <td><div class="fctColorBox" style="background: #14AB00" onclick="setColor('#14AB00')"></div></td>
+			  </tr>
+			  <tr>
+			    <td><div class="fctColorBox" style="background: #FFFFFF" onclick="setColor('#FFFFFF')"></div></td>
+				<td><div class="fctColorBox" style="background: #555555" onclick="setColor('#555555')"></div></td>
+			    
+			    <td><div class="fctColorBox" style="background: #FD5650" onclick="setColor('#FD5650')"></div></td>
+			    <td><div class="fctColorBox" style="background: #544CFF" onclick="setColor('#544CFF')"></div></td>
+			    
+			    
+			    <td><div class="fctColorBox" style="background: #FD4DFF" onclick="setColor('#FD4DFF')"></div></td>
+			    <td><div class="fctColorBox" style="background: #5BFFFF" onclick="setColor('#5BFFFF')"></div></td>
+			     
+			    <td><div class="fctColorBox" style="background: #FFFF00" onclick="setColor('#FFFF00')"></div></td>
+			    <td><div class="fctColorBox" style="background: #5CFF00" onclick="setColor('#5CFF00')"></div></td>
+			  </tr>
+			</table>
+		</center>
+	</div>
+</div>
+<script type="text/javascript" src="scripts/sign-editor.js"></script>
+</body>
+</html>

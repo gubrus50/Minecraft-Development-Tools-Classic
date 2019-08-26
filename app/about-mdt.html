@@ -1,0 +1,236 @@
+<!-- app styles -->
+<script src="scripts/jQuery v3-3-1.js"></script><script>$(document).ready(function(){document.onselectstart=function(){return false};document.onmousedown=function(){return false}});</script>
+<style>
+
+.title { 
+	background: black;
+	opacity: 0.5;
+	border-radius: 2.5px 2.5px 0px 0px;
+	border: 2px solid  gray;
+	border-bottom: 0;
+	height: 40px;
+	margin-top: 20px;
+}
+
+ul {
+	background: black;
+	opacity: 0.5;
+	margin-top: -1px;
+	border: 2px solid gray;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+}
+
+.note {
+	background: black;
+	opacity: 0.5;
+	margin-top: -16px;
+	border-radius: 0px 0px 5px 5px;
+	border: 2px solid gray;
+	border-top: 0
+}
+
+section, h2 { margin-left: 10px; margin-top: 5px}
+
+.ulBorder { 
+	border-radius: 0px 0px 2.5px 2.5px;
+	border-bottom: 2px solid gray
+}
+
+
+a { color: lightGray }
+
+body {
+    scrollbar-face-color: #2b2b33;
+    scrollbar-arrow-color: #9e9e9e;
+    scrollbar-track-color: #24242b;
+    scrollbar-corner-color: #24242b;
+    scrollbar-shadow-color: #24242b;
+    scrollbar-3dlight-color: #24242b;
+    scrollbar-highlight-color: #24242b;
+    scrollbar-darkshadow-color: #24242b;
+    scrollbar-lightshadow-color: #24242b;
+}
+
+.backgroundImage {
+	position: fixed;
+	left: 0;
+	top: -60px;
+	width: 100%;
+	height: 150%;
+	background-position: center center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.backgorundImage, img {
+	width: 100%;
+}
+
+</style>
+
+<!-- display -->
+<body onmousewheel="if(window.event.ctrlKey){return false}">
+<script type="text/javascript">
+
+var i=5;
+var del = 500;
+var fad = 2000;
+
+window.onload = function() {
+	
+	$("img").hide();
+	img = document.getElementsByTagName("img")[0];
+	$(img).show();
+
+	setInterval(function(){
+		i++; if (i>5){ i=0 }
+
+		if ((i+1)>5) {
+			$(".backgroundImage").css("background-image", "url('images/bg1.jpg')");
+		} else {
+			$(".backgroundImage").css("background-image", "url('images/bg"+(i+1)+".jpg')");	
+		}
+
+		img = document.getElementsByTagName("img")[i];
+		$(img).delay(del).fadeOut(fad);
+
+		if ((i+1)>5) {
+			img = document.getElementsByTagName("img")[0];
+		} else {
+			img = document.getElementsByTagName("img")[(i+1)];
+		}
+
+		img = document.getElementsByTagName("img")[(i+1)];
+		$(img).delay(del+1500).fadeIn(fad);
+
+	}, 20000);
+}
+
+</script>
+
+<div class="backgroundImage">
+	<img src="images/bg1.jpg" />
+	<img src="images/bg2.jpg" />
+	<img src="images/bg3.jpg" />
+	<img src="images/bg4.jpg" />
+	<img src="images/bg5.jpg" />
+	<img src="images/bg6.jpg" />
+</div>
+
+
+<div style="background:black;opacity:0.6;position:fixed;top:0px;left:0px;width:100%;height:100%"></div>
+<div style="font-family:calibri;width:99.25%;word-wrap:break-word;color:#fff;opacity:0.8;margin:-10px 6px 12px 4px">
+
+<div class="title"><h2>WHAT IS A TOOL?</h2></div>
+<ul>
+	<br/>
+	<li>A tool is basically an html application which can be launched by Minecraft-DT</li><br/>
+	<li>Most of the tools should be baised on the game called minecraft</li><br/>
+	<li>
+	They provide useful mecanics to help out minecraft engineers<br/>
+	in some basic or complex tasks
+	</li>
+	<br/>
+</ul>
+
+<div class="note">
+<br/>
+<section>
+	<b>Example</b><br/>
+	<p>
+	One command block generator tool can help the user convert their command<br/>
+	creation in to one summoning command
+	</p>
+</section>
+</br>
+</div>
+
+
+
+<div class="title"><h2>HOW TO INCLUDE MY TOOL?</h2></div>
+<ul class="ulBorder" >
+	<br/>
+	<li>
+	You can include your tools by pressing "My Tools" button at the bottom right corner<br/>
+	(A new window should appear on your screen)
+	</li><br/>
+	<li>What you need to do next is to simply drag and drop your tool into this window</li><br/>
+	<li>The last thing you need to do is to restart the application</li>
+	<br/>
+</ul>
+
+
+
+
+<div class="title"><h2>WHERE CAN I GET MORE TOOLS?</h2></div>
+<ul class="ulBorder">
+	<br/>
+	<li>
+	You can get some of our tools from <a href="https://github.com/gubrus50/Minecraft-DT-Tools" target="blank_">https://github.com/gubrus50/Minecraft-DT-Tools</a>
+	</li><br/>
+	<li>You can also try search for somebody elses tool(s) using your webengine</li><br/>
+	<li>
+	Or you can just try make your own tool for your needs<br/>
+	(Scroll down to secion "How to create my own tool?")
+	</li>
+	<br/>
+</ul>
+
+
+
+
+<div class="title"><h2>HOW TO CREATE MY OWN TOOL?</h2></div>
+<ul>
+	<br/>
+	<li>
+	To create your own tool, you must learn the following programming launguages;
+	<br/>HTML, HTA and JavaScript (or jQuery for complex work)
+	</li><br/>
+	<li>Now you need a template for your tool which is located in your tools inventory</li><br/>
+	<li>
+	To access the inventory, go to main screen of Minecraft-DT and press"My Tools"<br/>
+	button. You should be able to see the folder called "Default"
+	</li><br/>
+	<li>
+	Everything is organised for you, the only thing that you must take focus on is on the<br/>
+	HTA file called "run" which is your tool display that will appear when launched by<br/>
+	Minecraft-DT
+	</li><br/>
+	<li>
+	Now you must design your tool. Make a plan of what you want your tool to do<br/>
+	After the planning, you will be required to do your coding part
+	</li><br/>
+	<li>
+	You can change your tools image which should be located in your tool<br/>
+	"images" folder
+	</li><br/>
+	<li>
+	To rename your tool, simply rename the folder name in which<br/>
+	your "run.hta" file is locaded at
+	</li>
+	<br/>
+</ul>
+
+<div class="note">
+<br/>
+<section>
+	<b>Notes</b>
+	<p>
+	Notice that if you change the location of your "run.hta" file to different folder in the<br/>
+	"Default" folder, your tool would not be displayed in the Minecraft-DT application
+	</p>
+	<p>
+	Minecraft-DT does not own your tool, therefore you have all rights since you are the<br/>
+	owner, but don't forget about a LICENSE and COPYRIGHT LAW if you're planning to<br/>
+	use your tool in a comercial use
+	</p>
+</section>
+</br>
+<div>
+
+
+
+</div>
+</body>

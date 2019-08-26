@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Command Creation Editor</title>
+<meta http-equiv="x-ua-compatible" content="IE=9" />
+<link rel="stylesheet" type="text/css" href="plugins/codemirror v5-43-0/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="plugins/codemirror v5-43-0/theme/ttcn.css" />
+<script type="text/javascript" src="plugins/codemirror v5-43-0/lib/codemirror.js"></script>
+<script type="text/javascript" src="plugins/codemirror v5-43-0/mode/javascript/javascript.js"></script>
+<script type="text/javascript" src="scripts/jQuery v3-3-1.js"></script>
+<script type="text/javascript" src="scripts/XRegExp-all v4-2-4.js"></script>
+<script type="text/javascript" src="scripts/XRegExp-lookbehind v2.js"></script>
+<script type="text/javascript" src="scripts/cce.js"></script>
+<style>
+
+@font-face{
+	font-family: "Minecraft-Italic";
+	src: url("styles/Minecraft-Italic.eot"),url("styles/Minecraft-Italic.otf");
+}
+
+body{
+    scrollbar-face-color: #2b2b33;
+    scrollbar-arrow-color: #9e9e9e;
+    scrollbar-track-color: #24242b;
+    scrollbar-corner-color: #24242b;
+    scrollbar-shadow-color: #24242b;
+    scrollbar-3dlight-color: #24242b;
+    scrollbar-highlight-color: #24242b;
+    scrollbar-darkshadow-color: #24242b;
+    scrollbar-lightshadow-color: #24242b;
+}
+
+div {
+	scrollbar-face-color: #fff;
+    scrollbar-arrow-color: gray;
+    scrollbar-track-color: #fff;
+    scrollbar-corner-color: #fff;
+    scrollbar-shadow-color: #fff;
+    scrollbar-3dlight-color: #fff;
+    scrollbar-highlight-color: #fff;
+    scrollbar-darkshadow-color: #fff;
+    scrollbar-lightshadow-color: #fff;
+}
+
+</style>
+</head>
+
+<body>
+
+<textarea class="codemirror-textarea"></textarea>
+
+<textarea id="editor" style="display:none!important"></textarea>
+
+</body>
+
+<script type="text/javascript">
+// disables selecting
+document.onselectstart = function() { return false }
+
+// Creates empty division for holding modified, unfinished content. links to cce.js
+jQuery('<div/>', { id: "readyContent", style: "display: none" }).appendTo("body");
+
+// Sets container editor content to default
+setTimeout(function(){ resetContainerEditor() }, 1000);
+
+var docB = document.body;
+
+// bind mousewheel event on the mouseWheel function
+if (docB.addEventListener)
+{
+    docB.addEventListener('DOMMouseScroll',mouseWheel,false);
+    docB.addEventListener("mousewheel",mouseWheel,false);
+}
+else { docB.onmousewheel=mouseWheel }
+
+// Disables ctrl button
+function mouseWheel(e)
+{
+    e=e?e:window.event;
+    if (e.ctrlKey)
+    {
+        if(e.preventDefault) e.preventDefault();
+        else e.returnValue=false;
+        return false;
+    }
+}
+</script>
+</html>
