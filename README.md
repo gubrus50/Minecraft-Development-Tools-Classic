@@ -1,7 +1,7 @@
 ## WHAT IS Minecraft-DT?
 Minecraft-DT is a simple launcher for special <a href="#" target="_blank">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as ``Command Creation Generator`` supports ``Visual Display and Text Editor`` for the Sign, and also provides the user with additional ``Creation Editor`` which allows user to generate their own <a href="#" target="_blank">Minecraft Command Creation</a>
 
-<p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases" target="_blank">https://github.com/gubrus50/Minecraft-Development-Tools/releases</a></p>
+<b>News</b> about the application - **[Minecraft-Development-Tools/releases](https://github.com/gubrus50/Minecraft-Development-Tools/releases)**
 
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 
@@ -101,6 +101,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 <li>From <b>Minecraft-DT</b>, move <b>MDT-Tools</b> to <b>%AppData%</b> folder</li>
 <li>Open <b>create-shortcut.vbs</b> to create a shortcut for the application</li>
 
-## License
+<br />
 
+## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
