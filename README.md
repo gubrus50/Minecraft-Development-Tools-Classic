@@ -50,7 +50,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 
 ---
 
-## Download
+## Downloads
 
 <table>
   <tr>
@@ -73,7 +73,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 
 <table>
   <tr>
-    <th>Tool</th>
+    <th>Development Tool</th>
     <th>Version</th>
     <th>Download link (Google Drive)</th>
     <th>Release</th>
