@@ -1,5 +1,5 @@
 ## WHAT IS Minecraft-DT?
-Minecraft-DT is a simple launcher for special <a href="#">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as "Command Creation Generator" supports <u>Visual Display</u> and <u>Text Editor</u> for the Sign, and also provides the user with additional <u>Creation Editor</u> which allows user to generate their own <a href="#">Minecraft Command Creation</a></p>
+Minecraft-DT is a simple launcher for special <a href="#">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as "Command Creation Generator" supports <b>Visual Display</b> and <b>Text Editor</b> for the Sign, and also provides the user with additional <b>Creation Editor</b> which allows user to generate their own <a href="#">Minecraft Command Creation</a></p>
 
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 <p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases" target="_blank">https://github.com/gubrus50/Minecraft-Development-Tools/releases</a></p>
