@@ -4,7 +4,7 @@ tools which will help minecraft developers and beginners in making
 their imagination come to life in their minecraft world.</p>
 
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
-<p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-DT/releases" target="_blank">https://github.com/gubrus50/Minecraft-DT/releases</a></p>
+<p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases" target="_blank">https://github.com/gubrus50/Minecraft-Development-Tools/releases</a></p>
 
 <br /><h2>WHAT IS A TOOL?</h2>
 <li>A tool is basically an html application which can be launched by Minecraft-DT.</li>
