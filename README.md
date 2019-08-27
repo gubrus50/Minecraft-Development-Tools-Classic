@@ -67,6 +67,8 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
   </tr>
 </table>
 
+<br />
+
 <table>
   <tr>
     <th>Development Tool</th>
