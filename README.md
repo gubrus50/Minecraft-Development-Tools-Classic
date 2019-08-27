@@ -1,18 +1,18 @@
 ## WHAT IS Minecraft-DT?
 Minecraft-DT is a simple launcher for special <a href="#" target="_blank">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as ``Command Creation Generator`` supports ``Visual Display and Text Editor`` for the Sign, and also provides the user with additional ``Creation Editor`` which allows user to generate their own <a href="#" target="_blank">Minecraft Command Creation</a>
 
----
-> <b>News</b> about the application - **[Minecraft-Development-Tools/releases](https://github.com/gubrus50/Minecraft-Development-Tools/releases)**
----
+
+<b>News</b> about the application - **[Minecraft-Development-Tools/releases](https://github.com/gubrus50/Minecraft-Development-Tools/releases)**
+
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
+
 
 ## WHAT IS Command Creation?
 <p>Command creation is a smart container that stores many <a href="https://minecraft.gamepedia.com/Command_Block" target="_blank">command blocks</a>. Most of the modern command creations usually contain a user friendly interface that allows the user to toggle "On" and/or "Off" the commands that are within the container. Once activated, those command blocks will then run a series of complex algorythym.
 <br /><br />
 Command creations are usually summoned by one or more command blocks. They are found to be useful as they can be easilly and quickly exported to the world. This means that you don't have to download a complete new world or a schematic to use them.</p>
 
-
-
+---
 
 <br />
 
@@ -20,7 +20,7 @@ Command creations are usually summoned by one or more command blocks. They are f
 <li>A tool is basically an html application which can be launched by Minecraft-DT.</li>
 <li>Most of the tools should be baised on the game called minecraft.</li>
 <li>They provide useful mecanics to help out minecraft engineers in some basic or complex tasks.</li>
-<br/><b>For example</b> - one command block generator tool can help the user convert their command creation in to one summoning command.<br />
+<br/><b>For example</b> - one command block generator tool can help the user convert their command creation in to one summoning command.
 
 <br />
 
@@ -28,7 +28,7 @@ Command creations are usually summoned by one or more command blocks. They are f
 <li>You can include your tools by pressing "My Tools" button at the bottom right corner.</li>
 <li>A new window should appear on your screen.</li>
 <li>What you need to do next is to simply drag and drop your tool into this window.</li>
-<li>The last thing you need to do is to restart the application.</li><br />
+<li>The last thing you need to do is to restart the application.</li>
 
 <br />
 
@@ -49,6 +49,8 @@ Notice that if you change the location of your "run.hta" file to different folde
 
 <p>Minecraft-DT does not own your tool, therefore you have all rights since you are the owner, but don't forget
 about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comercial use.</p><br />
+
+---
 
 ## Download - Launcher
 <table>
