@@ -1,12 +1,12 @@
 ## WHAT IS Minecraft-DT?
-<p>Minecraft-DT is a simple launcher for special <a href="#">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as <b>"</b>Command Creation Generator<b>"</b> supports <b>Visual Display</b> and <b>Text Editor</b> for the Sign, and also provides the user with additional <b>Creation Editor</b> which allows user to generate their own <a href="#">Minecraft Command Creation</a></p>
+<p>Minecraft-DT is a simple launcher for special <a href="#" target="_blank">development tools</a>. Those tools are providing the user with some editors that can save their time. For example one of our tool known as <b>"</b>Command Creation Generator<b>"</b> supports <b>Visual Display</b> and <b>Text Editor</b> for the Sign, and also provides the user with additional <b>Creation Editor</b> which allows user to generate their own <a href="#" target="_blank">Minecraft Command Creation</a></p>
 
 <p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases" target="_blank">https://github.com/gubrus50/Minecraft-Development-Tools/releases</a></p>
 
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 
 ## WHAT IS Command Creation?
-<p>Command creation is a smart container that stores many <a href="https://minecraft.gamepedia.com/Command_Block">command blocks</a>. Most of the modern command creations usually contain a user friendly interface that allows the user to toggle "On" and/or "Off" the commands that are within the container. Once activated, those command blocks will then run a series of complex algorythym.
+<p>Command creation is a smart container that stores many <a href="https://minecraft.gamepedia.com/Command_Block" target="_blank">command blocks</a>. Most of the modern command creations usually contain a user friendly interface that allows the user to toggle "On" and/or "Off" the commands that are within the container. Once activated, those command blocks will then run a series of complex algorythym.
 <br /><br />
 Command creations are usually summoned by one or more command blocks. They are found to be useful as they can be easilly and quickly exported to the world. This means that you don't have to download a complete new world or a schematic to use them.</p>
 
