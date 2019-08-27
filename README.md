@@ -46,11 +46,9 @@ Command creations are usually summoned by one or more command blocks. They are f
 Notice that if you change the location of your "run.hta" file to different folder in the "Default" folder, your tool would not be displayed in the Minecraft-DT application.</p>
 
 <p>Minecraft-DT does not own your tool, therefore you have all rights since you are the owner, but don't forget
-about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comercial use.</p><br />
+about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comercial use.</p>
 
 ---
-
-<br />
 
 ## Download - Launcher
 <table>
