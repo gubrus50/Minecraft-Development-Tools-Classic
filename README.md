@@ -52,6 +52,8 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 
 ## Downloads
 
+<br />
+
 <table>
   <tr>
     <th>Launcher</th>
