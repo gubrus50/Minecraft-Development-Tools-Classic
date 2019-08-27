@@ -14,8 +14,6 @@ Command creations are usually summoned by one or more command blocks. They are f
 
 ---
 
-<br />
-
 ## WHAT IS A TOOL?
 <li>A tool is basically an html application which can be launched by Minecraft-DT.</li>
 <li>Most of the tools should be baised on the game called minecraft.</li>
@@ -51,6 +49,8 @@ Notice that if you change the location of your "run.hta" file to different folde
 about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comercial use.</p><br />
 
 ---
+
+<br />
 
 ## Download - Launcher
 <table>
