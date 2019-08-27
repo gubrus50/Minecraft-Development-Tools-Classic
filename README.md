@@ -88,8 +88,3 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 <li>Install<b> Minecraft-DT.rar</b> and unzip it at <b>C:\Program Files (x86)</b></li>
 <li>From <b>Minecraft-DT</b>, move <b>MDT-Tools</b> to <b>%AppData%</b> folder</li>
 <li>Open <b>create-shortcut.vbs</b> to create a shortcut for the application</li>
-
-<br /><h2>Contacts</h2>
-You can contact us by joining the discord server: https://discord.gg/gMaTtZu<br />
-If you want to report a bug / error, join our discord server and post any errors<br />
-at the <b>Issues</b> room. Thank you very much for helping us.<br />
