@@ -50,10 +50,11 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 
 ---
 
-## Download - Launcher
+## Download
+
 <table>
   <tr>
-    <th>Application Name</th>
+    <th>Launcher</th>
     <th>Version</th>
     <th>Download link (Google Drive)</th>
     <th>Release</th>
@@ -69,12 +70,10 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     </td>
   </tr>
 </table>
-<br />
 
-## Download - Tools
 <table>
   <tr>
-    <th>Tool Name</th>
+    <th>Tool</th>
     <th>Version</th>
     <th>Download link (Google Drive)</th>
     <th>Release</th>
