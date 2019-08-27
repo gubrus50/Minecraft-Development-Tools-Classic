@@ -6,19 +6,21 @@ their imagination come to life in their minecraft world.</p>
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 <p><b>News</b> about the application - <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases" target="_blank">https://github.com/gubrus50/Minecraft-Development-Tools/releases</a></p>
 
+<br />
 ## WHAT IS A TOOL?
 <li>A tool is basically an html application which can be launched by Minecraft-DT.</li>
 <li>Most of the tools should be baised on the game called minecraft.</li>
 <li>They provide useful mecanics to help out minecraft engineers in some basic or complex tasks.</li>
 <br/><b>For example</b> - one command block generator tool can help the user convert their command creation in to one summoning command.<br />
 
+<br />
 ## HOW TO INCLUDE MY TOOL?
 <li>You can include your tools by pressing "My Tools" button at the bottom right corner.</li>
 <li>A new window should appear on your screen.</li>
 <li>What you need to do next is to simply drag and drop your tool into this window.</li>
 <li>The last thing you need to do is to restart the application.</li><br />
 
-
+<br />
 ## HOW TO CREATE MY OWN TOOL?
 <li>To create your own tool, you must learn the following programming launguages; HTML-HTA and JavaScript-jQuery.</li>
 <li>Now you need a template for your tool which is located in your tools inventory.</li>
