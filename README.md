@@ -88,3 +88,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 <li>Install<b> Minecraft-DT.rar</b> and unzip it at <b>C:\Program Files (x86)</b></li>
 <li>From <b>Minecraft-DT</b>, move <b>MDT-Tools</b> to <b>%AppData%</b> folder</li>
 <li>Open <b>create-shortcut.vbs</b> to create a shortcut for the application</li>
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
