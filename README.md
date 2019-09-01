@@ -80,7 +80,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     <td>Command Creation Generator</td>
     <td>v0.1.2</td>
     <td>
-      <a href="https://drive.google.com/open?id=1TEvRpqM18X5otBUD-3X3u-G-ckCb2pec" target="_blank">Windows.rar</a>
+      <a href="https://drive.google.com/open?id=1nMnVpYWlROePNBtPQJfV0TRkrPSUPk-t" target="_blank">Windows.rar</a>
     </td>
     <td><a href="https://github.com/gubrus50/Minecraft-DT/releases/tag/CCG-v0.1" target="_blank">01/09/2019</a></td>
   </tr>
