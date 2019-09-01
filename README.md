@@ -6,13 +6,6 @@ Minecraft-DT is a simple launcher for special development tools. Development too
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 
 ---
-
-## WHAT IS A TOOL?
-<li>A tool is basically an html application which can be launched by Minecraft-DT.</li>
-<li>Most of the tools should be baised on the game called minecraft.</li>
-<li>They provide useful mecanics to help out minecraft engineers in some basic or complex tasks.</li>
-<br/><b>For example</b> - one command block generator tool can help the user convert their command creation in to one summoning command.
-
 ## HOW TO INCLUDE MY TOOL?
 <li>You can include your tools by pressing "My Tools" button at the bottom right corner.</li>
 <li>A new window should appear on your screen.</li>
