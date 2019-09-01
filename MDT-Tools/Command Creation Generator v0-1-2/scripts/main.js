@@ -339,7 +339,7 @@ function saveProject(){
 
 	var URI = 'charset=utf-8,';
 	var fileName = "text-ccgp.html";
-	var testlink = window.open("about:Minecraft-DT/CommandCreationGenerator", "_blank");
+	var testlink = window.open("about:Minecraft-DT/Command Creation Generator v0-1-2", "_blank");
 
 	testlink.document.write(fileData);
 	testlink.document.close();
@@ -570,7 +570,7 @@ function generateCreation() {
 // Saves creation summoning commands
 function saveCreation(summonContainer, summonContainerCommands, cName, cProgrammer, cVersion) {
 
-	var testlink = window.open("about:Minecraft-DT/CommandCreationGenerator", "_blank");
+	var testlink = window.open("about:Minecraft-DT/Command Creation Generator v0-1-2", "_blank");
 	var fileName = cName+".html";
 	var URI 	 = 'charset=utf-8,';
 	var fileData = ""+

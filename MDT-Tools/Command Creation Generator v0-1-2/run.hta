@@ -432,7 +432,7 @@ Function updateConfig()
 	' Sets variables
 	'
 	Set objWSS = CreateObject("WScript.Shell")
-	objFolderCCG = objWSS.ExpandEnvironmentStrings("%APPDATA%\MDT-Tools\CommandCreationGenerator\")
+	objFolderCCG = objWSS.ExpandEnvironmentStrings("%APPDATA%\MDT-Tools\Command Creation Generator v0-1-2\")
 	'
 	Set objFSO = CreateObject("Scripting.FileSystemObject")
 	Set objFolder = objFSO.GetFolder(objFolderCCG & "projects")
