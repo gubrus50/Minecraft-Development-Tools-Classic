@@ -1,14 +1,9 @@
 ## WHAT IS Minecraft-DT?
-Minecraft-DT is a simple launcher for special development tools ([``download section``](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/README.md#downloads)). Those tools are providing the user with some editors that can save their time. Example tool: check [``Command Creation Generator``](https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/Command-Creation-Generator-v0.1.2)
+Minecraft-DT is a simple launcher for special development tools. [``check download section``](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/README.md#downloads). Those tools are providing the user with some editors that can save their time. Example tool: [``Command Creation Generator``](https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/Command-Creation-Generator-v0.1.2)
 
 > <b>News</b> about the application can be found at **[Minecraft-Development-Tools/releases](https://github.com/gubrus50/Minecraft-Development-Tools/releases)**
 
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
-
-## WHAT IS Command Creation?
-Command creation is a smart container that stores many [``command blocks``](https://minecraft.gamepedia.com/Command_Block). Most of the modern command creations usually contain a user friendly interface that allows the user to toggle "On" and/or "Off" the commands that are within the container. Once activated, those command blocks will run a series of complex algorithm.
-<br /><br />
-Command creations are usually summoned by one or more command blocks. They are found to be useful as they can be easilly and quickly exported to the world. This means that you don't have to download a complete new world or a schematic to use them.
 
 ---
 
