@@ -134,11 +134,11 @@ window.onload = function() {
 	<section>
 		<b>Notes</b>
 		<p>
-			<a target="_blank" style="color: lightblue; cursor: pointer" href="' + checkLink + '">
+			<a id="imdt" target="_blank" style="color: lightblue; cursor: pointer" href="#">
 				<u>Inspect Minecraft-DT project on github.com</u>
 			</a>
 			<br/>
-			<a target="_blank" style="color: lightblue; cursor: pointer" href="' + downloadLink + '">
+			<a id="drv" target="_blank" style="color: lightblue; cursor: pointer" href="#">
 				<u>Download released version</u>
 			</a>
 		</p>
@@ -174,8 +174,9 @@ if (online == true) { // Check if user is connected to the wifi
 		script.type = 'text/javascript';
 		script.src = 'https://cdn.jsdelivr.net/gh/gubrus50/Minecraft-Development-Tools@master/app/scripts/version.js?cachebuster='+ new Date().getTime();
 		head.appendChild(script);
-		var checkLink = 'https://github.com/gubrus50/Minecraft-Development-Tools/';
-		var downloadLink = 'https://github.com/gubrus50/Minecraft-Development-Tools#downloads';
+		document.getElementById("imdt").href = 'https://github.com/gubrus50/Minecraft-Development-Tools';
+		// downloadLink is global variable from https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/scripts/version.js
+		document.getElementById("drv").href = downloadLink;
 		setTimeout(function() { 
 
 			var publishedVersion = updatePublishedVersion(releasedVersion);

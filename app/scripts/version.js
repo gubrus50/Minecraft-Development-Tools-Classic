@@ -1,4 +1,5 @@
 var releasedVersion = '2.5.2';
+var downloadLink    = 'href';
 
 function updatePublishedVersion(releasedVersion) {
   var publishedVersion = '2.5.2';
