@@ -134,7 +134,7 @@ window.onload = function() {
 	<section>
 		<b>Notes</b>
 		<p>
-			<a id="imdt" target="_blank" style="color: lightblue; cursor: pointer" href="#">
+			<a id="imdt" target="_blank" style="color: lightblue; cursor: pointer" href="https://github.com/gubrus50/Minecraft-Development-Tools">
 				<u>Inspect Minecraft-DT project on github.com</u>
 			</a>
 			<br/>
@@ -174,9 +174,7 @@ if (online == true) { // Check if user is connected to the wifi
 		script.type = 'text/javascript';
 		script.src = 'https://raw.githack.com/gubrus50/Minecraft-Development-Tools/master/app/scripts/version.js?cachebuster='+ new Date().getTime();
 		head.appendChild(script);
-		document.getElementById("imdt").href = 'https://github.com/gubrus50/Minecraft-Development-Tools';
-		// downloadLink is global variable from https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/scripts/version.js
-		document.getElementById("drv").href = downloadLink;
+
 		setTimeout(function() { 
 
 			var publishedVersion = updatePublishedVersion(releasedVersion);
