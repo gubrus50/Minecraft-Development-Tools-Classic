@@ -50,7 +50,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
       <a href="https://drive.google.com/open?id=1jx5JghNeQpWtaF9_J5n5XwkN2PXqS11n" target="_blank">Windows.rar</a>
     </td>
     <td>
-      <a href="https://github.com/gubrus50/Minecraft-DT/releases/tag/v2.5-Beta" target="_blank">17/01/2019</a>
+      <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/MDT-v2.5.2-Beta" target="_blank">02/09/2019</a>
     </td>
   </tr>
 </table>
