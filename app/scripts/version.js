@@ -1,5 +1,5 @@
 var releasedVersion = '2.5.2';
-var downloadLink    = 'href';
+var downloadLink    = 'https://drive.google.com/file/d/1JaJoXQiVqds3Wt3szPCRnrDS-T1-H9QT/view';
 
 function updatePublishedVersion(releasedVersion) {
   var publishedVersion = '2.5.2';
