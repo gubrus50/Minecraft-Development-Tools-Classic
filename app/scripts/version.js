@@ -1,5 +1,4 @@
 var releasedVersion = '2.5.2';
-var downloadLink    = 'https://drive.google.com/file/d/1jQES7mo-BVZZuiMdxlWQNz3cSZc_1Q7t/view';
 
 function updatePublishedVersion(releasedVersion) {
   var publishedVersion = '2.5.2';
@@ -14,6 +13,7 @@ function updateCurrentVersion(releasedVersion) {
 }
 
 function updateDocumentation() {
+  $("#drv").href("https://drive.google.com/file/d/1jQES7mo-BVZZuiMdxlWQNz3cSZc_1Q7t/view");
   $("#aboutNewRelease").html("\
     <br/>\
     <li>Updated development tools images and the logo. Changed word \"Developing\" to \"Development\"</li><br/>\
