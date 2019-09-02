@@ -16,5 +16,7 @@ function updateDocumentation() {
   $("#aboutNewRelease").html("\
     <br/>\
     <li>Updated development tools images and the logo. Changed word \"Developing\" to \"Development\"</li><br/>\
+    <li>Updated file updates.html. version.js used to use rawgit.com. Now domain has been changed to cdn.jsdelivr.net<br/>\
+    and also old repository links have been replaced to \"https://github.com/gubrus50/Minecraft-Development-Tools/...\"</li><br/>\
   ");
 }
