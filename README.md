@@ -47,7 +47,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     <td>Minecraft-DT</td>
     <td>v2.5.2-Beta</td>
     <td>
-      <a href="https://drive.google.com/open?id=1JaJoXQiVqds3Wt3szPCRnrDS-T1-H9QT" target="_blank">Windows.rar</a>
+      <a href="https://drive.google.com/file/d/1jQES7mo-BVZZuiMdxlWQNz3cSZc_1Q7t/view" target="_blank">Windows.rar</a>
     </td>
     <td>
       <a href="https://github.com/gubrus50/Minecraft-DT/releases/tag/v2.5-Beta" target="_blank">17/01/2019</a>
