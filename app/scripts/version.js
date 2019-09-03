@@ -13,7 +13,7 @@ function updateCurrentVersion(releasedVersion) {
 }
 
 function updateDocumentation() {
-  $("#drv").attr("href", "https://drive.google.com/open?id=1jx5JghNeQpWtaF9_J5n5XwkN2PXqS11n"); // Download released version link
+  $("#drv").attr("href", "https://drive.google.com/file/d/1jx5JghNeQpWtaF9_J5n5XwkN2PXqS11n/view"); // Download released version link
   $("#aboutNewRelease").html("\
     <br/>\
     <li>Updated development tools images and the logo. Changed word \"Developing\" to \"Development\"</li><br/>\
