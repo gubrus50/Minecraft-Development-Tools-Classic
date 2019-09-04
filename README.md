@@ -76,7 +76,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     <td>Default</td>
     <td>v0.1</td>
     <td>
-      <a href="https://drive.google.com/open?id=1EsclPOV8StDBFTydVyoqkY8zVoLuIwKv">Windows.rar</a>
+      <a href="https://drive.google.com/open?id=1edtYMNGXEk35hB-8eqj_X5LbI0t5Ze4B">Windows.zip</a>
     </td>
     <td><a href="#" target="_blank">null</a></td>
   </tr>
