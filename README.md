@@ -47,8 +47,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     <td>Minecraft-DT</td>
     <td>v2.5.2-Beta</td>
     <td>
-      <a href="https://drive.google.com/open?id=1mLkoqqa9cpK3aAFL8EObk7fyWEVCdU1K" target="_blank">Windows.zip</a><br />
-      <a href="https://drive.google.com/open?id=1jx5JghNeQpWtaF9_J5n5XwkN2PXqS11n" target="_blank">Windows.rar</a>
+      <a href="https://drive.google.com/open?id=1mLkoqqa9cpK3aAFL8EObk7fyWEVCdU1K" target="_blank">Windows.zip</a>
     </td>
     <td>
       <a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/MDT-v2.5.2-Beta" target="_blank">02/09/2019</a>
@@ -69,8 +68,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
     <td>Command Creation Generator</td>
     <td>v0.1.2</td>
     <td>
-      <a href="https://drive.google.com/open?id=1EvclsjWZJBcRAhbfsVrJZeQze2PzsB3A" target="_blank">Windows.zip</a><br />
-      <a href="https://drive.google.com/open?id=1LP3UMlnnEdP9LRNDMzNEB7Aau2dOCt90" target="_blank">Windows.rar</a>
+      <a href="https://drive.google.com/open?id=1EvclsjWZJBcRAhbfsVrJZeQze2PzsB3A" target="_blank">Windows.zip</a>
     </td>
     <td><a href="https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/CCG-v0.1.2" target="_blank">01/09/2019</a></td>
   </tr>
