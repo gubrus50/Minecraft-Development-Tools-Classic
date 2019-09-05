@@ -88,7 +88,7 @@ about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comer
 <br />
 
 ## Installation For Windows-10
-<li>Install<b> Minecraft-DT.rar</b> and unzip it at <b>C:\Program Files (x86)</b></li>
+<li>Install<b> Minecraft-DT.zip</b> and unzip it at <b>C:\Program Files (x86)</b></li>
 <li>From <b>Minecraft-DT</b>, move <b>MDT-Tools</b> to <b>%AppData%</b> folder</li>
 <li>Open <b>create-shortcut.vbs</b> to create a shortcut for the application</li>
 
