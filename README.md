@@ -6,29 +6,30 @@ Minecraft-DT is a simple launcher for special development tools. Development too
 <img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
 
 ---
+
 ## HOW TO INCLUDE MY TOOL?
 <li>You can include your tools by pressing "My Tools" button at the bottom right corner.</li>
 <li>A new window should appear on your screen.</li>
 <li>What you need to do next is to simply drag and drop your tool into this window.</li>
 <li>The last thing you need to do is to restart the application.</li>
-
+  
 ## HOW TO CREATE MY OWN TOOL?
-<li>To create your own tool, you must learn the following programming launguages; HTML-HTA and JavaScript-jQuery.</li>
+<li>To create your own tool, you must learn the following programming languages; HTML-HTA and JavaScript-jQuery.</li>
 <li>Now you need a template for your tool which is located in your tools inventory.</li>
 <li>To access the inventory, go to main screen of Minecraft-DT and press "My Tools" button.</li>
 <li>You should be able to see the folder called "Default".</li>
-<li>Everything is organised for you, the only thing that you must take focus on is the HTA file called "run".</li>
+<li>verything is organized for you, the only thing that you must take focus on is the HTA file called "run".</li>
 <li>This is your tool display which will appear when launched by Minecraft-DT.</li>
-<li>Now you must design your tool, make a plan of what you want your tool to do</li>
+<li>Now you must design your tool, make a plan of what you want your tool to do.</li>
 <li>After that, you are required to do your coding part.</li>
 <li>You can change your tools image which should be located in your tool "images" folder.</li>
-<li>To rename your tool, simply rename the folder name in which your "run.hta" file is locaded at.</li>
+<li>To rename your tool, simply rename the folder name in which your "run.hta" file is located at.</li>
 
 <br /><b>Notes:</b><p>
-Notice that if you change the location of your "run.hta" file to different folder in the "Default" folder, your tool would not be displayed in the Minecraft-DT application.</p>
+Notice that if you change the location of your "run.hta" file to different folder in the "Default" folder, your tool would not be displayed in the Minecraft-DT application.
+</p>
 
-<p>Minecraft-DT does not own your tool, therefore you have all rights since you are the owner, but don't forget
-about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a comercial use.</p>
+<p>Minecraft-DT does not own your tool, therefore you have all rights since you are the owner, but don't forget about a LICENSE and COPYRIGHT LAW if you're planning to use your tool in a commercial use.</p>
 
 ---
 
