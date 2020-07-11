@@ -1,9 +1,9 @@
 ## WHAT IS Minecraft-DT?
-Minecraft-DT is a simple launcher for special development tools. Development tools are basically a third party editors based on game known as [Minecraft](https://www.minecraft.net/en-us/). Those editors allow the user to save their time by taking part in complex tasks. Take one of our tools as an example: [Command Creation Generator](https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/MDT-v2.5.2-Beta) or go to [Downloads section](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/README.md#downloads). 
+Minecraft-DT is a simple launcher for special development tools. Development tools are basically a third party editors based on game known as [Minecraft](https://www.minecraft.net/en-us/). Those editors allow the user to save their time by taking part in complex tasks. Take one of our tools as an example: [Command Creation Generator](https://github.com/gubrus50/Minecraft-Development-Tools/releases/tag/MDT-v2.5.2-Beta) or go to [Downloads section](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/Minecraft-DT/README.md#downloads). 
 
 > <b>News</b> about the application can be found at **[Minecraft-Development-Tools/releases](https://github.com/gubrus50/Minecraft-Development-Tools/releases)**
 
-<img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/app/images/Minecraft-DT.png"/>
+<img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/Minecraft-DT/app/images/Minecraft-DT.png"/>
 
 ---
 
@@ -96,4 +96,4 @@ Notice that if you change the location of your "run.hta" file to different folde
 <br />
 
 ## License
-This project is licensed under the MIT License - see the [``LICENSE.md``](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/LICENSE) file for details
+This project is licensed under the MIT License - see the [``LICENSE.md``](https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/Minecraft-DT/LICENSE) file for details
