@@ -28,11 +28,10 @@
 .menu {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background-image: url('/images/purple-bricks.jpg');
-  background-size: 35px;
-  background-position: 15px 0px;
-  background-color: #222;
   margin-bottom: 35px;
+  position: relative;
+  box-shadow: 5px 0 10px 0 rgba(0,0,0,.5);
+  background-color: #222;
 }
 .menu button {
   background-color: rgba(0,0,0,0);

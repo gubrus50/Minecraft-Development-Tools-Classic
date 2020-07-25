@@ -1,5 +1,5 @@
 .Body {
-	height: 100vh;
-	display: grid;
-	grid-template-rows: 1fr auto;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
 }
