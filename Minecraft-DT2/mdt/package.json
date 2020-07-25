@@ -1,6 +1,6 @@
 {
   "name": "Minecraft-DT2",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Minecraft-DT is a simple launcher for special development tools which are a third party editors based on game known as Minecraft. Those editors save users time by completing complex instructions in the background.",
   "main": "public/electron.js",
   "dependencies": {
