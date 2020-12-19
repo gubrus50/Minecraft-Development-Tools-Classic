@@ -1,6 +1,20 @@
 import React from 'react';
-import '../css/NavigationBar.css';
+import './styles/NavigationBar.css';
 import playSound from './Sounds';
+
+
+const btnToolsFolder = () => {
+  playSound('btn-press');
+}
+
+const btnMoreTools = () => {
+  playSound('btn-press');
+}
+
+const btnAbout = () => {
+  playSound('btn-press');
+}
+
 
 const NavigationBar = () => {
   return (
@@ -32,13 +46,13 @@ const NavigationBar = () => {
         <p>MyToolName24</p>
       </div>
       <div className="menu">
-        <button className="btnToolsFolder" onClick={() => playSound('btn-press')} title="Open tools folder">
+        <button className="btnToolsFolder" onClick={btnToolsFolder} title="Open tools folder">
           <img src="images/iconmonstr-wrench-23.svg" draggable="false" alt="tools folder icon" />
         </button>
-        <button className="btnMoreTools" onClick={() => playSound('btn-press')} title="Get more tools">
+        <button className="btnMoreTools" onClick={btnMoreTools} title="Get more tools">
           <img src="images/iconmonstr-folder-5.svg" draggable="false" alt="tools folder icon" />
         </button>
-        <button className="btnAbout" onClick={() => playSound('btn-press')} title="About Minecraft-DT2">
+        <button className="btnAbout" onClick={btnAbout} title="About Minecraft-DT2">
           <img src="images/iconmonstr-newspaper-13.svg" draggable="false" alt="tools folder icon" />
         </button>
       </div>

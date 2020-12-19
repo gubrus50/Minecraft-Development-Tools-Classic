@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/Footer.css';
+import './styles/Footer.css';
 import playSound from './Sounds';
 
 const Footer = () => {

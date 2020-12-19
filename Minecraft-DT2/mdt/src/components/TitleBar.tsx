@@ -1,32 +1,33 @@
 import React from 'react';
-import '../css/TitleBar.css';
+import './styles/TitleBar.css';
 import playSound from './Sounds';
+
 
 let remote = window.require('electron').remote;
 let packJson = require('../../package.json');
 let version = packJson['version'];
 
 
+const minimizeApp = () => {
+  playSound('btn-press');
+  remote.BrowserWindow.getFocusedWindow().minimize();
+}
+
+const maximizeApp = () => {
+  playSound('btn-press');
+  let window = remote.BrowserWindow.getFocusedWindow();
+  window.isMaximized() ? window.unmaximize() : window.maximize();
+}
+
+const terminateApp = () => {
+  playSound('btn-press');
+  setTimeout(() => {
+    remote.getCurrentWindow().close();
+  }, 1000);
+}
+
+
 const Titlebar = () => {
-
-  function minimizeApp() {
-    playSound('btn-press');
-    remote.BrowserWindow.getFocusedWindow().minimize();
-  }
-
-  function maximizeApp() {
-    playSound('btn-press');
-    let window = remote.BrowserWindow.getFocusedWindow();
-    window.isMaximized() ? window.unmaximize() : window.maximize();
-  }
-
-  function terminateApp() {
-    playSound('btn-press');
-    setTimeout(() => {
-      remote.getCurrentWindow().close();
-    }, 1000);
-  }
-
   return (
     <div className="TitleBar">
       <button id="return" onClick={() => playSound('btn-press')}><i></i></button>
