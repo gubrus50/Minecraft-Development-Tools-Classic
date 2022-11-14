@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#000000"/>
+  <meta name="description" content="Website created using electron"/>
+  <link rel="icon" href="src/images/icon.ico"/>
+  <link rel="stylesheet" href="src/styles/index.css"/>
+  <link rel="stylesheet" href="src/styles/title_bar.css"/>
+  <link rel="stylesheet" href="src/styles/navigation_bar.css"/>
+  <link rel="stylesheet" href="src/styles/main_display.css"/>
+  <link rel="stylesheet" href="src/styles/footer.css"/>
+</head>
+<body class="background">
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <title-bar>
+    <button id="return"><i></i></button>
+    <div class="windowTitle draggable">
+      <span>Minecraft-DT2</span>
+    </div>
+    <div class="windowControls preventSelect">
+      <button id="minimize" onclick="windowControls.minimizeApp()"><i></i></button>
+      <button id="maximize" onclick="windowControls.maximizeApp()"><i></i></button>
+      <button id="terminate" onclick="windowControls.terminateApp()"><i></i></button>
+    </div>
+  </title-bar>
+
+  <navigation-bar>
+    <div class="developmentTools">
+      <help-content name="Load developmen tool">
+        <p>The following option <span class="warning">opens a detailed page</span> about the selected tool in this launcher and prepares it for the ready to launch section. Once the tool is prepared, the user is able to launch or delete the selected tool.</p>
+        <p>Development Tools are user-friendly <span class="danger">third-party</span> applications that help save users time by completing complex tasks</p>
+        <p>
+          <strong><span class="warning">WARNING!</span></strong>
+          Before launching, it is important to understand the risks of third-party software.
+        </p>
+      </help-content>
+    </div>
+    <div class="menu">
+      <button class="btnToolsFolder">
+        <img src="src/images/iconmonstr-wrench-23.svg" draggable="false" alt="tools folder icon"/>
+        <help-content name="Open tools fodler">
+          <p>The following option starts <span class="warning">File Explorer</span> in the directory where the Development Tools are stored.</p>
+        </help-content>
+      </button>
+      <button class="btnMoreTools">
+        <img src="src/images/iconmonstr-wrench-24.svg" draggable="false" alt="tools folder icon"/>
+        <help-content name="Get more tools">
+          <p>The following option starts the <span class="danger">Edge Browser</span> at our official website where you can download more Development Tools for the Minecraft-DT2 launcher.</p>
+        </help-content>
+      </button>
+      <button class="btnAbout">
+        <img src="src/images/iconmonstr-newspaper-13.svg" draggable="false" alt="tools folder icon"/>
+        <help-content name="About Minecraft-DT2">
+          <p>The following option <span class="warning">opens a page</span> in this launcher that contains all the necessary information about Minecraft-DT2.</p>
+        </help-content>
+      </button>
+    </div>
+  </navigation-bar>
+
+
+  <main-display>
+    <div class="display">
+      <help-tag class="hide">test</help-tag>
+      <iframe id="iframeBody" title="External display"></iframe>
+    </div>
+    <footer>
+      <div>
+        <iframe id="iframeFooter" title="Development Tool's brief description">
+          <p>You must enable iframe to inspect tools content.</p>
+        </iframe>
+      </div>
+      <div>
+        <div class="buttonLaunch button">
+          <button>Run</button>
+          <help-content name="Run development tool">
+            <p>The following option launches the selected Development Tool from the left navigation bar.</p>
+            <p>The Minecraft-DT2 launcher will shutdown after successful execution of the selected Development Tool.</p>
+          </help-content>
+        </div>
+      </div>
+      <div>
+        <div class="buttonDefault button">
+          <button>Check for updates</button>
+          <help-content name="Check for updates">
+            <p>The following option checks if a new version of the Minecraft-DT2 launcher is available. All release notes are then displayed in the main body.</p>
+            <p>Note that this option requires an <span class="danger">internet connection</span> to compare the necessary data from our official website API.</p>
+          </help-content>
+        </div>
+        <div class="buttonDefault button">
+          <button>Uninstall the tool</button>
+          <help-content name="Uninstall the tool">
+            <p>The following option <span class="danger">removes all files</span> from the selected Development Tools directory. Once pressed, the user is asked to confirm the deletion action.</p>
+          </help-content>
+        </div>
+      </div>
+    </footer>
+  </main-display>
+
+
+<script name="main-display" src="src/scripts/main_display.js"></script>
+<script name="footer">
+// Set footer's button's attribute "data-before" to button's text value.
+Array.from(document.querySelectorAll('footer button'))
+.map(btn => btn.setAttribute('data-before', btn.innerText));
+</script>
+<script name="index" src="src/scripts/index.js"></script>
+</body>
+</html>

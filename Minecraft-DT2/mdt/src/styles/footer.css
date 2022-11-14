@@ -1,0 +1,103 @@
+footer {
+  width: 100%;
+  height: var(--footer-height);
+  background-image: url('../images/purple-bricks.jpg');
+  background-size: 35px;
+  background-position: 0px 0.5px;
+  display: block;
+  border-top: 1px solid #222;
+  margin-bottom: 35px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+}
+footer > div {
+  display: flex;
+  align-items: center;
+  padding: 10px 0 10px 0;
+}
+
+/* iframeFooter parent division */
+footer > div:nth-of-type(1) {
+  padding-left: 10px;
+}
+
+#iframeFooter {
+  width: 100%;
+  height: 75px;
+  border: 2px solid #000;
+  border-right: 0;
+  background-color: rgba(0,0,0,.4);
+}
+
+/* defaultButtons parent division */
+footer > div:nth-of-type(3) {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 10px;
+  padding-left: 8px;
+  margin-top: 1px;
+}
+
+
+.button {
+  border: 2px solid #000;
+}
+.button > button {
+  border: 0;
+  color: rgba(255,255,255,.75);
+  background: none;
+  position: relative;
+  font-family: SilkscreenNormal;
+}
+.button > button:before {
+  content: attr(data-before);
+  position: absolute;
+  z-index: 1;
+}
+.button > button:after {
+  background-color: rgb(111,111,111);
+  border-top: 2px solid #bfbfbf;
+  border-right: 2px solid #535353;
+  border-bottom: 3px solid #535353;
+  border-left: 2px solid #bfbfbf;
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 0;
+}
+
+
+.buttonLaunch {
+  background-color: #008000;
+}
+.buttonLaunch:hover {
+  background-color: #0f0;
+}
+.buttonLaunch > button {
+  width: 60px;
+  height: 75px;
+}
+.buttonLaunch > button:after {
+  opacity: .7;
+}
+.buttonLaunch > button:hover:active:after {
+  opacity: .65;
+}
+
+.buttonDefault {
+  background-color: #005ce6;
+}
+.buttonDefault > button {
+  width: 250px;
+  height: 32px;
+}
+.buttonDefault > button:hover:after {
+  opacity: .8;
+}
+.buttonDefault > button:hover:active:after {
+  opacity: .7;
+}
