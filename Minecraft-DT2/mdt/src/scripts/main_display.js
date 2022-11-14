@@ -1,71 +1,3 @@
-/* Converts special development tools tags to related data
-    from Development Tool's `dt_config.json` file
-
-    For example, <dt-title></dt-title> is replaced with `title`
-
-    Note that this works only for valid Development Tools.
-    If specific iframe does not require replacement,
-    then set `dtConfig` prameter to "false"
-*/
-const setIframesDevToolsTags = (iframeDoc, dtConfig) => {
-
-  if (!dtConfig || !iframeDoc) {
-    console.error('Failed to replace Development Tool\'s tags due to missing property `dtConfig`.');
-    return false;
-  }
-
-  const removeFileSignature = (elm, dtConfigObj) => {
-
-    let str = dtConfigObj;
-
-    // Return dtConfigObj value if object does not contain "." character
-    // and node element (elm) does not contain attribute "only-name".
-    if (!/./g.test(str) || !elm.hasAttribute('only-name')) return elm.innerText = dtConfigObj;
-
-    // Keep removing characters from dtConfig object,
-    // linerally from righ-to-left, until the first dott is removed.
-    for (let i = str.length - 1; i > -1; i--) {
-      
-      let char = str[i]; 
-          str  = str.substr(0, i);
-
-      if (char == '.') return elm.innerText = str;
-    }
-  }
-
-  [...iframeDoc.getElementsByTagName('dt-title')]
-  .map((elm) => elm.innerText = dtConfig.title);
-
-  [...iframeDoc.getElementsByTagName('dt-author')]
-  .map((elm) => elm.innerText = dtConfig.author);
-
-  [...iframeDoc.getElementsByTagName('dt-version')]
-  .map((elm) => elm.innerText = dtConfig.version);
-
-  [...iframeDoc.getElementsByTagName('dt-icon')]
-  .map((elm) => removeFileSignature(elm, dtConfig.icon));
-
-  [...iframeDoc.getElementsByTagName('dt-index')]
-  .map((elm) => removeFileSignature(elm, dtConfig.index));
-
-  [...iframeDoc.getElementsByTagName('dt-body-page')]
-  .map((elm) => removeFileSignature(elm, dtConfig.body_page));
-
-  [...iframeDoc.getElementsByTagName('dt-footer-page')]
-  .map((elm) => removeFileSignature(elm, dtConfig.footer_page));
-
-  [...iframeDoc.getElementsByTagName('dt-fail')]
-  .map((elm) => elm.style.display = 'none');
-
-  [...iframeDoc.getElementsByTagName('dt-success')]
-  .map((elm) => elm.style.display = 'block');
-
-  console.log('Successfully ignored replacement of Development Tool\'s tags.');
-  return true;
-}
-
-
-
 const appendDefaultStylesForIframe = (iframe) => {
 
   // Validate iframe
@@ -95,7 +27,7 @@ const appendDefaultStylesForIframe = (iframe) => {
 
 
 
-  // Set href if  iframe is #iframeBody or #iframeFooter, return false with error message
+  // Set href if iframe is #iframeBody or #iframeFooter, return false with error message
 
   let href;
   let iframeId = iframe.getAttribute('id');
@@ -107,7 +39,7 @@ const appendDefaultStylesForIframe = (iframe) => {
     href = href_escape + '/src/styles/iframe_footer_stylesheet.css';
   }
   else {
-    console.log('Illegal iframe id, stylesheet can be applied to #iframeBody and #iframeFooter');
+    console.error('Illegal iframe id, stylesheet can be applied to #iframeBody and #iframeFooter only!');
     return false;
   }
 
