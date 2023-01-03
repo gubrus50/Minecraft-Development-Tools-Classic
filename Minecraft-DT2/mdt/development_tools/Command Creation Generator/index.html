@@ -1,1 +1,83 @@
-index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./src/css/fonts.css">
+  <link rel="stylesheet" href="./src/css/style.css">
+</head>
+<body>
+
+<editor-tool name="sign" class="background">
+  <div id="commands">
+    <div class="menu">
+      <button onclick="displayCommand(CurrentSign, true, 1)" title="Sign's first command" disabled></button>
+      <button onclick="displayCommand(CurrentSign, true, 2)" title="Sign's second command"></button>
+      <button onclick="displayCommand(CurrentSign, true, 3)" title="Sign's third command"></button>
+      <button onclick="displayCommand(CurrentSign, true, 4)" title="Sign's last command"></button>
+    </div>
+    <textarea data-display></textarea>
+  </div>
+  <div id="wysiwyg">
+    <button class="gradient" style="--gradient-angle: 90deg;" onclick="displaySign(CurrentSign, true, 'left')">
+      <span><i></i></span>
+    </button>
+    <div class="container">
+      <div class="menu">
+        <div class="wysiwyg-options text-format">
+          <button title="bold">b</button>
+          <button title="italic">i</button>
+          <button title="underline">u</button>
+          <button title="strikethrough">strikethrough</button>
+          <button title="obfuscate">obfuscate</button>
+        </div>
+        <div class="display">
+          <button onclick="displaySign(1)" title="Container's top-left sign" data-active>/tl</button>
+          <button onclick="displaySign(2)" title="Container's top-right sign">/tr</button>
+          <button onclick="displaySign(3)" title="Container's bottom-left sign">/bl</button>
+          <button onclick="displaySign(4)" title="Container's bottom-right sign">/br</button>
+        </div>
+      </div>
+      <div class="sign">
+        <div class="input" contenteditable="true" spellcheck="false"></div>
+        <div class="input" contenteditable="true" spellcheck="false"></div>
+        <div class="input" contenteditable="true" spellcheck="false"></div>
+        <div class="input" contenteditable="true" spellcheck="false"></div>
+      </div>
+      <div class="menu">
+        <div class="wysiwyg-options text-color" title="Change selection's color">
+          <button style="--bg-color: #AAAAAA" data-color="gray"></button>
+          <button style="--bg-color: #000000" data-color="black"></button>
+          <button style="--bg-color: #A90400" data-color="dark_red"></button>
+          <button style="--bg-color: #0000B2" data-color="dark_blue"></button>
+          <button style="--bg-color: #A900B2" data-color="dark_purple"></button>
+          <button style="--bg-color: #13AAAB" data-color="dark_aqua"></button>
+          <button style="--bg-color: #FEAC00" data-color="gold"></button>
+          <button style="--bg-color: #14AB00" data-color="dark_green"></button>
+          <button style="--bg-color: #FFFFFF" data-color="white"></button>
+          <button style="--bg-color: #555555" data-color="dark_gray"></button>
+          <button style="--bg-color: #FD5650" data-color="red"></button>
+          <button style="--bg-color: #544CFF" data-color="blue"></button>
+          <button style="--bg-color: #FD4DFF" data-color="light_purple"></button>
+          <button style="--bg-color: #5BFFFF" data-color="aqua"></button>
+          <button style="--bg-color: #FFFF00" data-color="yellow"></button>
+          <button style="--bg-color: #5CFF00" data-color="green"></button>
+        </div>
+      </div>
+    </div>
+    <button class="gradient" style="--gradient-angle: 270deg;" onclick="displaySign(CurrentSign, true, 'right')">
+      <span><i></i></span>
+    </button>
+  </div>
+</editor-tool>
+
+<editor-tool name="container" contenteditable="true" spellcheck="false"></editor-tool>
+
+
+
+<script defer name="wysiwyg" src="./src/js/wysiwyg.js"></script>
+<script defer name="container" src="./src/js/container.js"></script>
+<script defer name="main" src="./src/js/main.js"></script>
+
+</body>
+</html>

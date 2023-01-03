@@ -1,0 +1,520 @@
+:root {
+  --commands-menu-height: 75px;
+  --commands-width: calc(var(--window-width) / 3);
+  --window-width: 990px;
+  --wysiwyg-arrow-size: 35px;
+  --btn-margin: 2.5px;
+  --selection-color: #fff;
+  --bg-0: url('../img/bg0.png');
+  --bg-1: url('../img/bg1.png');
+  --text-color: #000;
+  --caret-color: #000;
+}
+
+::selection {
+  background-color: rgba(0,0,0,0.2);
+  color: var(--selection-color);
+}
+
+@keyframes backgroundMove {
+  00.0%, 11.0% { background-position: -25px -25px; }
+  16.5%, 27.5% { background-position: 0px 0px; }
+  33.0%, 44.0% { background-position: -50px -50px; }
+  49.5%, 60.5% { background-position: -50px 0px; }
+  66.0%, 77.0% { background-position: 0px -50px; }
+  82.5%, 100% { background-position: -25px -25px; }
+}
+
+@keyframes backgroundSlideShow {
+  00%, 20% { background-image: var(--bg-0); }
+  20%, 40% { background-image: var(--bg-0); }
+  40%, 60% { background-image: var(--bg-1); }
+  60%, 80% { background-image: var(--bg-1); }
+}
+
+.background {
+  position: relative;
+  background-color: transparent;
+}
+.background::before {
+  content: "";
+  position: absolute;
+  width: calc(100% + 50px);
+  height: calc(100% + 50px);
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-image: /* Preload background images */
+    var(--bg-0),
+    var(--bg-1);
+  animation: backgroundMove 60s infinite, backgroundSlideShow 40s infinite;
+  background-size: cover;
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;
+  width: var(--window-width);
+  height: calc(520px - 35px - 100px);
+  background-color: gray;
+}
+
+editor-tool {
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: gray;
+}
+
+
+
+
+
+editor-tool[name="sign"] {
+  display: none; /* grid */
+  grid-template-columns: 1fr 2fr;
+}
+
+
+
+
+
+editor-tool[name="container"] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 5px;
+
+  font-size: 12px;
+  font-family:
+    'minecraftiaregular',
+    'minecraftru',
+    'Arial',
+    'Sans serif';
+
+  counter-reset: new-line-instance;
+}
+
+editor-tool[name="container"] > div {
+  position: relative;
+  overflow: hidden;
+}
+
+editor-tool[name="container"] > div::before {
+  counter-increment: new-line-instance;
+  content: counter(new-line-instance) "\002000/"; /* \002000 - SPACE */
+  
+  background-image: url('../img/chain_command_block.webp');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-x: 0;
+  padding-left: 20px;
+}
+
+editor-tool[name="container"] > div:first-child::before {
+  background-image: url('../img/repeating_command_block.webp');
+}
+
+editor-tool[name="container"] > div[data-conditional]:not(:first-child)::after {
+  content: "\27BD"; /* ➽ */
+  color: lime;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+editor-tool[name="container"] > div[data-error]::after {
+  content: "!!!" !important;
+  color: red !important;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+editor-tool[name="container"] > div:not([data-error]) * {
+  caret-color: #000;
+}
+
+editor-tool[name="container"] > div[data-error]::before {
+  color: red;
+}
+
+editor-tool[name="container"] > div[data-error] * {
+  color: red !important;
+  caret-color: red;
+}
+
+
+
+#commands {
+  background-color: rgba(255,255,255,.8);
+}
+
+
+
+
+
+#commands > .menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: var(--commands-menu-height);
+  background-color: black;
+}
+
+#commands > .menu button {
+  height: 50px;
+  width: 50px;
+  background-image: url('../img/commands.png');
+  background-size: cover;
+  background-position-x: -50px;
+  border: none;
+  border-radius: 2px;
+  transform: rotate(-90deg);
+  transition: 1s background-position-x, 1s transform;
+  z-index: 1;
+}
+
+#commands > .menu button:hover {
+  transform: scale(1.4);
+}
+#commands > .menu button[disabled] {
+  background-position: 0;
+  transform: rotate(90deg);
+}
+
+
+
+
+
+#commands > textarea {
+  padding-left: 5px;
+  padding-top: 5px;
+  width: 100%;
+  height: calc(100% - var(--commands-menu-height));
+  min-width: var(--commands-width);
+  max-width: var(--window-width);
+
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  resize: horizontal;
+  background-color: transparent;
+
+  font-family:
+    'minecraftiaregular',
+    'minecraftru',
+    'Arial',
+    'Sans serif';
+  font-size: 12px;
+  opacity: 0;
+}
+
+#commands > textarea[data-display] {
+  opacity: 1;
+  transition: 1s opacity;
+}
+
+
+
+
+#wysiwyg {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+
+
+
+
+#wysiwyg .container > .menu {
+  width: 100%;
+  padding: 5px;
+  margin: 10px auto;
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,.4);
+  user-select: none;
+}
+
+#wysiwyg .container > .menu:first-child {
+  display: grid;
+  grid-template-columns: 2fr auto;
+  grid-gap: 20px;
+}
+
+#wysiwyg .container > .menu button {
+  margin: var(--btn-margin);
+  height: calc(50% - (2 * var(--btn-margin)));
+  border: none;
+
+  float: left;
+  font-size: 10px;
+  font-family:
+    'minecraftiaregular',
+    'minecraftru',
+    'Arial',
+    'Sans serif';
+}
+
+
+
+#wysiwyg .wysiwyg-options > button {
+  text-transform: capitalize;
+}
+
+#wysiwyg .wysiwyg-options > button:hover {
+  background-color: lightGrey;
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-child(1) {
+  font-weight: bold;
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-child(2) {
+  font-style: italic;
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-child(3) {
+  text-decoration: underline;
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-child(4) {
+  text-decoration: line-through;
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-child(-n + 3) {
+  width: calc((100% / 3) - (2 * var(--btn-margin)));
+}
+
+#wysiwyg .wysiwyg-options.text-format > button:nth-last-child(-n + 2) {
+  width: calc(50% - (2 * var(--btn-margin)));
+}
+
+
+
+#wysiwyg .wysiwyg-options.text-color {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 5px;
+}
+
+#wysiwyg .wysiwyg-options.text-color > button {
+  height: 20px;
+  margin: 0;
+  background-color: var(--bg-color);
+  border: 1px solid #fff;
+  position: relative;
+  color: #fff;
+}
+
+#wysiwyg .wysiwyg-options.text-color > button:hover::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 7px;
+  background-color: rgba(0,0,0,.5);
+  top: 0;
+  left: 0;
+}
+
+#wysiwyg .wysiwyg-options.text-color > button::after {
+  content: attr(data-color);
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 4px;
+  top: 0;
+  left: 2px;
+}
+
+#wysiwyg .wysiwyg-options.text-color > button:hover {
+  transform: scale(2);
+  z-index: 1;
+  transition: .5s transform;
+}
+
+#wysiwyg .wysiwyg-options.text-color > button:hover:active {
+  transform: scale(1.5);
+  transition: .2s transform;
+}
+
+
+
+#wysiwyg .display {
+  width: 100px;
+  height: 50px;
+  counter-reset: button-instance;
+}
+
+#wysiwyg .display > button {
+  width:  calc(50% - (2 * var(--btn-margin)));
+  border: 1px solid #fff !important;
+  background-color: transparent;
+  color: transparent;
+  text-transform: uppercase;
+}
+
+#wysiwyg .display > button:hover,
+#wysiwyg .display > button[data-active] {
+  background-color: #fff;
+  color: rgba(0,0,0,.5);
+}
+#wysiwyg .display > button:hover:active {
+  color: #000;
+}
+
+#wysiwyg .display > button::before {
+  counter-increment: button-instance;
+  content: counter(button-instance);
+}
+
+
+
+#wysiwyg .sign {
+  width: 372px;
+  height: 186px;
+  background-color: #8B6D33;
+  background-image: url('../img/blank_sign.png');
+  background-size: cover;
+}
+
+#wysiwyg .sign > .input {
+  height: 42px;
+  width: 361px;
+  margin: 0 auto;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  vertical-align: bottom;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 31.5px;
+  font-family:
+    'minecraftiaregular',
+    'minecraftru',
+    'Arial',
+    'Sans serif';
+  caret-color: var(--caret-color) !important;
+}
+#wysiwyg .sign > .input br { display: none; /* Fix bug where text moves up on line break's deletion*/ }
+
+#wysiwyg .sign a {
+  text-decoration: none;
+  color: transparent;
+  position: relative;
+}
+
+#wysiwyg .sign a * {
+  color: transparent !important;
+}
+
+#wysiwyg .sign a::before {
+  content: var(--text-content);
+  color: var(--text-color) !important;
+  position: absolute;
+  left: 0;
+}
+
+#wysiwyg .sign u a::before {
+  text-decoration: underline;
+}
+
+#wysiwyg .sign strike a::before {
+  text-decoration: line-through;
+}
+
+#wysiwyg .sign u strike a::before,
+#wysiwyg .sign strike u a::before {
+  text-decoration: underline line-through;
+}
+
+
+
+
+#wysiwyg .gradient {
+  height: 100%;
+  width: 80px;
+  display: flex;
+  border: none;
+  align-items: center;
+  background: linear-gradient(
+    var(--gradient-angle),
+    rgba(0,0,0,0.6) 0%,
+    transparent 100%
+  );
+}
+
+#wysiwyg .gradient:hover {
+  background: linear-gradient(
+    var(--gradient-angle),
+    rgba(0,0,0,0.8) 0%,
+    transparent 100%
+  );
+}
+
+#wysiwyg .gradient > span {
+  min-width: 48px;
+  max-width: 48px;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+}
+
+#wysiwyg .gradient > span > i {
+  --arrow-size: 10px;
+
+  height: var(--wysiwyg-arrow-size);
+  width:  var(--wysiwyg-arrow-size);
+
+  display: block;
+  opacity: 0.8;
+  border-width: 0 var(--arrow-size) var(--arrow-size) 0;
+  border-style: solid;
+  border-color:
+    transparent 
+    rgba(191, 191, 191, 0.3) 
+    rgba(191, 191, 191, 0.3) 
+    transparent;
+}
+
+#wysiwyg .gradient:hover > span > i {
+  border-color:
+    transparent
+    #fff
+    #fff
+    transparent;
+}
+
+#wysiwyg .gradient:first-child {
+  justify-content: flex-start;
+}
+
+#wysiwyg .gradient:first-child > span > i {
+  transform: rotate(135deg);
+  margin-left: 12px;
+}
+
+#wysiwyg .gradient:last-child {
+  justify-content: flex-end;
+}
+
+#wysiwyg .gradient:last-child > span > i {
+  transform: rotate(-45deg);
+  margin-left: -12px;
+}
