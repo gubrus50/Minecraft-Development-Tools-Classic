@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./src/css/fonts.css">
   <link rel="stylesheet" href="./src/css/style.css">
+  <!-- PrismJS, Prism-Live & Prism-Line-Numbers-->
+  <link rel="stylesheet" href="./src/lib/prismjs/prism.css">
+  <link rel="stylesheet" href="./src/lib/prismjs/prism-live.css">
+  <link rel="stylesheet" href="./src/lib/prismjs/prism-line-numbers.css">
 </head>
 <body>
 
@@ -71,10 +75,20 @@
   </div>
 </editor-tool>
 
-<editor-tool name="container" contenteditable="true" spellcheck="false"></editor-tool>
+<editor-tool name="container" spellcheck="false">
+  <textarea class="prism-live language-minecraft-v1-12-x line-numbers">gamerule commandBlockOutput false
+</textarea>
+</editor-tool>
 
 
 
+<!-- Bliss (required for Prism-Live) -->
+<script defer name="bliss" src="./src/lib/bliss/bliss.js"></script>
+<!-- PrismJS, Prism-Live & Prism-Line-Numbers-->
+<script defer name="prismJS" src="./src/lib/prismjs/prism.js"></script>
+<script defer name="prismLive" src="./src/lib/prismjs/prism-live.js?load=css,html,javascript"></script>
+<script defer name="prismLineNumbers" src="./src/lib/prismjs/prism-line-numbers.js"></script>
+<!-- Main scripts -->
 <script defer name="wysiwyg" src="./src/js/wysiwyg.js"></script>
 <script defer name="container" src="./src/js/container.js"></script>
 <script defer name="main" src="./src/js/main.js"></script>

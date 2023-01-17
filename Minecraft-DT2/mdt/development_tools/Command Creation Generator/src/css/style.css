@@ -71,6 +71,7 @@ editor-tool {
   height: 100%;
   overflow: hidden;
   background-color: gray;
+  margin: 10px/* Delete me */
 }
 
 
@@ -78,7 +79,7 @@ editor-tool {
 
 
 editor-tool[name="sign"] {
-  display: none; /* grid */
+  display: grid; /* grid */
   grid-template-columns: 1fr 2fr;
 }
 
@@ -90,42 +91,19 @@ editor-tool[name="container"] {
   display: block;
   width: 100%;
   height: 100%;
+  outline: none;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 5px;
-
-  font-size: 12px;
-  font-family:
-    'minecraftiaregular',
-    'minecraftru',
-    'Arial',
-    'Sans serif';
-
-  counter-reset: new-line-instance;
 }
 
 editor-tool[name="container"] > div {
   position: relative;
   overflow: hidden;
 }
-
-editor-tool[name="container"] > div::before {
-  counter-increment: new-line-instance;
-  content: counter(new-line-instance) "\002000/"; /* \002000 - SPACE */
-  
-  background-image: url('../img/chain_command_block.webp');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position-x: 0;
-  padding-left: 20px;
-}
-
-editor-tool[name="container"] > div:first-child::before {
-  background-image: url('../img/repeating_command_block.webp');
-}
+/*
 
 editor-tool[name="container"] > div[data-conditional]:not(:first-child)::after {
-  content: "\27BD"; /* ➽ */
+  content: "\27BD"; / ➽ /
   color: lime;
   position: absolute;
   left: 0;
@@ -153,7 +131,7 @@ editor-tool[name="container"] > div[data-error] * {
   caret-color: red;
 }
 
-
+*/
 
 #commands {
   background-color: rgba(255,255,255,.8);
