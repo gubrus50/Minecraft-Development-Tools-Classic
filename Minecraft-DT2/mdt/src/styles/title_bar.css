@@ -22,6 +22,7 @@ title-bar {
   user-select: none;
   line-height: 33px;
   height: 100%;
+  overflow: hidden;
 }
 .windowTitle > span {
   font-size: 14px;

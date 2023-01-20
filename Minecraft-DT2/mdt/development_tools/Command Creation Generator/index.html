@@ -12,6 +12,12 @@
 </head>
 <body>
 
+<div class="zoomContainer">
+  <button>-</button>
+  <input type="number" placeholder="%" min="100" max="200" value="100"></input>
+  <button>+</button>
+</div>
+
 <editor-tool name="sign" class="background">
   <div id="commands">
     <div class="menu">
@@ -76,7 +82,10 @@
 </editor-tool>
 
 <editor-tool name="container" spellcheck="false">
-  <textarea class="prism-live language-minecraft-v1-12-x line-numbers">gamerule commandBlockOutput false
+  <textarea class="prism-live language-minecraft-v1-12-x line-numbers">
+gamerule commandBlockOutput false
+​execute @e[type="Zombie",r=3] ~ ~2 ~ tellraw @a ["",{"text":"Zombies","bold":true,"color":"yellow"},{"text":" are real!"}]
+tp @p[name="McRaZick"] 0 30 350
 </textarea>
 </editor-tool>
 

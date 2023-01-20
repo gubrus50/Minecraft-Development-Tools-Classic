@@ -1,7 +1,7 @@
 navigation-bar {
   background-color: rgba(34,34,34,.95);
   width: 225px;
-  height: 100vh;
+  height: calc(100vh - var(--titleBar-height));
   display: grid;
   grid-template-rows: 1fr auto;
   float: left;
@@ -52,7 +52,6 @@ navigation-bar {
 .menu {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  margin-bottom: 35px;
   position: relative;
   box-shadow: 5px 0 10px 0 rgba(0,0,0,.5);
   background-color: #222;

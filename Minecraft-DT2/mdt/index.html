@@ -82,7 +82,7 @@
           </help-content>
         </div>
       </div>
-      <div>
+      <div class="panelDoubble">
         <div class="buttonDefault button">
           <button>Check for updates</button>
           <help-content name="Check for updates">
@@ -102,11 +102,6 @@
 
 
 <script name="main-display" src="src/scripts/main_display.js"></script>
-<script name="footer">
-// Set footer's button's attribute "data-before" to button's text value.
-Array.from(document.querySelectorAll('footer button'))
-.map(btn => btn.setAttribute('data-before', btn.innerText));
-</script>
 <script name="index" src="src/scripts/index.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 main-display {
-  height: 100vh;
+  height: calc(100vh - var(--titleBar-height));
   display: grid;
   grid-template-rows: 1fr auto;
   position: relative;

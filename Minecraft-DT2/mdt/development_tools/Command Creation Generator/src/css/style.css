@@ -9,6 +9,8 @@
   --bg-1: url('../img/bg1.png');
   --text-color: #000;
   --caret-color: #000;
+
+  --slide-animation-delay: 1s; /* in seconds only! As it's manipulated in main.js */
 }
 
 ::selection {
@@ -30,6 +32,44 @@
   20%, 40% { background-image: var(--bg-0); }
   40%, 60% { background-image: var(--bg-1); }
   60%, 80% { background-image: var(--bg-1); }
+}
+
+/* "Slide animations"
+- Source: https://stackoverflow.com/questions/74438924/how-can-i-make-smooth-slide-transition/74440636#74440636
+- Accessed: 17.01.2023
+*/
+
+@keyframes slideLeftToCenter {
+  from { transform: translateX(-100%) }
+  to   { transform: translateX(0) }
+}
+
+@keyframes slideCenterToLeft {
+  from { transform: translateX(0) }
+  to   { transform: translateX(-100%) }
+}
+
+@keyframes slideRightToCenter {
+  from { transform: translateX(100%) }
+  to   { transform: translateX(0) }
+}
+
+@keyframes slideCenterToRight {
+  from { transform: translateX(0) }
+  to   { transform: translateX(100%) }
+}
+
+.slide-ltc { /* ltc - left to right */
+  animation: slideLeftToCenter var(--slide-animation-delay) forwards;
+}
+.slide-ctl { /* ctl - center to left */
+  animation: slideCenterToLeft var(--slide-animation-delay) forwards;
+}
+.slide-rtc { /* rtc - right to center */
+  animation: slideRightToCenter var(--slide-animation-delay) forwards;
+}
+.slide-ctr { /* ctr - center to right */
+  animation: slideCenterToRight var(--slide-animation-delay) forwards;
 }
 
 .background {
@@ -60,8 +100,8 @@
 
 body {
   overflow: hidden;
-  width: var(--window-width);
-  height: calc(520px - 35px - 100px);
+  height: 100vh;
+  width: 100vw;
   background-color: gray;
 }
 
@@ -71,21 +111,15 @@ editor-tool {
   height: 100%;
   overflow: hidden;
   background-color: gray;
-  margin: 10px/* Delete me */
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-
-
-
-
 
 editor-tool[name="sign"] {
-  display: grid; /* grid */
+  display: grid;
   grid-template-columns: 1fr 2fr;
 }
-
-
-
-
 
 editor-tool[name="container"] {
   display: block;
@@ -94,52 +128,77 @@ editor-tool[name="container"] {
   outline: none;
   background-color: #fff;
   box-sizing: border-box;
+  transform: translateX(-100%);
 }
 
 editor-tool[name="container"] > div {
   position: relative;
   overflow: hidden;
 }
-/*
 
-editor-tool[name="container"] > div[data-conditional]:not(:first-child)::after {
-  content: "\27BD"; / ➽ /
-  color: lime;
-  position: absolute;
+
+
+.zoomContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  position: fixed;
+  bottom: 0;
   left: 0;
-  top: 0;
+  z-index: 1;
+
+  background-color: rgba(0, 0, 0, 1);
+  transition: opacity 1s;
+
+  width: calc(45px * 3);
+  height: 25px;
+}
+.zoomContainer:hover {
+  opacity: 1;
 }
 
-editor-tool[name="container"] > div[data-error]::after {
-  content: "!!!" !important;
-  color: red !important;
-  position: absolute;
-  left: 0;
-  top: 0;
+.zoomContainer > * {
+  background-color: transparent;
+  border: 1px solid gray;
+  color: #fff;
+  text-align: center;
 }
 
-editor-tool[name="container"] > div:not([data-error]) * {
-  caret-color: #000;
+.zoomContainer > button {
+  height: 100%;
+  width: 25%;
+  border-left: 0;
+  border-right: 0;
+}
+.zoomContainer > button:hover {
+  background-color: rgba(255,255,255,.2);
+}
+.zoomContainer > button:hover:active {
+  background-color: rgb(126, 102, 152);
 }
 
-editor-tool[name="container"] > div[data-error]::before {
-  color: red;
+.zoomContainer > input {
+  box-sizing: border-box;
+  height: 100%;
+  width: 50%;
+}
+.zoomContainer > input::-webkit-outer-spin-button,
+.zoomContainer > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.zoomContainer > input::placeholder {
+  color: #fff;
 }
 
-editor-tool[name="container"] > div[data-error] * {
-  color: red !important;
-  caret-color: red;
-}
 
-*/
+
 
 #commands {
   background-color: rgba(255,255,255,.8);
+  position: relative;
 }
-
-
-
-
 
 #commands > .menu {
   display: flex;

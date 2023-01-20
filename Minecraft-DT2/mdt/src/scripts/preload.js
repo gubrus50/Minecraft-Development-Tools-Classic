@@ -16,6 +16,62 @@ contextBridge.exposeInMainWorld('launcher', {
 
 
 
+const capitalize = (string) => {
+
+  // Capitalize string objects
+  // E.g. "McRaZick is the best" -> "Mcrazick Is The Best" :)
+
+  return string
+  .split(' ')
+  .map(word => word[0].toUpperCase() + word.substring(1).toLowerCase())
+  .join(' ');
+
+}
+
+
+const getAndRemoveFotoersMenu = async () => {
+
+  let parser = new DOMParser();
+
+  // Get and remove buttons
+  let buttons = [...document.querySelectorAll('footer > div')].splice(1);
+  buttons.map(btn => btn.remove());
+
+  return buttons; // Removed buttons
+} 
+
+
+
+const importDevToolsMenu = async (dtMenuData) => {
+
+  let parser = new DOMParser();
+  let childrenArray = parser.parseFromString(dtMenuData, 'text/html').querySelector('body').childNodes;
+  let frag = document.createDocumentFragment();
+  
+  childrenArray.forEach(item => {
+    item.classList.add('devToolsMenuBtn');
+    frag.appendChild(item);
+  });
+
+  await document.querySelector('footer').append(frag);
+}
+
+
+
+const displayNavigationBar = (boolean = true) => {
+
+  // Validate parameter boolean
+  if (boolean != true && boolean != false) return;
+
+  let navBar = document.querySelector('navigation-bar');
+  
+  (boolean == true)
+  ? navBar.style.removeProperty('display')
+  : navBar.style.setProperty('display', 'none');
+
+}
+
+
 const setIframesDevToolsTags = (iframe, dtConfig) => {
 
   /* Converts special development tools tags to related data
@@ -50,34 +106,93 @@ const setIframesDevToolsTags = (iframe, dtConfig) => {
     }
   }
 
-  Array.from(iframeDoc.getElementsByTagName('dt-title'))
+  [...iframeDoc.getElementsByTagName('dt-title')]
   .map(elm => elm.innerText = dtConfig.title);
 
-  Array.from(iframeDoc.getElementsByTagName('dt-author'))
+  [...iframeDoc.getElementsByTagName('dt-author')]
   .map(elm => elm.innerText = dtConfig.author);
 
-  Array.from(iframeDoc.getElementsByTagName('dt-version'))
+  [...iframeDoc.getElementsByTagName('dt-version')]
   .map(elm => elm.innerText = dtConfig.version);
 
-  Array.from(iframeDoc.getElementsByTagName('dt-icon'))
+  [...iframeDoc.getElementsByTagName('dt-icon')]
   .map(elm => removeFileSignature(elm, dtConfig.icon));
 
-  Array.from(iframeDoc.getElementsByTagName('dt-index'))
+  [...iframeDoc.getElementsByTagName('dt-index')]
   .map(elm => removeFileSignature(elm, dtConfig.index));
 
-  Array.from(iframeDoc.getElementsByTagName('dt-body-page'))
+  [...iframeDoc.getElementsByTagName('dt-body-page')]
   .map(elm => removeFileSignature(elm, dtConfig.body_page));
 
-  Array.from(iframeDoc.getElementsByTagName('dt-footer-page'))
+  [...iframeDoc.getElementsByTagName('dt-footer-page')]
   .map(elm => removeFileSignature(elm, dtConfig.footer_page));
 
-  Array.from(iframeDoc.getElementsByTagName('dt-fail'))
+  [...iframeDoc.getElementsByTagName('dt-fail')]
   .map(elm => elm.style.display = 'none');
 
-  Array.from(iframeDoc.getElementsByTagName('dt-success'))
+  [...iframeDoc.getElementsByTagName('dt-success')]
   .map(elm => elm.style.display = 'block');
 
   return true;
+}
+
+
+
+const launchDevTool = async (args) => {
+
+  // Display Development Tool
+  let ifrBody   = document.querySelector('main-display #iframeBody');
+  let ifrFooter = document.querySelector('main-display #iframeFooter');
+
+  let btnReturn = document.querySelector('#return');
+  let winTitle  = document.querySelector('.windowTitle > span');
+      winTitle.innerHTML = `Minecraft-DT2 - ${capitalize(args.dtConfig.title)}`;
+
+  // Attribute 'data-isDevTool' is used to prevent iframeBody's onLoad event
+  // from appending the default <link mdt-styleheet/> in iframeBody's <head>
+  ifrBody.setAttribute('data-isDevTool', true);
+  ifrBody.setAttribute('src', args.__devTool + '/' + args.dtConfig.index);
+
+
+  // Hide navigation bar & footer's menu
+  let removedButtons = await getAndRemoveFotoersMenu();
+  displayNavigationBar(false);
+  importDevToolsMenu(args.dtMenuData);
+
+
+
+
+  // ---- YOU NEEEEEEEED TO SPLIT THIS IN TO A SEPARATE FUNCTION!!!!! ----- //
+  // Return to Minecraft-DT2's main menu (exit Development Tool)
+
+  btnReturn.addEventListener('click', () => {
+
+    let ifrBodySrc = './iframe_body.html';
+    let ifrFooterSrc = './iframe_footer.html';
+
+    ifrBody.removeAttribute('data-isDevTool');
+    ifrBody.setAttribute('src', ifrBodySrc);
+    ifrFooter.setAttribute('src', ifrFooterSrc);
+
+    winTitle.innerHTML = 'Minecraft-DT2';
+    displayNavigationBar();
+    getAndRemoveFotoersMenu();
+
+    // Include original footer's buttons
+    let frag = document.createDocumentFragment();
+  
+    removedButtons.forEach(item => {
+      frag.appendChild(item);
+    });
+
+    // Appen original foote's buttons
+    // and hide <help-tag>
+    document.querySelector('footer').append(frag);
+    document.querySelector('help-tag').classList.add('hide');
+
+  }, { once: true });
+  
+  // ---- YOU NEEEEEEEED TO SPLIT THIS IN TO A SEPARATE FUNCTION!!!!! ----- //
 }
 
 
@@ -91,20 +206,32 @@ ipcRenderer.on('importDevTool', (event, args) => {
 
 
   // Create development tool's onClick event
-  let ifrBody   = document.querySelector('main-display #iframeBody');
+  let ifrBody = document.querySelector('main-display #iframeBody');
   let ifrFooter = document.querySelector('main-display #iframeFooter');
+  let buttonLaunch = document.querySelector('.buttonLaunch > button'); 
+
+  const updateFootersButtonLaunch = () =>
+  {
+    // Set launch button's onClick event so
+    // that it can start Development Tool in <main-display>
+
+    buttonLaunch.addEventListener('click', () => {
+      launchDevTool(args);
+    }, { once: true });
+  }
 
   const updateMainDisplayIframes = () =>
   {
     // Change iframe's source to development tool's iframes,
     // and update the special tags from those iframe's.
 
+    ifrBody.removeAttribute('data-isDevTool');
     ifrBody.setAttribute('src', args.__devTool + '/' + args.dtConfig.body_page);
     ifrFooter.setAttribute('src', args.__devTool + '/' + args.dtConfig.footer_page);
 
     const updateIframeBodyTags   = () => setIframesDevToolsTags(ifrBody, args.dtConfig);
     const updateIframeFooterTags = () => setIframesDevToolsTags(ifrFooter, args.dtConfig);
-  
+
     ifrBody.addEventListener('load', () => {
       setIframesDevToolsTags(ifrBody, args.dtConfig);
     }, { once: true });
@@ -116,6 +243,9 @@ ipcRenderer.on('importDevTool', (event, args) => {
 
   devTool.removeEventListener('click', updateMainDisplayIframes);
   devTool.addEventListener('click',    updateMainDisplayIframes);
+
+  devTool.removeEventListener('click', updateFootersButtonLaunch);
+  devTool.addEventListener('click',    updateFootersButtonLaunch);
 
 
 

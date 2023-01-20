@@ -7,6 +7,8 @@ const {
 const url  = require('url');
 const path = require('path');
 const fs   = require('fs');
+const { resolve } = require('path');
+const { DefaultDeserializer } = require('v8');
 const __devTools = './development_tools';
 
 let appWindow;
@@ -37,105 +39,108 @@ const createWindow = () => {
 
 
 
-const isDevToolWithValidConfig = (__devTool) => {
+const isDevToolWithValidConfig = async (__devTool) => {
 
   let __dtConfig = __devTool + '/dt_config.json';
+
   // Get and validate "dt_config.json" file's content
-  fs.promises.readFile(__dtConfig, 'utf8').then((data) => {
+  let data = await fs.promises.readFile(__dtConfig, 'utf8')
+  const dtConfig = JSON.parse(data);
 
-    const dtConfig = JSON.parse(data);
+  if ( // If valid keys are present
+        dtConfig.hasOwnProperty('title')
+    && dtConfig.hasOwnProperty('icon')
+    && dtConfig.hasOwnProperty('index')
+    && dtConfig.hasOwnProperty('menu')
+    && dtConfig.hasOwnProperty('body_page')
+    && dtConfig.hasOwnProperty('footer_page')
+    && dtConfig.hasOwnProperty('version')
+    && dtConfig.hasOwnProperty('author')
+  )
+  { // Return false when data is empty or exceeds 50 characters
+    for (let key in dtConfig)
+    {
+      let keyValue = dtConfig[key];
+      if (
+        keyValue === ''
+        || keyValue === null
+        || keyValue.length >= 50
+      )
+      { return false }
+    }
+  } else { return false }
 
-    if ( // If valid keys are present
-         dtConfig.hasOwnProperty('title')
-      && dtConfig.hasOwnProperty('icon')
-      && dtConfig.hasOwnProperty('index')
-      && dtConfig.hasOwnProperty('body_page')
-      && dtConfig.hasOwnProperty('footer_page')
-      && dtConfig.hasOwnProperty('version')
-      && dtConfig.hasOwnProperty('author')
-    )
-    { // Return false when data is empty or exceeds 50 characters
-      for (let key in dtConfig)
-      {
-        let keyValue = dtConfig[key];
-        if (
-          keyValue === ''
-          || keyValue === null
-          || keyValue.length >= 50
-        )
-        { return false }
-      }
-    } else { return false }
+  // Validate file format for
+  // keys: icon, index, menu, body_page & footer_page
+  if (
+        !/.+?(\.png)/g.test(dtConfig.icon)
+    || !/.+?(\.html)/g.test(dtConfig.index)
+    || !/.+?(\.html)/g.test(dtConfig.menu)
+    || !/.+?(\.html)/g.test(dtConfig.body_page)
+    || !/.+?(\.html)/g.test(dtConfig.footer_page)
+  )
+  { return false }
 
-    // Validate file format for
-    // keys: icon, index, body_page & footer_page
-    if (
-          !/.+?(\.png)/g.test(dtConfig.icon)
-      || !/.+?(\.html)/g.test(dtConfig.index)
-      || !/.+?(\.html)/g.test(dtConfig.body_page)
-      || !/.+?(\.html)/g.test(dtConfig.footer_page)
-    )
-    { return false }
-
-    // Return false if necessary files do not exist
-    // at specified directories:
-    if (
-      !fs.existsSync(__devTool + '/' + dtConfig.icon)
-      || !fs.existsSync(__devTool + '/' + dtConfig.index)
-      || !fs.existsSync(__devTool + '/' + dtConfig.body_page)
-      || !fs.existsSync(__devTool + '/' + dtConfig.footer_page)
-    )
-    { return false }
-  });
-
+  // Return false if necessary files do not exist
+  // at specified directories:
+  if (
+    !fs.existsSync(__devTool + '/' + dtConfig.icon)
+    || !fs.existsSync(__devTool + '/' + dtConfig.index)
+    || !fs.existsSync(__devTool + '/' + dtConfig.menu)
+    || !fs.existsSync(__devTool + '/' + dtConfig.body_page)
+    || !fs.existsSync(__devTool + '/' + dtConfig.footer_page)
+  )
+  { return false }
+  
   return true;
 }
 
 
 
-const importDevTools = () => {
+const importDevTools = async () => {
 
   // Read files from development_tools directory
-  fs.promises.readdir(__devTools).then(files => {
-    files.map(file => {
-      // Check If file is a directory
-      let __devTool = __devTools + '/' + file;
-      let stats = fs.statSync(__devTool);
+  let files = await fs.promises.readdir(__devTools)
+  files.map(async (file) =>
+  {
+    // Check If file is a directory
+    let __devTool = __devTools + '/' + file;
+    let stats     = fs.statSync(__devTool);
 
-      if (!stats.isFile()) {
-        // Read files from development_tool's directory
-        fs.promises.readdir(__devTool).then(files => {
-          files.map(file => {
-            // If file from development_tool's direcotry has valid "dt_config.json"
-            let __dtFile = __devTool + '/' + file;
-            let stats = fs.statSync(__dtFile);
+    if (!stats.isFile())
+    {
+      // Read files from development_tool's directory
+      let files = await fs.promises.readdir(__devTool)
+      files.map(async (file) =>
+      {
+        // If file from development_tool's direcotry has valid "dt_config.json"
+        let __dtFile      = __devTool + '/' + file;
+        let stats         = fs.statSync(__dtFile);
+        let isConfigValid = await isDevToolWithValidConfig(__devTool);
 
-            if (stats.isFile()
-            && file === 'dt_config.json'
-            && isDevToolWithValidConfig(__devTool))
-            {
-              // Read development_tool's configuration
-              let __dtConfig = __devTool + '/dt_config.json';
-              fs.promises.readFile(__dtConfig, 'utf8').then((data) => {
+        if (stats.isFile() && file === 'dt_config.json' && isConfigValid === true)
+        {
+          // Read development_tool's configuration
+          let __dtConfig = __devTool + '/dt_config.json';
+          let data       = await fs.promises.readFile(__dtConfig, 'utf8')
+          let dtConfig   = await JSON.parse(data);
 
-                const dtConfig = JSON.parse(data);
-                // Build and append development tool component
-                appWindow.webContents.send('importDevTool', {
-                  __devTool: __devTool,
-                  dtConfig: dtConfig,
-                });
+          let __dtMenu = __devTool + '/' + dtConfig.menu;
+          console.log(__dtMenu);
 
-              });
-            }
+          let dtMenuData = await fs.promises.readFile(__dtMenu, 'utf8');
+
+          // Build and append development tool component
+          appWindow.webContents.send('importDevTool', {
+            __devTool: __devTool,
+            dtConfig: dtConfig,
+            dtMenuData: dtMenuData,
           });
-        }).catch((error) => {
-          console.error(error);
-        });
-      }
-    });
-  }).catch((error) => {
-    console.error(error);
+        }
+      });
+    }
   });
+
 }
 
 
@@ -166,6 +171,7 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on('importDevTools', importDevTools);
+
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common

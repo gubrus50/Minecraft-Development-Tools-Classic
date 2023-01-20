@@ -1,61 +1,80 @@
 footer {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+
   width: 100%;
   height: var(--footer-height);
+
   background-image: url('../images/purple-bricks.jpg');
   background-size: 35px;
   background-position: 0px 0.5px;
-  display: block;
+
   border-top: 1px solid #222;
-  margin-bottom: 35px;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+  box-sizing: border-box;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
 }
 footer > div {
-  display: flex;
-  align-items: center;
+  display: block;
+  height: var(--footer-height);
+  box-sizing: border-box;
   padding: 10px 0 10px 0;
-}
-
-/* iframeFooter parent division */
-footer > div:nth-of-type(1) {
-  padding-left: 10px;
 }
 
 #iframeFooter {
   width: 100%;
-  height: 75px;
+  height: 100%;
+  box-sizing: border-box;
   border: 2px solid #000;
   border-right: 0;
   background-color: rgba(0,0,0,.4);
 }
 
-/* defaultButtons parent division */
-footer > div:nth-of-type(3) {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-right: 10px;
-  padding-left: 8px;
-  margin-top: 1px;
+footer > div:nth-of-type(2).panelDoubble {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
 }
+footer > div:nth-of-type(2).panelDoubble div:nth-child(1) { border-bottom-width: 1px; }
+footer > div:nth-of-type(2).panelDoubble div:nth-child(2) { border-top-width: 1px; }
 
+/* defaultButtons' parent division */
+footer > div:nth-of-type(3).panelDoubble,
+footer > div:nth-of-type(3).panelTriple {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 8px;
+  padding-left: 8px;
+}
+footer > div:nth-of-type(3).panelTriple {
+  grid-template-columns: 1fr 1fr; 
+  grid-template-areas: 
+    "first first"
+    "second third";
+}
+footer > div:nth-of-type(3).panelTriple div:nth-child(1) { grid-area: first; }
+footer > div:nth-of-type(3).panelTriple div:nth-child(2) { grid-area: second;}
+footer > div:nth-of-type(3).panelTriple div:nth-child(3) { grid-area: third; }
+footer > div:nth-of-type(3).panelTriple > div.button > button { width: 100%; }
 
 .button {
   border: 2px solid #000;
+  box-sizing: border-box;
+  height: 100%;
+  position: relative;
 }
 .button > button {
   border: 0;
   color: rgba(255,255,255,.75);
   background: none;
-  position: relative;
   font-family: SilkscreenNormal;
 }
-.button > button:before {
+.button > button::before {
   content: attr(data-before);
   position: absolute;
   z-index: 1;
 }
-.button > button:after {
+.button > button::after {
   background-color: rgb(111,111,111);
   border-top: 2px solid #bfbfbf;
   border-right: 2px solid #535353;
@@ -68,6 +87,8 @@ footer > div:nth-of-type(3) {
   left: 0;
   bottom: 0;
   z-index: 0;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 
@@ -79,7 +100,7 @@ footer > div:nth-of-type(3) {
 }
 .buttonLaunch > button {
   width: 60px;
-  height: 75px;
+  height: 100%;
 }
 .buttonLaunch > button:after {
   opacity: .7;

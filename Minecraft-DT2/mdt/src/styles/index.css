@@ -6,6 +6,7 @@
   --bg-4: url('../images/bg4.jpg');
   --bg-5: url('../images/bg5.jpg');
   --footer-height: 100px;
+  --titleBar-height: 35px;
 }
 
 @keyframes backgroundSlideShow {
@@ -100,7 +101,7 @@ help-tag {
   max-height: 300px;
 
   opacity: 1;
-  transition: opacity 1s, right 1s;
+  transition: opacity 1s, right 1s, z-index 1s;
   
   font-family: calibri;
   font-weight: normal;
@@ -109,6 +110,7 @@ help-tag {
 help-tag.hide {
   opacity: 0;
   right: -200px;
+  z-index: -1;
 }
 help-tag > h1 {
   font-size: 14px;

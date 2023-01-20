@@ -1,18 +1,30 @@
 /* ------ START LIBRARIES ------ */
 
+const isRealNumber = (n) => {
+  return (!(isNaN(n)) && typeof n == 'number') ? true : false;
+}
+
+
+
 function getCaretIndex(element) {
+
   let position = 0;
   const isSupported = typeof window.getSelection !== "undefined";
+
   if (isSupported) {
+
     const selection = window.getSelection();
+
     if (selection.rangeCount !== 0) {
       const range = window.getSelection().getRangeAt(0);
       const preCaretRange = range.cloneRange();
+
       preCaretRange.selectNodeContents(element);
       preCaretRange.setEnd(range.endContainer, range.endOffset);
       position = preCaretRange.toString().length;
     }
   }
+  
   return position;
 }
 
@@ -136,10 +148,96 @@ const stopInterval = (intervalName) => {
 
 
 
+
+let Global = {
+  isOnSlideAnimation: false,
+}
+
+
+
+function displayEditor(editorName) {
+
+  let style = getComputedStyle(document.body);
+  let slideDelay = style.getPropertyValue('--slide-animation-delay').slice(0, -2);
+
+
+  // Validate parameter editorName and slide animation's state
+  if (!(['sign','container'].indexOf(editorName) >= 0)
+  || Global.isOnSlideAnimation == true) return;
+
+  
+  // Pause displayEditor() until slide animation ends
+  Global.isOnSlideAnimation = true;
+
+  createInterval('editors-animation-slide', () => {
+    Global.isOnSlideAnimation = false;
+    removeInterval('editors-animation-slide');
+  }, slideDelay * 1000);
+
+
+  // Hide editors and remove slide classes
+  Array.from(document.querySelectorAll('editor-tool')).map(editor => {
+    editor.classList.remove('slide-rtc');
+    editor.classList.remove('slide-ltc');
+    editor.classList.remove('slide-ctr');
+    editor.classList.remove('slide-ctl');
+    editor.style.setProperty('display', 'none');
+  });
+
+
+  if (editorName === "sign")
+  {
+    let next_editor = document.querySelector('editor-tool[name="sign"]');
+    let prev_editor = document.querySelector('editor-tool[name="container"]');
+
+    next_editor.classList.add('slide-rtc');
+    prev_editor.classList.add('slide-ctl');
+
+    next_editor.style.removeProperty('display');
+    prev_editor.style.removeProperty('display');
+  }
+  else if (editorName === "container")
+  {
+    let next_editor = document.querySelector('editor-tool[name="container"]');
+    let prev_editor = document.querySelector('editor-tool[name="sign"]');
+
+    next_editor.classList.add('slide-ltc');
+    prev_editor.classList.add('slide-ctr');
+
+    next_editor.style.removeProperty('display');
+    prev_editor.style.removeProperty('display');
+  }
+}
+
+
+
 window.onload = async () => {
 
   makeWysiwygFuncitonal(); /* wysiwyg.js onLoad */
-  makeContainerFuncitonal(); /* container.js onLoad */
+
+  // :: Update CSS's root variable "--window-width" on window resize event
+
+  window.addEventListener('resize', () => {
+    let clientWidth = document.body.clientWidth;
+    createStyle('new-window-width', `:root { --window-width: ${clientWidth}px }`);
+  });
+  
+
+
+  // :: Update CSS's root variable "--slide-animation-delay"
+  // and predefine <editor's> slide styles as "sign" <editor> is displayed
+
+  let style = getComputedStyle(document.body);
+  let slideDelay = style.getPropertyValue('--slide-animation-delay');
+
+  createStyle('new-slide-animation-delay', `:root { --slide-animation-delay: 0s }`);
+  displayEditor('sign');
+
+  setTimeout(() => {
+    createStyle('new-slide-animation-delay', `:root { --slide-animation-delay: ${slideDelay} }`);
+  }, 1000);
+
+
 
   // :: Animate button "obfuscate"
 
@@ -165,10 +263,10 @@ window.onload = async () => {
   // :: (functionality) Show active display button in #wysiwyg .display
 
   let display_btns = document.querySelectorAll('#wysiwyg .display button');
-  Array.from(display_btns).map((btn, index) => {
+  [...display_btns].map((btn, index) => {
     btn.addEventListener('click', () => {
 
-      Array.from(display_btns).map(b => {
+      [...display_btns].map(b => {
         b.removeAttribute('data-active');
       });
 
@@ -186,13 +284,13 @@ window.onload = async () => {
 
   // :: (functionality) Show active command and button in #commands
 
-  let commands_btns = document.querySelectorAll('#commands button');
   let textarea      = document.querySelector('#commands > textarea');
+  let commands_btns = document.querySelectorAll('#commands .menu > button');
 
-  Array.from(commands_btns).map(btn => {
+  [...commands_btns].map(btn => {
     btn.addEventListener('click', () => {
 
-      Array.from(commands_btns).map(b => {
+      [...commands_btns].map(b => {
         b.removeAttribute('disabled');
       });
       btn.setAttribute('disabled','');
@@ -209,13 +307,114 @@ window.onload = async () => {
 
 
 
-  // :: Update CSS's root variable "--window-width" on window resize event
+  // Start of .zoomContainer -------------------------------------------------------
 
-  window.addEventListener('resize', () => {
-    let clientWidth = document.body.clientWidth;
-    createStyle('new-window-width', `
-      :root { --window-width: ${clientWidth}px }
-    `);
+  // Scale specified DOM elements
+
+  createInterval('zoomContainer', () =>
+  {
+    let input = document.querySelector('.zoomContainer > input');
+    let value = Number(input.value);
+    let percentage = value.toFixed(2) + '%';
+
+    document.querySelector('#wysiwyg').style.zoom = percentage;
+    document.querySelector('#commands').style.zoom = percentage;
+    document.querySelector('editor-tool[name="container"]').style.zoom = percentage;
+  }, 100);
+
+
+
+  let zoomContainerInputs = document.querySelectorAll('.zoomContainer > input');
+
+  // :: (functionality) Store previous valid-in-range number in input's attribute "data-previousValue"
+
+  [...zoomContainerInputs].map(input => {
+    
+    function updatePrevValAttr()
+    {
+      let maxRange = input.max;
+      let minRange = input.min;
+      let value    = Number(input.value);
+
+      // Validate value's data type and range
+      if (!(isRealNumber(value))
+      || value > maxRange
+      || value < minRange) return;
+
+      input.setAttribute('data-previousValue', input.value);
+    }
+
+    input.addEventListener('focus', () => updatePrevValAttr());
+    input.addEventListener('keypress', (e) => {
+      // 13 = Enter key
+      if (e.which == 13) updatePrevValAttr();
+    });
   });
 
+
+
+  // :: (functionality) .zoomContainer's range validation on input's change event
+
+  [...zoomContainerInputs].map(input => {
+    input.addEventListener('change', () => {
+
+      let maxRange = input.max;
+      let minRange = input.min;
+
+      let value    = Number(input.value);
+      let prevVal  = Number(input.dataset.previousvalue);
+          prevVal  = isRealNumber(prevVal) ? prevVal : 100;
+
+      if (value > maxRange || value < minRange) {
+        input.value = prevVal;
+      }
+      else {
+        // Replace possible floating-points
+        input.value = value;
+      }
+    });
+  });
+
+
+
+  // :: (functionality) Increment / Decrement input's value using buttons
+
+  [...zoomContainerInputs].map(input =>
+  {
+    let parent  = input.parentElement;
+    let buttons = parent.querySelectorAll('button');
+
+    // Set onclick event for .zoomContainer's buttons
+    if (buttons.length > 1)
+    {
+      buttons[0].addEventListener('click', () => updateValue('decrement'));
+      buttons[1].addEventListener('click', () => updateValue('increment'));
+    }
+
+    function updateValue(mode)
+    {
+      // Validate mode parameter
+      if (!(['increment','decrement'].includes(mode))) {
+        return console.error(`Illegal parameter! mode: ${mode}`);
+      };
+
+      let value    = Number(input.value);
+      let maxRange = input.max;
+      let minRange = input.min;
+
+      // Validate value's data type
+      if (!(isRealNumber(value))) return;
+      
+      // Increment/Decrement value
+      (mode == 'increment') ? value+=10 : value-=10;
+
+      // Validate value's range
+      if (value > maxRange || value < minRange) return;
+
+      // Update input's value
+      input.value = value;
+    }
+  });
+
+  // End of .zoomContainer ---------------------------------------------------------
 }
