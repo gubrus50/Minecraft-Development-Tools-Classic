@@ -1,49 +1,50 @@
 @font-face{
-	font-family: "SilkscreenNormal";
-	src: url("../font/slkscr.ttf"),
-	     url("../font/slkscr.eot");
-	font-weight: 400;
-	font-style: normal;
+  font-family: "SilkscreenNormal";
+  src: url("../font/slkscr.ttf"),
+       url("../font/slkscr.eot");
+
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face{
-	font-family: "Minecraft-Regular";
-	src: url("../font/Minecraft-Regular.eot"),
-	     url("../font/Minecraft-Regular.otf");
+  font-family: "Minecraft-Regular";
+  src: url("../font/Minecraft-Regular.eot"),
+       url("../font/Minecraft-Regular.otf");
 }
 
 @font-face{
-	font-family: "Minecraft-Bold";
-	src: url("../font/../font/Minecraft-Bold.eot"),
-	     url("../font/../font/Minecraft-Bold.otf");
+  font-family: "Minecraft-Bold";
+  src: url("../font/../font/Minecraft-Bold.eot"),
+       url("../font/../font/Minecraft-Bold.otf");
 }
 
 @font-face{
-font-family: "Minecraft-Italic";
-src: url("../font/Minecraft-Italic.eot"),
-     url("../font/Minecraft-Italic.otf");
+  font-family: "Minecraft-Italic";
+  src: url("../font/Minecraft-Italic.eot"),
+       url("../font/Minecraft-Italic.otf");
 }
 
 @font-face{
-	font-family: "Minecraft-BoldItalic";
-	src: url("../font/Minecraft-BoldItalic.eot"),
-	     url("../font/Minecraft-BoldItalic.otf");
+  font-family: "Minecraft-BoldItalic";
+  src: url("../font/Minecraft-BoldItalic.eot"),
+       url("../font/Minecraft-BoldItalic.otf");
 }
 
 @font-face{
-	font-family: "Minecraft-Bold";
-	src: url("../font/Minecraft-Bold.eot"),
-	     url("../font/Minecraft-Bold.otf");
+  font-family: "Minecraft-Bold";
+  src: url("../font/Minecraft-Bold.eot"),
+       url("../font/Minecraft-Bold.otf");
 }
 
 @font-face{
-	font-family: "minecraftiaregular";
-	src: url("../font/minecraftia-webfont.eot"),
-	     url("../font/minecraftia-webfont.otf");
+  font-family: "minecraftiaregular";
+  src: url("../font/minecraftia-webfont.eot"),
+       url("../font/minecraftia-webfont.otf");
 }
 
 @font-face{
-	font-family: "minecraftru";
-	src: url("../font/ru-webfont.eot"),
-	     url("../font/ru-webfont-Bold.otf");
+  font-family: "minecraftru";
+  src: url("../font/ru-webfont.eot"),
+       url("../font/ru-webfont-Bold.otf");
 }

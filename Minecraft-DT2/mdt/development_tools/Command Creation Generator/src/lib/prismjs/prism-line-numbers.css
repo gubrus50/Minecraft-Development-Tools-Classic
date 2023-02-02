@@ -1,65 +1,65 @@
 pre[class*="language-"].line-numbers {
-	position: relative;
-	padding-left: 5em;
-	counter-reset: linenumber;
+  position: relative;
+  padding-left: 5em;
+  counter-reset: linenumber;
 }
 
 pre[class*="language-"].line-numbers > code {
-	position: relative;
-	white-space: inherit;
+  position: relative;
+  white-space: inherit;
 }
 
 .line-numbers .line-numbers-rows {
-	position: absolute;
-	pointer-events: none;
-	top: 0;
-	font-size: 100%;
-	left: -3.2em;
-	width: 3em; /* works for line-numbers below 1000 lines */
-	letter-spacing: -1px;
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  font-size: 100%;
+  left: -3.2em;
+  width: 3em; /* works for line-numbers below 1000 lines */
+  letter-spacing: -1px;
 
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
 }
 
-	.line-numbers-rows > span {
-		display: block;
-		counter-increment: linenumber;
-		position: relative;
-	}
+  .line-numbers-rows > span {
+    display: block;
+    counter-increment: linenumber;
+    position: relative;
+  }
 
-		.line-numbers-rows > span::before {
-			content: counter(linenumber) "\002000/"; /* \002000 - SPACE */
-			color: rgb(148, 148, 148);
-			display: block;
-			padding-right: 0em;
-			text-align: right;
+    .line-numbers-rows > span::before {
+      content: counter(linenumber) "\002000/"; /* \002000 - SPACE */
+      color: rgb(148, 148, 148);
+      display: block;
+      padding-right: 0em;
+      text-align: right;
 
-			font-family:
-				'minecraftiaregular',
-				'minecraftru',
-				'Arial',
-				'Sans serif';
-			font-size: 12px;
-		}
+      font-family:
+        'minecraftiaregular',
+        'minecraftru',
+        'Arial',
+        'Sans serif';
+      font-size: 12px;
+    }
 
-		.line-numbers-rows > span::after {
-			content: " ";
-			background-image: url('../../img/chain_command_block.webp');
-			background-repeat: no-repeat;
-			background-size: contain;
-			background-position-x: 0;
-			height: 18px;
-			width: 18px;
+    .line-numbers-rows > span::after {
+      content: " ";
+      background-image: url('../../img/chain_command_block.png');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position-x: 0;
+      height: 18px;
+      width: 18px;
 
-			position: absolute;
-			top: 0;
-			left: -20px
-			
-		}
-		.line-numbers-rows > span:first-child::after {
-			background-image: url('../../img/repeating_command_block.webp');
-		}
+      position: absolute;
+      top: 0;
+      left: -20px
+      
+    }
+    .line-numbers-rows > span:first-child::after {
+      background-image: url('../../img/repeating_command_block.png');
+    }
