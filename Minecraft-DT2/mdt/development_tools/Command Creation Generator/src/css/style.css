@@ -251,12 +251,13 @@ editor-tool[name="container"] textarea.prism-live::-webkit-scrollbar-corner {
 
 
 #commands > textarea {
+  --multiplier: 1;
   padding-left: 5px;
   padding-top: 5px;
   width: 100%;
   height: calc(100% - var(--commands-menu-height));
   min-width: var(--commands-width);
-  max-width: var(--window-width);
+  max-width: calc(var(--window-width) * var(--multiplier));
 
   box-sizing: border-box;
   border: none;

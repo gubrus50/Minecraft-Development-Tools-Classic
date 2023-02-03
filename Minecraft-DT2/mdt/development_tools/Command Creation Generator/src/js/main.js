@@ -98,6 +98,7 @@ const Intervals = {}
 const createInterval = (intervalName, intervalFunction, delay, replace) => {
 
   if (replace != true && Intervals[intervalName]) {
+    if (replace === false) return;
     return console.error(`Interval "${intervalName}" already exists in "Intervals" object. Set 'replace' parameter to 'true' in order to overwrite the interval.`);
   }
 
@@ -211,16 +212,64 @@ function displayEditor(editorName) {
 
 
 
+function updateRootVariableWindowWidth() {
+  let clientWidth = document.body.clientWidth;
+  createStyle('new-window-width', `:root { --window-width: ${clientWidth}px }`);
+}
+
+
+
+const wysiwygCommandsObserver = new MutationObserver(() => {
+
+  let zoomContainerInput = document.querySelector('.zoomContainer > input[type="number"]');
+  let multiplier;
+
+  // Get multiplier
+  switch (zoomContainerInput.value)
+  {
+    case "100": multiplier = 1.000; break;
+    case "110": multiplier = .9090; break;
+    case "120": multiplier = .8330; break;
+    case "130": multiplier = .7690; break;
+    case "140": multiplier = .7140; break;
+    case "150": multiplier = .6665; break;
+    case "160": multiplier = .6250; break;
+    case "170": multiplier = .5880; break;
+    case "180": multiplier = .5555; break;
+    case "190": multiplier = .5265; break;
+    case "200": multiplier = .5000; break;
+    default:
+      console.error(`Cannot apply style property '--multiplier' for #command's textarea!`);
+  }
+
+  // Apply multiplier
+  if (multiplier) {
+    let textara = document.querySelector('#commands textarea');
+        textara.style.setProperty('--multiplier', multiplier);
+  }
+
+});
+
+
+
 window.onload = async () => {
 
   makeWysiwygFuncitonal(); /* wysiwyg.js onLoad */
 
+
+  // :: Update commands's textarea's style property "--multiplier" 
+
+  wysiwygCommandsObserver.observe(document.querySelector('#commands'), {
+    attributes: true,
+    attributeFilter: ["style"]
+  });
+
+
+
   // :: Update CSS's root variable "--window-width" on window resize event
 
-  window.addEventListener('resize', () => {
-    let clientWidth = document.body.clientWidth;
-    createStyle('new-window-width', `:root { --window-width: ${clientWidth}px }`);
-  });
+  updateRootVariableWindowWidth();
+  window.addEventListener('resize', updateRootVariableWindowWidth);
   
 
 

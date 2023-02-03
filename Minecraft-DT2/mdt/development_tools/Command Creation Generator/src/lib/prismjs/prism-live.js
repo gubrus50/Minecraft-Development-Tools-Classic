@@ -1,3 +1,4 @@
+function loadPrismLive() {
 /**
     Prism Live: Code editor based on Prism.js
     Works best in Chrome. Currently only very basic support in other browsers (no snippets, no shortcuts)
@@ -843,4 +844,5 @@
     });
     
     })();
-    
+}
+loadPrismLive();

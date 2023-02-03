@@ -84,3 +84,53 @@ if (Prism) {
   }
 }
 
+
+
+function containerGetCommands() {
+
+  let editor   = document.querySelector('editor-tool[name="container"]');
+  let codeNode = editor.querySelector('div.prism-live code');
+  
+  return codeNode.innerText.split('\n');
+
+}
+
+
+
+function containerSetCommands(commands_array=[]) {
+
+  // Validate parameter: commands_array for type and length
+  if (!(Array.isArray(commands_array) && commands_array.length > 0)) {
+    return console.error(`parameter 'commands_array' must be an Array with one or more items.`);
+  }
+
+  // Initialize textarea
+  let textarea = document.createElement('textarea');
+      textarea.value = commands_array.join('\r\n');
+      textarea.classList.add(
+        'prism-live',
+        'language-minecraft-v1-12-x',
+        'line-numbers'
+      );
+
+  // Update editor-container's display (prism-live)
+  let editor = document.querySelector('editor-tool[name="container"]');
+  let prism  = editor.querySelector('div.prism-live');
+  if (prism) prism.remove();
+
+  editor.append(textarea);
+  loadPrismLive();
+
+}
+
+
+
+
+
+containerSetCommands([
+  'gamerule commandBlockOutput false',
+  'execute @e[type="Zombie",r=3] ~ ~2 ~ tellraw @a ["",{"text":"Zombies","bold":true,"color":"yellow"},{"text":" are real!"}]',
+  'tp @p[name="McRaZick"] 0 30 350'
+]);
+
+
