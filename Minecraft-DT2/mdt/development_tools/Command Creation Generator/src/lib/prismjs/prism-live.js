@@ -1,4 +1,6 @@
-function loadPrismLive() {
+const PrismLiveEventlisteners = [];
+
+function loadPrismLive() { 
 /**
     Prism Live: Code editor based on Prism.js
     Works best in Chrome. Currently only very basic support in other browsers (no snippets, no shortcuts)
@@ -187,13 +189,24 @@ function loadPrismLive() {
                 }
             });
     
+
+            /* START of Modified by McRaZick 04/02/2023 ----- */
+
+            let param = this;
+            let prismLiveSyncStyles = (evt) => { param.syncStyles() };
+            PrismLiveEventlisteners.push(prismLiveSyncStyles);
+  
             // this.syncScroll();
             this.textarea.addEventListener("scroll", this, {passive: true});
-    
+
+            //console.log(this)
             $.bind(window, {
-                "resize": evt => this.syncStyles()
+                "resize": prismLiveSyncStyles
             });
-    
+
+            /* END of Modified by McRaZick ------------------- */
+
+
             // Copy styles with a delay
             requestAnimationFrame(() => {
                 this.syncStyles();

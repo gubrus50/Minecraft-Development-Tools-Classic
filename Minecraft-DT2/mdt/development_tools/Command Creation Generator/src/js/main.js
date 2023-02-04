@@ -255,7 +255,7 @@ const wysiwygCommandsObserver = new MutationObserver(() => {
 window.onload = async () => {
 
   makeWysiwygFuncitonal(); /* wysiwyg.js onLoad */
-
+  makeContainerFunctional(); /* container.js onLoad */
 
   // :: Update commands's textarea's style property "--multiplier" 
 

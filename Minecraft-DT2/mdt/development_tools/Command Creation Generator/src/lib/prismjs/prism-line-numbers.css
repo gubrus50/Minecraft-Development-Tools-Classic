@@ -1,6 +1,6 @@
 pre[class*="language-"].line-numbers {
   position: relative;
-  padding-left: 5em;
+  padding-left: 3.8em;
   counter-reset: linenumber;
 }
 
@@ -14,9 +14,10 @@ pre[class*="language-"].line-numbers > code {
   pointer-events: none;
   top: 0;
   font-size: 100%;
-  left: -3.2em;
+  left: -3.8em;
   width: 3em; /* works for line-numbers below 1000 lines */
   letter-spacing: -1px;
+  /*border-right: 1px solid #999;*/
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -28,38 +29,12 @@ pre[class*="language-"].line-numbers > code {
   .line-numbers-rows > span {
     display: block;
     counter-increment: linenumber;
-    position: relative;
   }
 
-    .line-numbers-rows > span::before {
-      content: counter(linenumber) "\002000/"; /* \002000 - SPACE */
-      color: rgb(148, 148, 148);
+    .line-numbers-rows > span:before {
+      content: counter(linenumber);
+      color: #999;
       display: block;
-      padding-right: 0em;
+      padding-right: 0.8em;
       text-align: right;
-
-      font-family:
-        'minecraftiaregular',
-        'minecraftru',
-        'Arial',
-        'Sans serif';
-      font-size: 12px;
-    }
-
-    .line-numbers-rows > span::after {
-      content: " ";
-      background-image: url('../../img/chain_command_block.png');
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position-x: 0;
-      height: 18px;
-      width: 18px;
-
-      position: absolute;
-      top: 0;
-      left: -20px
-      
-    }
-    .line-numbers-rows > span:first-child::after {
-      background-image: url('../../img/repeating_command_block.png');
     }

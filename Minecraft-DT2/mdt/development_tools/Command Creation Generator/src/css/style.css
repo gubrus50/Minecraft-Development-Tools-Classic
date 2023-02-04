@@ -115,7 +115,6 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: gray;
-
 }
 
 editor-tool {
@@ -144,13 +143,42 @@ editor-tool[name="container"] {
   transform: translateX(-100%);
 }
 
-editor-tool[name="container"] > div {
+editor-tool[name="sign"] #commands textarea {
+  padding-bottom: 50px;
+}
+editor-tool[name="sign"] #commands textarea,
+editor-tool[name="container"] textarea.prism-live {
+  cursor: auto;
+}
+
+editor-tool[name="container"] > div.prism-live {
   position: relative;
   overflow: hidden;
 }
-
 editor-tool[name="container"] textarea.prism-live::-webkit-scrollbar-corner {
   background-color: rgba(33,33,33,.3);
+}
+editor-tool[name="container"] span.token.commandblock {
+  position: relative;
+}
+editor-tool[name="container"] span.token.commandblock::before {
+  content: " ";
+  position: absolute;
+  height: 100%;
+  width: 23px;
+  top: 0;
+  left: -.5px;
+
+  background-color: #1a1a1a;
+  background-image: url('../img/repeating_command_block.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  background-position-x: 0;
+  background-position-y: 2px;
+}
+editor-tool[name="container"] span.token.commandblock ~ span.token.commandblock::before {
+  background-image: url('../img/chain_command_block.png');
 }
 
 
