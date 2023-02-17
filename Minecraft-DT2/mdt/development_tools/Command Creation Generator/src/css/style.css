@@ -46,6 +46,23 @@
   60%, 80% { background-image: var(--bg-1); }
 }
 
+@keyframes loadingCircle {
+  from { transform: rotate(0deg) }
+  to   { transform: rotate(350deg) }
+}
+
+@keyframes loadingCircleText {
+  00%, 30% { content: "Loading\0020."   }
+  30%, 60% { content: "Loading\0020.."  }
+  60%, 90% { content: "Loading\0020..." }
+}
+
+@keyframes pulsing {
+  00%, 30%  { opacity: .3 }
+  30%, 60%  { opacity: .6 }
+  60%, 100% { opacity: .3 }
+}
+
 /* "Slide animations"
 - Source: https://stackoverflow.com/questions/74438924/how-can-i-make-smooth-slide-transition/74440636#74440636
 - Accessed: 17.01.2023
@@ -180,6 +197,118 @@ editor-tool[name="container"] span.token.commandblock::before {
 editor-tool[name="container"] span.token.commandblock ~ span.token.commandblock::before {
   background-image: url('../img/chain_command_block.png');
 }
+editor-tool[name="container"] code.fadeIn > *:not(.line-numbers-rows) {
+  opacity: 1;
+  transition: opacity 1.5s;
+}
+editor-tool[name="container"] code.highlightAll > *:not(.line-numbers-rows),
+editor-tool[name="container"] span.token.highlight {
+  background-color: yellow;
+  font-size: 14px;
+  transition: font-size .5s;
+}
+editor-tool[name="container"] span.token.highlight.error {
+  background-color: transparent;
+  position: relative;
+}
+editor-tool[name="container"] span.token.highlight.error::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,0,0);
+  animation: pulsing 1s infinite;
+  z-index: 2;
+}
+editor-tool[name="container"] span.token.error-line{
+  --width: 0;
+  --top: 0;
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: var(--top);
+  left: -3.8em;
+  width: calc(100vw + var(--width));
+  height: 21px;
+  background-color: rgba(255, 255, 0, .1);
+  z-index: 1;
+}
+editor-tool[name="container"] span.token {
+  opacity: 1;
+}
+editor-tool[name="container"] span.token.hide {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+
+div.loadingScreen{
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  
+  transition: opacity 1s;
+  background-color: rgba(0,0,0,.6);
+  z-index: 3;
+}
+.loadingScreen.hide {
+  opacity: 0;
+}
+
+span.loading {
+  display: flex;
+  justify-content: center;
+
+  color: #fff;
+  font-family:
+  'minecraftiaregular',
+  'minecraftru',
+  'Arial',
+  'Sans serif';
+}
+
+span.loading::after {
+  --font-size: 15px;
+  --inline-height: 0.5;
+
+  position: absolute;
+  top: calc(50% - (var(--font-size) * var(--inline-height)));
+  width: 80px;
+
+  content: "Loading\0020.";
+  font-size: var(--font-size);
+  line-height: var(--inline-height);
+  text-align: center;
+
+  animation: loadingCircleText 2s infinite;
+  z-index: 2;
+}
+
+span.loading::before {
+  content: " ";
+  display: block;
+
+  height: 45px;
+  width: 45px;
+
+  border: 5px solid rgba(255,255,255,0.4);
+  border-left-color: transparent;
+  border-radius: 50%;
+
+  animation: loadingCircle 1s infinite;
+  z-index: 1;
+}
+
 
 
 .zoomContainer {

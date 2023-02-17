@@ -12,6 +12,10 @@
 </head>
 <body>
 
+<div class="loadingScreen hide" style="display: none;">
+  <span class="loading"></span>
+</div>
+
 <div class="zoomContainer">
   <button>-</button>
   <input type="number" placeholder="%" min="100" max="200" value="100"></input>
@@ -88,12 +92,12 @@
 
 
 
-<!-- Bliss (required for Prism-Live) -->
-<script defer name="bliss" src="./src/lib/bliss.js"></script>
-<!-- PrismJS, Prism-Live & Prism-Line-Numbers-->
+<!-- Libraries -->
+<script defer name="bliss" src="./src/lib/bliss.js"></script> <!-- Required for Prism-Live -->
 <script defer name="prismJS" src="./src/lib/prismjs/prism.js"></script>
 <script defer name="prismLive" src="./src/lib/prismjs/prism-live.js?load=css,html,javascript"></script>
 <script defer name="prismLineNumbers" src="./src/lib/prismjs/prism-line-numbers.js"></script>
+<script defer name="intervals" src="./src/lib/intervals.js"></script>
 <!-- Main scripts -->
 <script defer name="wysiwyg" src="./src/js/wysiwyg.js"></script>
 <script defer name="container" src="./src/js/container.js"></script>

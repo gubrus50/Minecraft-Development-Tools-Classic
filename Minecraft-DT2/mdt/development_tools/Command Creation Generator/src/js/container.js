@@ -1,5 +1,11 @@
 /* ------ START LIBRARIES ------ */
 
+// Source: https://flaviocopes.com/how-to-slow-loop-javascript/
+// Accessed: 21.09.2022
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 // Source: https://stackoverflow.com/questions/1064089/inserting-a-text-where-cursor-is-using-javascript-jquery#answer-36297528
 // Access: 04/02/2023 & modified
 
@@ -14,7 +20,7 @@ async function addTextAtCursorPosition(textArea, cursorPosition, text) {
   let front = (textArea.value).substring(0, cursorPosition);
   let back  = (textArea.value).substring(cursorPosition, textArea.value.length);
   let newValue = front + text + back;
-  await containerSetCommands([newValue]);
+  await containerSetCode([newValue]);
 }
 
 async function updateCursorPosition(cursorPosition, text, textAreaID) {
@@ -92,9 +98,9 @@ if (Prism) {
       /(\b(?:wsserver)\b)/gm,
       /(\b(?:xp)\b)/gm
     ],
-    'selector': /@(a|e|r|p)/,
+    'selector': /\s+@(a|e|r|p)/,
     'property': {
-      pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
+      pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"((?=\s*:)|(?=\s*=))/,
       lookbehind: true,
       greedy: true
     },
@@ -123,7 +129,610 @@ if (Prism) {
 
 
 
-async function containerGetCommands() {
+var string = 'bobby [{{[]          {}}     }   ] assasaas [ {   {{}} ]';
+console.log(string);
+
+
+
+function removeSpacing(string) {
+  return string.replace(/\s/g, '');
+}
+
+
+
+async function containerWrapTextNodesWithSpan() {
+  
+  let code = document.querySelector('editor-tool[name="container"] div.prism-live code');
+
+  // Wrap textNodes in <span>
+  await Promise.all([...code.childNodes]
+  .map(async node =>
+  {
+    if (node.nodeName == '#text')
+    {
+      let span = document.createElement('span');
+          span.classList.add('token');
+
+      // Replace node with span,
+      // The and node to that span.
+      code.replaceChild(span, node);
+      span.append(node);
+    } 
+  }));
+}
+
+
+
+function getPunctuationStartPos(string) {
+
+  let punctuations = ['[','{'];
+  let char;
+
+  // Linear search for punctuations '[' and '{'
+  for (let index = 0; index < string.length; index++) {
+    
+    let char = string[index];
+    
+    // SUCCESS Return punctuation's start position and previously used data
+    if (punctuations.includes(char)) {
+      return {
+        state: 'success',
+        character: char,
+        position: index
+      }
+    }
+  } 
+
+  // Punctuation not found
+  return {
+    state: 'fail', string,
+    error: console.error(`Failed to find punctuations: '${punctuations}'.`)
+  };
+}
+
+
+
+function getPunctuationEndPos(string, punctuationPosition) {
+
+  let stripped = string.substring(0, punctuationPosition);
+  let str = string.substring(punctuationPosition);
+  let punctuations = ['[','{'];
+
+  // Punctuation not found at first position
+  if (!punctuations.includes(str[0])) return {
+    state: 'fail', string, stripped,
+    error: console.error(`Punctuation not found at position: '${punctuationPosition}'.`)
+  }
+
+  let punctuation = str[0];
+  let punctuationCounter = 0;
+  let closing = (punctuation == '[') ? ']' : '}';
+  let char;
+
+  // Linear search for end position
+  for (let index = 0; index < str.length; index++) {
+
+    char = str[index];
+
+    // Increment / Decrement 'punctuationCounter'
+    if (char == punctuation) punctuationCounter++;
+    else if (char == closing) punctuationCounter--;
+
+    // SUCCESS Return punctuation's end position and previously used data
+    if (punctuationCounter <= 0) return {
+      state: 'success',
+      string,
+      stripped,
+      position: index + stripped.length
+    }
+  }
+
+  // No closing
+  return {
+    state: 'fail', string, stripped,
+    error: console.error(`Failed to find closing punctuation of '${punctuation}'.`)
+  }
+}
+
+
+
+async function getFirstClosedPunctuation(string) {
+
+  let start, end;
+
+  // Get and return error if 'start' is undefined of false
+  start = getPunctuationStartPos(string);
+
+  if (!(start)) return {
+    state: 'fail', string,
+    error: console.error(`Failed gathering variable 'start'.`)
+  }
+
+  // Get and return error if 'end' is undefined or false
+  end = getPunctuationEndPos(string, start.position);
+
+  if (!(end)) return {
+    state: 'fail', string,
+    error: console.error(`Failed gathering variable 'end'.`)
+  }
+
+  // Fail - throw error as 'start' and 'end' failed to get necessary data
+  if    (start.state == 'fail') { return { state: 'fail', string, error: start.error } }
+  else if (end.state == 'fail') { return { state: 'fail', string, error: end.error } }
+
+
+  // SUCCESS Return closed punctuation and previously used data
+  let closedPunctuation = string.substring(start.position, end.position + 1);
+  return {
+    state: 'success',
+    string,
+    startPos: start.position,
+    endPos: end.position,
+    closedPunctuation
+  };
+
+}
+
+
+
+async function containerGetCompiledCode() {
+
+  let timeMultiplier = 0.75; //0.75
+
+  const replaceTokens = async (token, innerText) =>
+  { // Get code's token, and replace it's innerText
+
+    await Promise.all([...code.querySelectorAll(token)]
+    .map(async token =>
+    {
+      token.classList.add('highlight');
+      await sleep(1000 * timeMultiplier);
+  
+      let oldInnerText = token.innerText;
+      token.innerText  = innerText;
+  
+      await sleep(1000 * timeMultiplier);
+      token.classList.remove('highlight');
+
+      return oldInnerText;
+    }));
+  }
+
+  const removeTokens = async (token) =>
+  { // Remove tokens from code's content
+
+    await Promise.all([...code.querySelectorAll(token)]
+    .map(async token =>
+    {
+      token.classList.add('highlight');
+      await sleep(1000 * timeMultiplier);
+
+      token.classList.add('hide');
+      await sleep(1000 * timeMultiplier);
+
+      token.remove();
+    }));
+  }
+
+  const hideTokens = async (token, instantly=false) =>
+  {
+    await Promise.all([...code.querySelectorAll(token)]
+    .map(token =>
+    {
+      (instantly)
+      ? token.style.opacity = 0
+      : token.classList.add('hide');
+    }));
+
+    await sleep(1000 * timeMultiplier);
+  }
+
+  const showTokens = async (token, fadein=false) =>
+  {
+    if (fadein) code.classList.add('fadeIn');
+
+    await Promise.all([...code.querySelectorAll(token)]
+    .map(token =>
+    {
+      token.style.removeProperty('opacity');
+      token.classList.remove('hide');
+    }));
+
+    await sleep(1000 * timeMultiplier);
+    if (fadein) code.classList.remove('fadeIn');
+  }
+
+
+  // Stage: 1 ---------------------------- //
+  // Prepare and Display container-editor for sorting, Then,
+  // Remove comments, and Replace strings with temporary marking: "S" (string) and "P" (property)
+  // At last, hide all tokens for 'Stage: 2'
+
+
+  displayEditor('container');
+
+  // Show .loading
+  let loading = document.querySelector('div.loadingScreen');
+      loading.style.removeProperty('display');
+      loading.classList.remove('hide');
+
+  // Disable textarea and scroll it to the top
+  let textarea = document.querySelector('editor-tool[name="container"] textarea.prism-live');
+      textarea.setAttribute('disabled', true);
+      textarea.scrollTo(0,0);
+
+  // Get code and code's content (innerText)
+  let code     = document.querySelector('editor-tool[name="container"] div.prism-live code');
+  let codeText = await containerGetCode();
+  
+  await sleep(1000);
+  await replaceTokens('span.string', '"S"');
+  await replaceTokens('span.property', '"P"');
+  await removeTokens('span.comment');
+
+  // Wrap text nodes for .highlightAll animation
+  await containerWrapTextNodesWithSpan();
+  code.classList.add('highlightAll');
+  
+  await sleep(1000 * timeMultiplier);
+  hideTokens('span.token');
+  await sleep(1000 * timeMultiplier);
+
+
+  // Stage: 2 ---------------------------- //
+  // Show striped-form-unnecessary-spaces code
+
+  
+  // Get code's content without unnecessary spacing
+  let codeString = await code.innerText.replace(/\s+/g, ' ');
+      codeString = await codeString.split('>>>/');
+      await codeString.shift();
+
+  // Update container display (and therefore, get new code)
+  (codeString.length > 1)
+  ? await containerSetCode(codeString)
+  : await containerSetCode([codeString]);
+  code = document.querySelector('editor-tool[name="container"] div.prism-live code');
+
+  // Wrap text nodes for .fadeIn animation
+  await containerWrapTextNodesWithSpan();
+
+  // Hide old and show new code
+  await hideTokens('span.token', true);
+  await showTokens('span.token', true);
+
+
+  // Stage: 3 ---------------------------- //
+  // Validate and Compress existing closed-punctuations '[...]' and '{...}'
+
+  timeMultiplier = 0.1 // 0.1
+
+  let data;
+  let newCode = "";
+  let punctuation_occurances = -1;
+      
+
+
+  const removeTokensBeforeFirstPunctuation = async () =>
+  {
+    let node, tokens;
+    let nodes = await Promise.all([...code.childNodes]);
+    let index = 0;
+
+    const isPunctuation = async () => {
+      node = nodes[index];
+
+      if (node.classList.contains('punctuation')) {
+        punctuation_occurances++;
+
+        // Node is punctuation
+        await Promise.all([...code.querySelectorAll('span.highlight')].map(node => newCode += node.innerText));
+        await removeTokens('span.highlight');
+        return { state: 'success', node };
+      }
+
+      index++; // Node is not punctuation
+      await sleep(100 * timeMultiplier);
+      node.classList.add('highlight');
+      return { state: 'fail', node };
+    }
+
+    while (true) {
+      try { // Repeat until data's state is resolved as 'success'
+        let data = await isPunctuation();
+        if (data.state == "success") return data;
+      }
+      catch (ex) { console.log("still waiting and trying again"); }
+    }
+  }
+
+
+
+  const errorOpenedBracket = async (bracket_pos) =>
+  { // Highlight opened bracket on original code
+
+    timeMultiplier = 0.75 // 0.75
+
+    // Highlight opened bracket in modified-by-algorithm code with an error
+    data.node.classList.add('error');
+    data.node.classList.add('highlight');
+    await sleep(5000 * timeMultiplier);
+
+    // Update container display with original code (and therefore, get new code)
+    (codeString.length > 1)
+    ? await containerSetCode(codeText)
+    : await containerSetCode([codeText]);
+    code = document.querySelector('editor-tool[name="container"] div.prism-live code');
+
+    // Highlight opened bracket in original-code with an error
+    let brackets = await Promise.all([...code.querySelectorAll('span.punctuation')]);
+    let opened_bracket = brackets[bracket_pos];
+        opened_bracket.classList.add('error');
+        opened_bracket.classList.add('highlight');
+
+    // Highlight line at which error token occurs
+    let errorLine = document.createElement('span');
+        errorLine.classList.add('error-line');
+        errorLine.classList.add('token');
+        errorLine.style.setProperty('--top', ( opened_bracket.getBoundingClientRect().y - code.getBoundingClientRect().y ) + 'px');
+        errorLine.style.setProperty('--width', document.getElementById('containerTextArea').scrollWidth + 'px');
+        await code.append(errorLine);
+
+    // Hide .loading and enable textarea
+    loading.classList.add('hide');
+    await sleep(1000 * timeMultiplier);
+    loading.style.display = 'none';
+    textarea.removeAttribute('disabled');
+
+    // Scroll code display to .error token
+    let tokenY = errorLine.getBoundingClientRect().y;
+    let tokenX = errorLine.getBoundingClientRect().x;
+    document.getElementById('containerTextArea')
+    .scrollTo(tokenX - 40, tokenY - 40);
+
+    // Log error message in console
+    return console.error('Found opened bracket:\n', opened_bracket);
+  };
+
+
+
+  const getClosedBracket = async () =>
+  {
+    let node;
+    let nodes = await Promise.all([...code.childNodes]);
+    let closedBracket = "";
+    let startBracket;
+    let index = 0;
+
+    // Validate opening of external bracket
+    node = nodes[0];
+
+    if (node.innerText === '[') startBracket = '[';
+    else if (node.innerText === '{') startBracket = '{';
+    else return;
+
+    // Loop through <code> nodes
+    for (let i = 0; i < nodes.length; i++) {
+      // Select node
+      node = nodes[i];
+      node.classList.add('highlight');
+      closedBracket += node.innerText;
+
+      if (startBracket === '[') {
+        // (index) Increment when '[' Decrement if ']'
+        if (['['].includes(node.innerText)) index++;
+        else if ([']'].includes(node.innerText)) index--;
+      }
+      else if (startBracket === '{') {
+        // (index) Increment when '{' Decrement if '}'
+        if (['{'].includes(node.innerText)) index++;
+        else if (['}'].includes(node.innerText)) index--;
+      }
+
+      // External brackets are closed [...] & {...}
+      // Note that nested brackets may be open
+      if (index === 0) return await closedBracket;
+    }
+
+    // startBracket has no closing
+    return false;
+  }
+
+
+
+  // Source: https://stackoverflow.com/questions/52969755/how-to-check-the-sequence-of-opening-and-closing-brackets-in-string#answer-52970433
+  // Access: 16/02/2023 & modified same day by McRaZick
+
+  const areBracketsClosed = async (expr) => {
+
+    let holder = [];
+    let openBrackets = ['{','['];
+    let closedBrackets = ['}',']'];
+    let lastOpenedBracketPosition = false;
+    let firstClosedBracketPosition = false;
+    let openBracketCount = 0;
+    let closedBracketCount = 0;
+    
+    const incrementPO = (string) => {
+      // Increment any punctuation_occurances from language "minecraft-v1-12-x"
+      // (Language is defined by PrismJS and is located at the very top of THIS file)
+
+      if (Prism
+      .languages['minecraft-v1-12-x']
+      .punctuation
+      .test(string))
+      {
+        punctuation_occurances++;
+      }
+    }
+
+    let index = -1;
+
+    // loop trought all letters of expr
+    for (let letter of expr) {
+      
+      index++;
+
+      // if its oppening bracket
+      if (openBrackets.includes(letter)) {
+        lastOpenedBracketPosition = index;
+        holder.push(letter);
+      }
+      // if its closing
+      else if (closedBrackets.includes(letter)) {
+        firstClosedBracketPosition = index;
+
+        // find its pair
+        let openPair = openBrackets[closedBrackets.indexOf(letter)];
+
+        // check if that pair is the last element in the array, if so, remove it
+        if (holder[holder.length - 1] === openPair) {
+          holder.splice(-1,1);
+        }
+        else {
+          holder.push(letter);
+          break;
+        }
+      }
+    }
+
+    // loop trought all letters of expr (again)
+    for (let letter of expr) {
+      if (openBrackets.includes(letter)) openBracketCount++;
+      else if (closedBrackets.includes(letter)) closedBracketCount++;
+    }
+
+  
+    let result = (holder.length === 0);
+
+    // Increment 'punctuation_occurances' and return false/true
+    if (result === false) {
+
+      // Hard to explain, it fixes the bug where .error used to highlight parent brackets
+      // despite the fact that a nested bracket is incorrectly places within the parent brackets
+      let openBracket = holder[holder.length - 1](openBracketCount < closedBracketCount)
+      ? holder[holder.length - 1]
+      : holder[0]
+      
+      if (openBrackets.includes(openBracket)) {
+        invalidBracketPosition = lastOpenedBracketPosition;
+      }
+      else if (closedBrackets.includes(openBracket)) {
+        invalidBracketPosition = firstClosedBracketPosition;
+      }
+
+      // Loop through expression's start position to open bracket.
+      let startToOpenedBracket = expr.substring(0, invalidBracketPosition + 1);
+      for (letter of startToOpenedBracket) incrementPO(letter);
+
+      return false;
+    }
+ 
+    for (letter of expr) incrementPO(letter);
+    return true;
+  }
+
+
+
+  while (true)
+  {
+    // Break from while-loop if there are no more punctuations in code
+    let punctuation = code.querySelector('span.punctuation');
+    if (!punctuation) break;
+
+    data = await removeTokensBeforeFirstPunctuation();
+    
+    // If first punctuation is a closed bracket
+    if (data.state == "success" && [']','}'].includes(data.node.innerText)) {
+      return await errorOpenedBracket(punctuation_occurances);
+    }
+    // If first punctuation is an open bracket
+    else if (data.state == "success" && ['[','{'].includes(data.node.innerText))
+    {
+      // Get external bracket and its content with nested brackets if included
+      let closedBracket = await getClosedBracket();
+      if (closedBracket === false) {
+        return await errorOpenedBracket(punctuation_occurances);
+      }
+      else if (closedBracket) {
+        /* Variable P.O. is incremented at removeTokensBeforeFirstPunctuation().
+        /  And so, the function increments the first instance of bracket.
+        /  
+        /  I don't want to increment brackets through that function.
+        /  I will delete the bracket once highlighted, and manage P.O. later
+        /  as it will give me better control of capturing the invalid bracket as error.
+        */
+        punctuation_occurances--;
+        // Remove unnecessary spacing from 'bracket'
+        closedBracket = closedBracket.replace(/\s/g, '');
+
+        let result = await areBracketsClosed(closedBracket);
+        if (result === false) {
+          return await errorOpenedBracket(punctuation_occurances);
+        }
+
+        // Remove closed and valid bracket (with nested closed brackets if pressent)
+        // And add it to newCode
+        await removeTokens('span.highlight');
+        newCode += await closedBracket;
+      }
+    }
+  }
+
+  // [,,{,{,{,,},,,},,,,]
+  // [type=sq[]uid,n{ame{=MyAut}o1} }4CCe02]
+  newCode += await code.innerText;
+  
+  // Stage: 4 ---------------------------- //
+  // Return 'newCode', initialize original code, and disable loading
+  
+  // Update container display with original code
+  (codeString.length > 1)
+  ? await containerSetCode(codeText)
+  : await containerSetCode([codeText]);
+
+  // Hide .loading and enable textarea
+  loading.classList.add('hide');
+  await sleep(1000 * timeMultiplier);
+  loading.style.display = 'none';
+  textarea.removeAttribute('disabled');
+
+  return newCode;
+}
+
+
+
+/* Compress codeString's list and data objects.
+// E.g. [ name = Bob ]                             -> [name=Bob]
+// E.g. { "forename" = "Jeff", surname:   Nowak  } -> {"forename"="Jeff",surname:Nowak}
+
+
+// Get list and data objects (punctuations)
+let listObjects = [...codeString.match(/\[(.*?)\]/g)].map(list => list.replace(/\s/g, ''));
+let dataObjects = [...codeString.match(/\{(.*?)\}/g)].map(data => data.replace(/\s/g, ''));
+
+// Replace codeString's punctuation accordingly to '[]' or '{}'
+// E.g. [name=Bob]    -> []
+// E.g. {name:"Jeff"} -> {}
+codeString  = codeString.replace(/\[(.*?)\]/g, '[]');
+codeString  = codeString.replace(/\{(.*?)\}/g, '{}');
+
+
+
+// Populate compressed punctuation to codeString's empty punctuations, respectively
+listObjects.map(list => codeString = codeString.replace(/\[\]/, list));
+dataObjects.map(data => codeString = codeString.replace(/\{\}/, data));
+
+console.log(codeString, listObjects, dataObjects);
+
+// Populate quotes to codeString's empty quotes, respectively
+strings.map(string => codeString = codeString.replace(/"S"/, string));
+properties.map(property => codeString = codeString.replace(/"P"/, property));
+*/
+
+
+
+async function containerGetCode() {
 
   let editor   = document.querySelector('editor-tool[name="container"]');
   let codeNode = editor.querySelector('div.prism-live code');
@@ -134,17 +743,17 @@ async function containerGetCommands() {
 
 
 
-async function containerSetCommands(commands_array=[]) {
+async function containerSetCode(code_array=[]) {
 
-  // Validate parameter: commands_array for type and length
-  if (!(Array.isArray(commands_array) && commands_array.length > 0)) {
-    return console.error(`parameter 'commands_array' must be an Array with one or more items.`);
+  // Validate parameter: code_array for type and length
+  if (!(Array.isArray(code_array) && code_array.length > 0)) {
+    return console.error(`parameter 'code_array' must be an Array with one or more items.`);
   }
 
   // Initialize textarea
   let textarea = document.createElement('textarea');
       textarea.id = "containerTextArea";
-      textarea.value = commands_array.join('\r\n');
+      textarea.value = code_array.join('\r\n');
       textarea.classList.add(
         'prism-live',
         'language-minecraft-v1-12-x',
@@ -207,30 +816,26 @@ function containerCreateCommandBlock(e) {
 
 function makeContainerFunctional() {
 
-  // Create 'span.token.commandblock', on Shift + Enter in container-editor's textarea.prism-live
   let textarea = document.querySelector('editor-tool[name="container"] textarea.prism-live');
-      textarea.removeEventListener('keydown', containerCreateCommandBlock);
-      textarea.addEventListener('keydown', containerCreateCommandBlock);
- 
+  
+  // Create 'span.token.commandblock', on Shift + Enter in container-editor's textarea.prism-live
+  textarea.removeEventListener('keydown', containerCreateCommandBlock);
+  textarea.addEventListener('keydown', containerCreateCommandBlock);
+
 }
 
 
 
-containerSetCommands([
-/*
-'gamerule commandBlockOutput false',
-'execute @e[type="Zombie",r=3] ~ ~2 ~ tellraw @a ["",{"text":"Zombies","bold":true,"color":"yellow"},{"text":" are real!"}]',
-'tp @p[name="McRaZick"] 0 30 350'
-*/
+containerSetCode([
 `/* SAMPLE FOR TESTING PURPOSES ONLY! */
 >>>/gamerule commandBlockOutput false
 
 // Summon Car Entity (e01)
 >>>/execute @e[type=squid,name=MyAuto14CCe02] ~ ~ ~ summon minecart ~ ~ ~ {
-  CustomName: "MyAuto14CCe01",
-  NoGravity: 1b,
+  "CustomName": "MyAuto14CCe01",
+  "NoGravity": 1b,
   CustomDisplayTile: 1,
-  DisplayTile: "minecraft:stone_slab",
+  "DisplayTile": "minecraft:stone_slab",
   DisplayOffset: 2
 }
 >>>/kill @e[type=squid,name=MyAuto14CCe02]
@@ -240,16 +845,16 @@ containerSetCommands([
 >>>/scoreboard objectives add MyAuto14CCsCD dummy
 
 // Remove entities from scoreboards if they exceede value 1
->>>/scoreboard players set @e[score_MyAuto14CCsDF_min=2] MyAuto14CCsDF 0
+>>>/scoreboard players set @e["score_MyAuto14CCsDF_min"=2] MyAuto14CCsDF 0
 >>>/scoreboard players reset @a MyAuto14CCsCD
 
 // Add entities to scoreboards
->>>/scoreboard players add @e[type=minecart,name=MyAuto14CCe01] MyAuto14CCsDF 1
+>>>/scoreboard players add @e[type=minecart,"name"=MyAuto14CCe01] MyAuto14CCsDF 1
 >>>/execute @e[type=minecart,name=MyAuto14CCe01] ~ ~ ~ execute @p[r=1] ~ ~ ~ scoreboard players set @p[r=1] MyAuto14CCsCD 1 {SelectedItemSlot:0}
 
 // Construct Car Entity
->>>/execute @e[score_MyAuto14CCsDF_min=1,score_MyAuto14CCsDF=1] ~ ~ ~ playsound minecraft:entity.cat.purr hostile @a[r=10] ~ ~ ~ 1 0.2 1
->>>/execute @e[score_MyAuto14CCsDF_min=1,score_MyAuto14CCsDF=1] ~ ~ ~ playsound minecraft:ui.toast.in ambient @a[r=10] ~ ~ ~ 0 0.2 0
+>>>/execute @e[score_MyAuto14CCsDF_min=1,"score_MyAuto14CCsDF"=1] ~ ~ ~ playsound minecraft:entity.cat.purr hostile @a[r=10] ~ ~ ~ 1 0.2 1
+>>>/execute @e["score_MyAuto14CCsDF_min"=1,score_MyAuto14CCsDF=1] ~ ~ ~ playsound minecraft:ui.toast.in ambient @a[r=10] ~ ~ ~ 0 0.2 0
 
 // Move Car North West
 >>>/execute @e[score_MyAuto14CCsCD_min=1,rym=135,ry=158] ~ ~ ~ tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~ say North West
