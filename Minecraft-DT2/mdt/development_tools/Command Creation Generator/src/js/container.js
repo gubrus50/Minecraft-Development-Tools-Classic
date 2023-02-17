@@ -346,6 +346,7 @@ async function containerGetCompiledCode() {
   // Stage: 1 ---------------------------- //
   // Prepare and Display container-editor for sorting, Then,
   // Remove comments, and Replace strings with temporary marking: "S" (string) and "P" (property)
+  // Store strings in adequate lists, e.g. token .property in list 'properties'
   // At last, hide all tokens for 'Stage: 2'
 
 
@@ -366,8 +367,20 @@ async function containerGetCompiledCode() {
   let codeText = await containerGetCode();
   
   await sleep(1000);
+
+  // Get string tokens
+
+  let strings = [];
+  await Promise.all([...code.querySelectorAll('span.string')]
+  .map(node => strings.push(node.innerText)));
   await replaceTokens('span.string', '"S"');
+
+  let properties = [];
+  await Promise.all([...code.querySelectorAll('span.property')]
+  .map(node => properties.push(node.innerText)));
   await replaceTokens('span.property', '"P"');
+
+  // Remove comments
   await removeTokens('span.comment');
 
   // Wrap text nodes for .highlightAll animation
@@ -428,6 +441,7 @@ async function containerGetCompiledCode() {
         // Node is punctuation
         await Promise.all([...code.querySelectorAll('span.highlight')].map(node => newCode += node.innerText));
         await removeTokens('span.highlight');
+        node.classList.add('highlight');
         return { state: 'success', node };
       }
 
@@ -459,9 +473,7 @@ async function containerGetCompiledCode() {
     await sleep(5000 * timeMultiplier);
 
     // Update container display with original code (and therefore, get new code)
-    (codeString.length > 1)
-    ? await containerSetCode(codeText)
-    : await containerSetCode([codeText]);
+    await containerSetCode(codeText);
     code = document.querySelector('editor-tool[name="container"] div.prism-live code');
 
     // Highlight opened bracket in original-code with an error
@@ -476,7 +488,7 @@ async function containerGetCompiledCode() {
         errorLine.classList.add('token');
         errorLine.style.setProperty('--top', ( opened_bracket.getBoundingClientRect().y - code.getBoundingClientRect().y ) + 'px');
         errorLine.style.setProperty('--width', document.getElementById('containerTextArea').scrollWidth + 'px');
-        await code.append(errorLine);
+        code.append(errorLine);
 
     // Hide .loading and enable textarea
     loading.classList.add('hide');
@@ -485,8 +497,8 @@ async function containerGetCompiledCode() {
     textarea.removeAttribute('disabled');
 
     // Scroll code display to .error token
-    let tokenY = errorLine.getBoundingClientRect().y;
-    let tokenX = errorLine.getBoundingClientRect().x;
+    let tokenY = opened_bracket.getBoundingClientRect().y;
+    let tokenX = opened_bracket.getBoundingClientRect().x;
     document.getElementById('containerTextArea')
     .scrollTo(tokenX - 40, tokenY - 40);
 
@@ -610,7 +622,7 @@ async function containerGetCompiledCode() {
 
       // Hard to explain, it fixes the bug where .error used to highlight parent brackets
       // despite the fact that a nested bracket is incorrectly places within the parent brackets
-      let openBracket = holder[holder.length - 1](openBracketCount < closedBracketCount)
+      let openBracket = (openBracketCount < closedBracketCount)
       ? holder[holder.length - 1]
       : holder[0]
       
@@ -674,22 +686,31 @@ async function containerGetCompiledCode() {
         // Remove closed and valid bracket (with nested closed brackets if pressent)
         // And add it to newCode
         await removeTokens('span.highlight');
-        newCode += await closedBracket;
+        newCode += closedBracket;
       }
+    }
+    else {
+      // Remove punctuation if it's not a bracket: '[]' or '{}'
+      // and add it to the 'newCode'
+      newCode += await data.node.innerText;
+      await removeTokens('span.highlight');
     }
   }
 
-  // [,,{,{,{,,},,,},,,,]
-  // [type=sq[]uid,n{ame{=MyAut}o1} }4CCe02]
   newCode += await code.innerText;
   
+
+
   // Stage: 4 ---------------------------- //
-  // Return 'newCode', initialize original code, and disable loading
-  
+  // Return 'newCode' with original quotes data, initialize original code, and disable loading
+  // Note, 'newCode' is returned as list with commands instead of a string object.
+
+  // Replace the temporary quote template with appropriate data
+  strings.map(string => newCode = newCode.replace(/"S"/, string));
+  properties.map(property => newCode = newCode.replace(/"P"/, property));
+
   // Update container display with original code
-  (codeString.length > 1)
-  ? await containerSetCode(codeText)
-  : await containerSetCode([codeText]);
+  await containerSetCode(codeText)
 
   // Hide .loading and enable textarea
   loading.classList.add('hide');
@@ -697,38 +718,18 @@ async function containerGetCompiledCode() {
   loading.style.display = 'none';
   textarea.removeAttribute('disabled');
 
+
+  newCode = newCode.split('\n');
+  newCode = await Promise.all(newCode.map(command => {
+    // If N command of 'newCode' list includes spacing at last position, remove it
+    if (/\s/g.test(command.slice(-1))) {
+      return command.slice(0,-1);
+    }
+    return command;
+  }));
+
   return newCode;
 }
-
-
-
-/* Compress codeString's list and data objects.
-// E.g. [ name = Bob ]                             -> [name=Bob]
-// E.g. { "forename" = "Jeff", surname:   Nowak  } -> {"forename"="Jeff",surname:Nowak}
-
-
-// Get list and data objects (punctuations)
-let listObjects = [...codeString.match(/\[(.*?)\]/g)].map(list => list.replace(/\s/g, ''));
-let dataObjects = [...codeString.match(/\{(.*?)\}/g)].map(data => data.replace(/\s/g, ''));
-
-// Replace codeString's punctuation accordingly to '[]' or '{}'
-// E.g. [name=Bob]    -> []
-// E.g. {name:"Jeff"} -> {}
-codeString  = codeString.replace(/\[(.*?)\]/g, '[]');
-codeString  = codeString.replace(/\{(.*?)\}/g, '{}');
-
-
-
-// Populate compressed punctuation to codeString's empty punctuations, respectively
-listObjects.map(list => codeString = codeString.replace(/\[\]/, list));
-dataObjects.map(data => codeString = codeString.replace(/\{\}/, data));
-
-console.log(codeString, listObjects, dataObjects);
-
-// Populate quotes to codeString's empty quotes, respectively
-strings.map(string => codeString = codeString.replace(/"S"/, string));
-properties.map(property => codeString = codeString.replace(/"P"/, property));
-*/
 
 
 
