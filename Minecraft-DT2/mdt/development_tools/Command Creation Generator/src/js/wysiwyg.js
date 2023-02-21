@@ -77,6 +77,24 @@ let CurrentCommand = 1;
 
 
 
+function saveCurrentSign() {
+
+  let sign        = document.querySelector('#wysiwyg .sign');
+  let sign_inputs = document.querySelectorAll('#wysiwyg .sign > div');
+  let textarea    = document.querySelector('#commands > textarea');
+
+  // Save current sign display
+  [...sign_inputs].map((input, index) => {
+    Signs[CurrentSign].display[index] = input.innerHTML;
+  });
+
+  // Save current command
+  Signs[CurrentSign].command[CurrentCommand - 1] = textarea.value;
+  
+}
+
+
+
 function displayCommand(sign_instance = CurrentSign, saveCurrentCommand = true, command_instance = 1) {
   // sign_instance :: Inteter 1-4 
   // command_instance :: Integer 1-4
@@ -242,6 +260,112 @@ function setObfuscatedAnchorColor() {
       }
     });
   }
+}
+
+
+
+function parseHtml(htmlString) {
+
+  const textContent = [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlString, 'text/html');
+  
+  const traverse = (node, format) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      textContent.push({ format, text: node.textContent });
+    }
+    else if (node.nodeType === Node.ELEMENT_NODE)
+    {
+      const newFormat = getNewFormat(format, node);
+      for (let child of node.childNodes) {
+        traverse(child, newFormat);
+      }
+    }
+  };
+
+  const getNewFormat = (format, node) => {
+    const tag = node.tagName;
+    const newFormat = format.slice();
+
+    if (tag === 'STRIKE') newFormat.push('strikethrough');
+    else if (tag === 'I') newFormat.push('italic');
+    else if (tag === 'U') newFormat.push('underline');
+    else if (tag === 'B') newFormat.push('bold');
+    else if (tag === 'A') newFormat.push('obfuscate');
+    else if (tag === 'FONT')
+    {
+      const color = node.getAttribute('color');
+      if (color) newFormat.push(`color-${color}`);
+    }
+    return newFormat;
+  };
+  
+  traverse(doc.body, []);
+  return textContent;
+}
+
+/* getNewFormat() and parseHtml() function's are desigen by Chat-GPT with McRaZick's collab. 20/02/2023
+
+---- Chat-GPT:
+
+Let's walk through the logic of this function. We start by defining an empty textContent array to store the text content with formatting information.
+We then create a new DOMParser object and use it to parse the HTML string into a Document object.
+
+Next, we define a traverse function that takes a node and a format array as inputs.
+If the node is a text node, we push an object containing the text content and the formatting information to the textContent array.
+If the node is an element node, we get the new format array by calling the getNewFormat function with the current format array and the node.
+We then recursively traverse the child nodes of the current node, passing the new format array as the format argument.
+
+The getNewFormat function takes the current format array and the current node as inputs.
+If the current node is a strikethrough, italic, underline, bold, anchor, or font element, we add the corresponding formatting string to the format array.
+We then return the new format array.
+
+With this implementation, we should be able to parse an HTML string and extract the text content along with formatting information.
+
+I broke the problem down into smaller subproblems and tackled them one by one. Here's an overview of the steps I took:
+
++ Create an empty textContent array to hold the final result.
++ Create an empty formatStack array to hold the current formatting state.
++ Write a processNode function that takes a single node and adds its text and formatting to textContent.
++ Write a processChildren function that takes a parent node and recursively processes its children.
++ Call processChildren on the root node of the DOM tree (i.e. the document.body node).
+
+In processNode, I used a loop to iterate over the elements of the formatStack array and concatenate them into a single string.
+This string represents the current formatting state, which is added to the textContent array along with the node's text.
+
+In processChildren, I used a for loop to iterate over the child nodes of the parent node.
+If a child node is a text node, it is passed to processNode. If it is an element node, its tag name is used to determine the formatting to apply.
+If the element has children, processChildren is called recursively on the element.
+
+The key insight that led to the solution was to use a stack to keep track of the current formatting state.
+By pushing and popping format strings onto and off of the stack as we traverse the tree,
+we can maintain the correct formatting state at any point in the traversal.
+
+*/
+
+
+
+function getSignData(sign_instance=false) {
+  // sign_instance :: Intager 1-4
+  
+  // Return error if invalid sign_instance
+  if (!([1,2,3,4].includes(sign_instance))) {
+    return console.error(`parameter 'sign_instance' must be an integer 1 - 4 (to corresponding sign)`);
+  }
+
+  saveCurrentSign();
+
+  let signData = {
+    command: undefined,
+    display: []
+  };
+
+  // #wysiwyg > container > .sign > .input <-- InputHTML
+  Signs[sign_instance].display.map((inputsHTML, index) => {
+    signData.display.push(parseHtml(inputsHTML));
+  });
+
+  return signData;
 }
 
 

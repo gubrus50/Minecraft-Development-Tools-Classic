@@ -129,17 +129,6 @@ if (Prism) {
 
 
 
-var string = 'bobby [{{[]          {}}     }   ] assasaas [ {   {{}} ]';
-console.log(string);
-
-
-
-function removeSpacing(string) {
-  return string.replace(/\s/g, '');
-}
-
-
-
 async function containerWrapTextNodesWithSpan() {
   
   let code = document.querySelector('editor-tool[name="container"] div.prism-live code');
@@ -163,119 +152,7 @@ async function containerWrapTextNodesWithSpan() {
 
 
 
-function getPunctuationStartPos(string) {
-
-  let punctuations = ['[','{'];
-  let char;
-
-  // Linear search for punctuations '[' and '{'
-  for (let index = 0; index < string.length; index++) {
-    
-    let char = string[index];
-    
-    // SUCCESS Return punctuation's start position and previously used data
-    if (punctuations.includes(char)) {
-      return {
-        state: 'success',
-        character: char,
-        position: index
-      }
-    }
-  } 
-
-  // Punctuation not found
-  return {
-    state: 'fail', string,
-    error: console.error(`Failed to find punctuations: '${punctuations}'.`)
-  };
-}
-
-
-
-function getPunctuationEndPos(string, punctuationPosition) {
-
-  let stripped = string.substring(0, punctuationPosition);
-  let str = string.substring(punctuationPosition);
-  let punctuations = ['[','{'];
-
-  // Punctuation not found at first position
-  if (!punctuations.includes(str[0])) return {
-    state: 'fail', string, stripped,
-    error: console.error(`Punctuation not found at position: '${punctuationPosition}'.`)
-  }
-
-  let punctuation = str[0];
-  let punctuationCounter = 0;
-  let closing = (punctuation == '[') ? ']' : '}';
-  let char;
-
-  // Linear search for end position
-  for (let index = 0; index < str.length; index++) {
-
-    char = str[index];
-
-    // Increment / Decrement 'punctuationCounter'
-    if (char == punctuation) punctuationCounter++;
-    else if (char == closing) punctuationCounter--;
-
-    // SUCCESS Return punctuation's end position and previously used data
-    if (punctuationCounter <= 0) return {
-      state: 'success',
-      string,
-      stripped,
-      position: index + stripped.length
-    }
-  }
-
-  // No closing
-  return {
-    state: 'fail', string, stripped,
-    error: console.error(`Failed to find closing punctuation of '${punctuation}'.`)
-  }
-}
-
-
-
-async function getFirstClosedPunctuation(string) {
-
-  let start, end;
-
-  // Get and return error if 'start' is undefined of false
-  start = getPunctuationStartPos(string);
-
-  if (!(start)) return {
-    state: 'fail', string,
-    error: console.error(`Failed gathering variable 'start'.`)
-  }
-
-  // Get and return error if 'end' is undefined or false
-  end = getPunctuationEndPos(string, start.position);
-
-  if (!(end)) return {
-    state: 'fail', string,
-    error: console.error(`Failed gathering variable 'end'.`)
-  }
-
-  // Fail - throw error as 'start' and 'end' failed to get necessary data
-  if    (start.state == 'fail') { return { state: 'fail', string, error: start.error } }
-  else if (end.state == 'fail') { return { state: 'fail', string, error: end.error } }
-
-
-  // SUCCESS Return closed punctuation and previously used data
-  let closedPunctuation = string.substring(start.position, end.position + 1);
-  return {
-    state: 'success',
-    string,
-    startPos: start.position,
-    endPos: end.position,
-    closedPunctuation
-  };
-
-}
-
-
-
-async function containerGetCompiledCode() {
+async function containerGetCompiledCommands() {
 
   let timeMultiplier = 0.75; //0.75
 
