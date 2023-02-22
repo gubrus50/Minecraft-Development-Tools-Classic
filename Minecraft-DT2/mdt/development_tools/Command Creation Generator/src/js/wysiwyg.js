@@ -361,11 +361,102 @@ function getSignData(sign_instance=false) {
   };
 
   // #wysiwyg > container > .sign > .input <-- InputHTML
-  Signs[sign_instance].display.map((inputsHTML, index) => {
+  Signs[sign_instance].display.map((inputsHTML) => {
     signData.display.push(parseHtml(inputsHTML));
   });
 
   return signData;
+}
+
+
+
+async function correctWysiwygFormat() {
+
+  let signData = getSignData(CurrentSign);
+  if (!signData) return console.error(`Failed to get 'signData'`);
+
+  let input = document.createElement('div');
+
+  const formatInput = (textObj) => {
+
+    let formatList = textObj.format;
+    if (!formatList) return textObj.text;
+
+    let closingTags = [];
+    let innerHTML = '';
+
+    let includesObfuscate = false;
+    let includesFont = false;
+    let color;
+
+    formatList.map(format =>
+    {
+      if (format === 'bold') {
+        innerHTML += "<b>";
+        closingTags.push("</b>");
+      }
+      if (format === 'italic') {
+        innerHTML += "<i>";
+        closingTags.push("</i>");
+      }
+      if (format === 'underline') {
+        innerHTML += "<u>";
+        closingTags.push("</u>");
+      }
+      if (format === 'strikethrough') {
+        innerHTML += "<strike>";
+        closingTags.push("</strike>");
+      }
+      if (format.includes('color')) {
+        includesFont = true;
+        color = format.substring(6);
+      }
+      if (format === 'obfuscate') {
+        includesObfuscate = true;
+      }
+    });
+
+    if (includesObfuscate) {
+      // Include font format before last
+      if (includesFont) {
+        innerHTML += `<font color="${color}">`;
+        closingTags.push("</font>");
+      }
+      // Include obfuscated format last
+      if (includesObfuscate) {
+        innerHTML += '<a href="#">';
+        closingTags.push("</a>");
+      }
+    }
+    else {
+      // Include font format first
+      if (includesFont) {
+        innerHTML = `<font color="${color}">` + innerHTML;
+        closingTags = ['</font>'].concat(closingTags);
+      }
+    }
+
+    // Include text, and close all formats
+    innerHTML += textObj.text;
+    closingTags.reverse().map(closingTag => innerHTML += closingTag);
+
+    // format 'input'
+    input.innerHTML += innerHTML;
+  }
+
+  for (let i = 0; i < signData.display.length; i++) {
+    let display = signData.display[i];
+
+    for (let j = 0; j < display.length; j++) {
+      let textObj = display[j];
+      formatInput(textObj);
+    }
+    // Update wysiwyg's '.input'
+    document.querySelectorAll('#wysiwyg .sign .input')[i].innerHTML = input.innerHTML;
+    setObfuscatedAnchorColor();
+    input.innerHTML = "";
+  }
+
 }
 
 
@@ -385,6 +476,21 @@ function makeWysiwygFuncitonal() {
   }, 20);
 
 
+  createInterval('wysiwyg_correctWysiwygFormat', async () =>
+  {
+    // Correct wysiwyg text decorations if anchor has a childElement
+    let anchors = document.querySelectorAll('#wysiwyg .sign a');
+    
+    for (let i = 0; i < anchors.length; i++) {
+      let node = anchors[i];
+
+      if (node.childElementCount > 0) {
+        await correctWysiwygFormat();
+        break;
+      }
+    }
+  }, 500);
+
 
   // :: wysiwyg-text-format button's functionality
 
@@ -399,6 +505,7 @@ function makeWysiwygFuncitonal() {
     {
       btn.addEventListener('click', () => {
         document.execCommand(btn.title, false, null);
+        correctWysiwygFormat();
       });
     }
     else {
@@ -414,13 +521,15 @@ function makeWysiwygFuncitonal() {
           let anchor_node = anchors[i];
           if (selection.containsNode(anchor_node)
           ||  selection.anchorNode.parentNode === anchor_node) {
-            return document.execCommand('unLink', false, '#');
+            document.execCommand('unLink', false, '#');
+            correctWysiwygFormat();
+            return;
           }
         }
         
         // Close selection with an anchor tag and update obfuscated text color.
         document.execCommand('createLink', false, '#');
-        setObfuscatedAnchorColor();  
+        correctWysiwygFormat(); 
       });
     }
   });
@@ -437,7 +546,7 @@ function makeWysiwygFuncitonal() {
       let color = btn.style.getPropertyValue('--bg-color');
       document.execCommand('foreColor', false, color);
       
-      setObfuscatedAnchorColor();
+      correctWysiwygFormat();
 
       // Update slection's color real time
       createStyle('update-selection-color', `
@@ -463,6 +572,17 @@ function makeWysiwygFuncitonal() {
   // :: Allow user to jump to next/previous .sign's .input, and ---------------------------------------
   // :: Remove input's overflowing contents. ----------------------------------------------------------
   
+  // Source: https://stackoverflow.com/questions/10778291/move-the-cursor-position-with-javascript#answer-10782169
+  // Accessed: 01/12/2022 at 6:22 am
+  const moveCaretTo = (charCount) => {
+
+    let selection = window.getSelection();
+    let textNode  = selection.focusNode;
+
+    if (selection.rangeCount > 0) {
+      selection.collapse(textNode, Math.min(textNode.length, charCount));
+    } 
+  }
   const moveCaretToEnd = (node) => {
     // Set input's cursor to last position.
     let selection = window.getSelection();
@@ -557,14 +677,27 @@ function makeWysiwygFuncitonal() {
     {
       const caretPos = window.getSelection().focusOffset;
 
+      // Remove div elements from input
+      [...event.target.children].map(node => { 
+        if (node.nodeName === 'DIV') {
+          console.error('<DIV> elements are forbidden in input!', {
+            input: event.target,
+            previousContent: event.target.innerHTML
+          });
+          node.remove();
+        }
+      });
+
       // Stripe overflowing content(s)
       while (/(<div><br><\/div>|<br>)/gm.test(input.innerHTML)) {
         removeLineBreaks(input);
       }
-      while (input.scrollHeight >= 50 || input.scrollWidth > input.offsetWidth)
-      {
-        del_lastChar_from_LastNode(input);
-      }
+      setTimeout(() => {
+        while (input.scrollHeight >= 50 || input.scrollWidth > input.offsetWidth)
+        {
+          del_lastChar_from_LastNode(input);
+        }
+      }, 0);
       
       // Remove <span> tags. (They are generated from deleted obfuscated anchor tags).
       Array.from(document.querySelectorAll('#wysiwyg .sign span')).map(span => {
