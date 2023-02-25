@@ -12,8 +12,39 @@
 </head>
 <body>
 
-<div class="loadingScreen hide" style="display: none;">
+<img id="cover" src="./src/img/bg3.png" alt="bg3.png">
+<div class="loadingScreen">
   <span class="loading"></span>
+</div>
+
+<div class="popup hide">
+  <div class="container" style="display: none">
+    <img src="./src/img/avatar.png" alt="avatar.png" draggable="false">
+    <div class="board">
+      <button class="exit"><i></i></button>
+      <p class="title">Container settings</p>
+      <p><warn>Warning!</warn> Your progress will not be saved after confirming this action. Are you sure you want to generate the creation?
+        <button class="submit" onclick="containerGetCompiledCommands(); this.setAttribute('disabled', true); hidePopups();">Confirm</button>
+      </p>
+      <hr>
+      <div class="settings">
+        <label>CEILING<input type="text" placeholder="stone_slab 5" value="stone_slab 5"></label>
+        <label>WALL<input type="text" placeholder="stained_glass 0" value="stained_glass 0"></label>
+        <label>BASE<input type="text" placeholder="stone_slab 13" value="stone_slab 13"></label>
+      </div>
+    </div>
+  </div>
+  <div class="info" style="display: none">
+    <img src="./src/img/avatar.png" alt="avatar.png" draggable="false">
+    <div class="board image">
+      <button class="exit"><i></i></button>
+      <p class="title">Important note</p>
+      <p><warn>Warning!</warn> Remember to occasionally save your creation as your progress <strong>IS NOT</strong> saved automatically.</p>
+      <p><strong>SIGN EDITOR</strong> includes variables <u style="white-space: nowrap; color: #0000B2">$creation_name</u> and <u style="white-space: nowrap; color: #0000B2">$programmer</u>, be mindful of how you use them because your input changes are applied for <u style="white-space: nowrap; color: #A900B2">!(creation_name)</u> and <u style="white-space: nowrap; color: #A900B2">!(creation_programmer)</u></p>
+      <p>At last, ensure that your code is valid in Minecraft's syntax, only <strong>CONTAINER EDITOR</strong> is dynamically typed.</p>
+    </div>
+  </div>
+  </div>
 </div>
 
 <div class="zoomContainer">

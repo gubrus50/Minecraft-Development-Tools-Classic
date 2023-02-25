@@ -245,7 +245,15 @@ editor-tool[name="container"] span.token.hide {
 }
 
 
-div.loadingScreen{
+
+#cover {
+  background-color: lightgray !important;
+  display: auto !important;
+}
+
+#cover,
+div.popup,
+div.loadingScreen {
   position: absolute;
   top: 0;
   left: 0;
@@ -257,11 +265,17 @@ div.loadingScreen{
   width: 100%;
   height: 100%;
   
-  transition: opacity 1s;
   background-color: rgba(0,0,0,.6);
   z-index: 3;
 }
-.loadingScreen.hide {
+
+
+#cover,
+div.popup,
+div.loadingScreen {
+  transition: opacity 1s;
+}
+.hide {
   opacity: 0;
 }
 
@@ -309,6 +323,213 @@ span.loading::before {
   z-index: 1;
 }
 
+
+div.popup {
+  z-index: 1;
+}
+div.popup > div {
+  display: flex;
+  width: 70%;
+  height: 60%;
+  user-select: none;
+  color: #484848;
+  font-family:
+  'minecraftiaregular',
+  'minecraftru',
+  'Arial',
+  'Sans serif';
+}
+
+div.popup img:first-child {
+  margin-right: 20px;
+}
+@media (max-aspect-ratio: 8/4) {
+  div.popup img:first-child { display: none }
+}
+
+div.popup .board {
+  padding: 1.5vmin;
+  padding-top: 0;
+  position: relative;
+  width: 100%;
+  border-style: solid;
+  border-width: 1vmin;
+  border-radius: 1.2vmin;
+  border-top-color: #FCFEFB;
+  border-left-color: #FCFEFB;
+  border-right-color: #54554F;
+  border-bottom-color: #54554F;
+  background-color: #C7C7C7;
+  box-shadow: 0px 0px 0px 0.7vmin #030301;
+}
+
+div.popup button.exit {
+  position: absolute;
+  top: -0.5vmin;
+  left: 2vmin;
+  float: right;
+  background-color: #d00000;
+  border: .6vmin solid #000;
+  border-radius: 1vmin;
+  border-bottom-left-radius: 4vmin;
+  height: 7vmin;
+  width: 8vmin;
+  position: relative;
+}
+div.popup button.exit > i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.2vmin;
+  margin-left: 0.2vmin;
+}
+div.popup button.exit > i::before,
+div.popup button.exit > i::after {
+  content: ' ';
+  width: .7vmin;
+  height: 4.2vmin;
+  display: inline-block;
+  vertical-align: middle;
+  background-color: #fff;
+  position: absolute;
+  top: calc(25 - 3.2vmin);
+}
+div.popup button.exit > i::before {
+  transform: rotate(45deg);
+}
+div.popup button.exit > i::after {
+  transform: rotate(-45deg);
+}
+div.popup button.exit:hover {
+  background-color: #ff0000;
+  cursor: pointer;
+}
+div.popup button.exit:hover > i::before,
+div.popup button.exit:hover > i::after {
+  background-color: #a50000;
+}
+div.popup button.exit:hover:active {
+  background-color: #ffd700;
+}
+div.popup button.exit:hover:active > i::before,
+div.popup button.exit:hover:active > i::after {
+  background-color: #c17e00;
+}
+
+div.popup .title {
+  font-size: 5vmin;
+}
+div.popup warn {
+  color: gold;
+  background-color: #9b9b9b;
+  padding-left: .5vmin;
+  padding-right: .5vmin;
+  font-weight: strong;
+}
+div.popup p {
+  font-size: 2vmin;
+}
+
+div.popup button.submit {
+  background-color: #008000;
+  color: #fff;
+  border: .4vmin solid #000;
+  font-size: 2vmin;
+  font-family:
+  'minecraftiaregular',
+  'minecraftru',
+  'Arial',
+  'Sans serif';
+  padding-left: 5px;
+  padding-right: 5px;
+  position: relative;
+}
+div.popup button.submit:not(.submit[disabled], .submit:hover)::after {
+  content: "";
+  position: absolute;
+  border: .4vmin solid #00ff00;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  animation: pulsing 2s infinite;
+}
+div.popup button.submit:hover {
+  background-color: #00ff00;
+  color: #008000;
+  cursor: pointer;
+}
+div.popup button.submit:hover:active {
+  background-color: #ffd700;
+  color: #c17e00;
+}
+div.popup button.submit[disabled] {
+  background-color: #808080;
+  border: .4vmin solid #404040;
+  color: #a9a9a9;
+  cursor: not-allowed;
+}
+div.popup button.submit[disabled]:hover:active {
+  background-color: #ababab;
+  color: #cccccc;
+  cursor: not-allowed;
+}
+
+div.popup hr {
+  margin: 2vmin auto;
+}
+div.popup .settings {
+  display: block;
+}
+div.popup .settings label {
+  display: block;
+  width: 100%;
+  font-size: 3vmin;
+}
+div.popup .settings input {
+  width: 100%;
+  padding: 1vmin;
+  border-width: .5vmin;
+  border-style: solid;
+  border-top-color: #54554F;
+  border-left-color: #54554F;
+  border-right-color: #FCFEFB;
+  border-bottom-color: #FCFEFB;
+  background-color: #8B8B8B;
+  box-sizing: border-box;
+  color: lime;
+  font-size: 2.5vmin;
+  font-family:
+  'minecraftiaregular',
+  'minecraftru',
+  'Arial',
+  'Sans serif';
+}
+
+
+div.popup .board.image {
+  --padding: 1.5vmin;
+  padding: 0;
+  background-image: url('../img/bg2.png');
+  background-repeat: no-repeat;
+  background-position-x: var(--padding);
+  background-position-y: var(--padding);
+  background-size: calc(100% - var(--padding) * 2) calc(100% - var(--padding) * 2);
+}
+div.popup .board.image button.exit {
+  left: 0.5vmin;
+}
+div.popup .board.image p {
+  padding: 0 1.5vmin;
+  background-color: #c7c7c7;
+}
+div.popup .board.image p:last-child {
+  padding-bottom: 1.5vmin;
+}
+div.popup .board.image p:not(p:first-of-type) {
+  padding-bottom: 3vmin;
+}
 
 
 .zoomContainer {

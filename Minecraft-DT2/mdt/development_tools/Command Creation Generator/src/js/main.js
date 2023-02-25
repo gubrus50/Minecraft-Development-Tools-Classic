@@ -1,47 +1,15 @@
 /* ------ START LIBRARIES ------ */
 
+// Source: https://flaviocopes.com/how-to-slow-loop-javascript/
+// Accessed: 21.09.2022
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 
 
 const isRealNumber = (n) => {
   return (!(isNaN(n)) && typeof n == 'number') ? true : false;
-}
-
-
-
-function getCaretIndex(element) {
-
-  let position = 0;
-  const isSupported = typeof window.getSelection !== "undefined";
-
-  if (isSupported) {
-
-    const selection = window.getSelection();
-
-    if (selection.rangeCount !== 0) {
-      const range = window.getSelection().getRangeAt(0);
-      const preCaretRange = range.cloneRange();
-
-      preCaretRange.selectNodeContents(element);
-      preCaretRange.setEnd(range.endContainer, range.endOffset);
-      position = preCaretRange.toString().length;
-    }
-  }
-  
-  return position;
-}
-
-
-
-// Source: https://stackoverflow.com/questions/10778291/move-the-cursor-position-with-javascript#answer-10782169
-// Accessed: 01/12/2022 at 6:22 am
-const moveCaretTo = (charCount) => {
-
-  let selection = window.getSelection();
-  let textNode  = selection.focusNode;
-
-  if (selection.rangeCount > 0) {
-    selection.collapse(textNode, Math.min(textNode.length, charCount));
-  } 
 }
 
 
@@ -52,7 +20,7 @@ const removeLineBreaks = (elm) => {
 
 
 
-const del_lastChar_from_LastNode = (node) => {
+const del_lastChar_from_lastNode = (node) => {
   if (!(node.childNodes.length)) {
 
     let txt = (node.nodeType === 3) ? node.nodeValue : node.innerHTML;
@@ -64,7 +32,7 @@ const del_lastChar_from_LastNode = (node) => {
     
   }
   else if (node.childNodes) {
-    return del_lastChar_from_LastNode(node.lastChild);
+    return del_lastChar_from_lastNode(node.lastChild);
   }
 }
 
@@ -101,6 +69,35 @@ const createStyle = (className, css) =>
 
 let Global = {
   isOnSlideAnimation: false,
+}
+
+
+
+function hidePopups() {
+  let popup = document.querySelector('.popup');
+      popup.classList.add('hide');
+
+  setTimeout(() => {
+    popup.style.display = 'none';
+    [...popup.children].map(popup => popup.style.display = 'none');
+    document.querySelector('.submit').removeAttribute('disabled');
+  }, 1000);
+
+}
+
+
+
+function showPopup(popupName) {
+  let popup = document.querySelector('.popup');
+      popup.classList.add('hide');
+      popup.style.removeProperty('display');
+
+  setTimeout(() => {
+    document.querySelector('.submit').removeAttribute('disabled');
+    [...popup.children].map(popup => popup.style.display = 'none');
+    document.querySelector(`.popup > .${popupName}`).style.removeProperty('display');
+    popup.classList.remove('hide');
+  }, 1000);
 }
 
 
@@ -265,7 +262,14 @@ window.onload = async () => {
       btn_obfuscate.innerText = patterns[i];
     }, 200);
   }
+
   
+
+  // :: (functionality) Hide popups onClick button.exit
+  [...document.querySelectorAll('button.exit')].map(btn => {
+    btn.addEventListener('click', hidePopups);
+  });
+
 
 
   // :: (functionality) Show active display button in #wysiwyg .display
@@ -425,4 +429,22 @@ window.onload = async () => {
   });
 
   // End of .zoomContainer ---------------------------------------------------------
+
+
+
+  // Hide loading and #cover
+  let loadingScreen = document.querySelector('.loadingScreen');
+  let cover = document.getElementById('cover');
+
+  await sleep(3000);
+  cover.classList.add('hide');
+  loadingScreen.classList.add('hide');
+  await sleep(1000);
+  cover.style.display = 'none';
+  loadingScreen.style.display = 'none';
+
+  // Show popup .info
+  await sleep(500);
+  document.querySelector('.popup > .info').style.removeProperty('display');
+  document.querySelector('.popup').classList.remove('hide');
 }

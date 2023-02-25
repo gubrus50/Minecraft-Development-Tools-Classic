@@ -9,7 +9,7 @@ const Signs = {
     command: [
       "/particle largeexplode ~ ~1 ~8 1.2 2.0 1.2 3 9",
       "/playsound minecraft:entity.generic.explode player @a ~ ~ ~",
-      "/tellraw @a {\n  \"text\": \"!(creation_name) has been destroyed!\",\n  \"color\": \"gold\"\n}",
+      "/tellraw @a {\"text\":\"!(creation_name) has been destroyed!\",\"color\":\"gold\"}",
       "/fill ~1 ~-5 ~ ~-2 ~3 ~16 air"
     ]
   },
@@ -23,23 +23,8 @@ const Signs = {
     command: [
       "/particle instantSpell ~ ~ ~ 0.2 0.2 0.2 9 9",
       "/playsound minecraft:entity.player.levelup player @a ~ ~ ~",
-      "/tellraw @a {\n  \"text\": \"Instruction...\",\n  \"color\": \"aqua\"\n}",
-
-`/give @p written_book 1 0 {
-  pages: ["
-    [\\"\\",{
-      \\"text\\": \\"[Instruction]\\\\n\\\\n\\",
-      \\"color\\": \\"aqua\\",
-      \\"bold\\": true
-    },{
-      \\"text\\": \\"- Item recipes:\\",
-      \\"color\\": \\"black\\",
-      \\"bold\\": false
-    }]
-  "],
-  title: Book,
-  author: !(creation_programmer)
-} `
+      "/tellraw @a {\"text\":\"Instruction...\",\"color\":\"aqua\"}",
+      `/give @p written_book 1 0 {pages:["[\\"\\",{\\"text\\":\\"[Instruction]\\\\n\\\\n\\",\\"color\\":\\"aqua\\",\\"bold\\":true},{\\"text\\":\\"- Item recipes:\\",\\"color\\":\\"black\\",\\"bold\\":false}"],title:Book,author:!(creation_programmer)}`
     ]
   },
   3 : {
@@ -50,9 +35,9 @@ const Signs = {
       "activate"
     ],
     command: [
-      "/tellraw @a {\n  \"text\": \"!(creation_name) has been activated!\",\n  \"color\": \"gold\"\n}",
+      "/tellraw @a {\"text\":\"!(creation_name) has been activated!\",\"color\":\"gold\"}",
       "/playsound block.piston.contract block @a ~ ~ ~ 10 1",
-      "/setblock ~ ~-2 ~2 repeating_command_block 3 replace {\n  auto: 1b,\n  TrackOutput: 0\n}",
+      "/setblock ~ ~-2 ~2 repeating_command_block 3 replace {auto: 1b,TrackOutput: 0}",
       "/fill ~1 ~4 ~1 ~-2 ~-2 ~17 stained_glass 3 replace stained_glass"
     ]
   },
@@ -64,7 +49,7 @@ const Signs = {
       "deactivate"
     ],
     command: [
-      "/tellraw @a {\n  \"text\": \"!(creation_name) has been deactivated!\",\n  \"color\": \"gold\"\n}",
+      "/tellraw @a {\"text\":\"!(creation_name) has been deactivated!\",\"color\":\"gold\"}",
       "/playsound block.piston.extend block @a ~ ~ ~ 10 1",
       "/setblock ~1 ~-2 ~2 command_block 3",
       "/fill ~2 ~4 ~1 ~-1 ~-2 ~17 stained_glass 7 replace stained_glass"
@@ -348,15 +333,23 @@ we can maintain the correct formatting state at any point in the traversal.
 function getSignData(sign_instance=false) {
   // sign_instance :: Intager 1-4
   
-  // Return error if invalid sign_instance
-  if (!([1,2,3,4].includes(sign_instance))) {
-    return console.error(`parameter 'sign_instance' must be an integer 1 - 4 (to corresponding sign)`);
-  }
+  let errorMessage = `parameter 'sign_instance' must be an integer 1 - 4 (to corresponding sign)`;
+ 
+  // Return error if 'sign_instance' is a boolean
+  if (typeof sign_instance === 'boolean') return console.error(errorMessage);
+  sign_instance = Number(sign_instance);
+
+  // Return error if 'sign_instance' is not a number
+  if (isNaN(sign_instance)) return console.error(errorMessage);
+  sign_instance = ~~sign_instance; // Convert float to integer
+
+  // Return error if 'sign_instance' is in invalid range
+  if (!(sign_instance > 0 && sign_instance < 5)) return console.error(errorMessage);
 
   saveCurrentSign();
 
   let signData = {
-    command: undefined,
+    command: Signs[sign_instance].command,
     display: []
   };
 
@@ -695,7 +688,7 @@ function makeWysiwygFuncitonal() {
       setTimeout(() => {
         while (input.scrollHeight >= 50 || input.scrollWidth > input.offsetWidth)
         {
-          del_lastChar_from_LastNode(input);
+          del_lastChar_from_lastNode(input);
         }
       }, 0);
       
