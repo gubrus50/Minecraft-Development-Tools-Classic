@@ -249,6 +249,117 @@ function setObfuscatedAnchorColor() {
 
 
 
+function hexaToMinecraftColorName(string) {
+
+  // Stripe 'color-' from 'string'
+  if (string.includes('color-')) {
+    string = string.substring(6);
+  }
+
+  // Return Minecraft color
+  switch (string.toUpperCase()) {
+    case "#AAAAAA": return "gray"
+    case "#000000": return "black"
+    case "#A90400": return "dark_red"
+    case "#0000B2": return "dark_blue"
+    case "#A900B2": return "dark_purple"
+    case "#13AAAB": return "dark_aqua"
+    case "#FEAC00": return "gold"
+    case "#14AB00": return "dark_green"
+    case "#FFFFFF": return "white"
+    case "#555555": return "dark_gray"
+    case "#FD5650": return "red"
+    case "#544CFF": return "blue"
+    case "#FD4DFF": return "light_purple"
+    case "#5BFFFF": return "aqua"
+    case "#FFFF00": return "yellow"
+    case "#5CFF00": return "green"
+    default:
+      return console.error(`Parameter string: '${string}' is not a valid minecaft color.`);
+  }
+}
+
+
+
+function constructTextNObject(inputData) {
+  let formats;
+  let inputText;
+  let TextN = '';
+
+  for (let i = 0; i < inputData.length; i++)
+  {
+    inputText = inputData[i].text;
+    inputText = JSON.stringify(inputText);
+    formats   = inputData[i].format;
+
+    // Replace format 'color-#HEXA' to Minecraft color (as name)
+    // E.g. 'color-#fd5650' -> 'red'
+    formats = formats.map(format => (format.includes('color-'))
+    ? `"color":"${hexaToMinecraftColorName(format)}"`
+    : `"${format}":true`);
+
+    formats = formats.join(',');
+    (formats.length > 0)
+    ? TextN += `,{"text":${inputText},${formats}}`
+    : TextN += `,{"text":${inputText}}`;
+  }
+
+  // If there are many textKeys
+  // Wrap input's 'text' keys to list: ["", ...textKeys]
+  // otherwise remove first comma
+  (inputData.length > 1)
+  ? TextN = '[""' + TextN + ']'
+  : TextN = TextN.slice(1);
+
+  // Return empty string or 'TextN' object
+  return (TextN.length)
+  ? JSON.parse(TextN)
+  : "";
+}
+
+
+
+function getSignDataTagObject(sign_instance) {
+
+  let display = [];
+      display = getSignData(sign_instance).display;
+
+  // Validate 'display' list's length
+  if (!(display.length > 0 && display.length <= 4)) return false;
+
+
+  let dataTagObj = {};
+
+  display.map((inputData, index) => {
+    let TextN = constructTextNObject(inputData);
+
+    // Disclude 'TextN' if it's empty
+    if (!TextN || TextN.hasOwnProperty('text')
+    &&  !TextN.text.replace(/\s/g, '').length) return;
+
+    dataTagObj['Text' + (index + 1)] = TextN;
+  });
+
+  return dataTagObj;
+}
+
+
+
+function getSignDataTag(sign_instance) {
+
+  let dataTagObj = getSignDataTagObject(sign_instance);
+  let dataTag = '';
+
+  for (const [key, value] of Object.entries(dataTagObj)) {
+    dataTag += `,${key}:`;
+    dataTag += JSON.stringify(JSON.stringify(value));
+  }
+
+  return `{${dataTag.slice(1)}}`;
+}
+
+
+
 function parseHtml(htmlString) {
 
   const textContent = [];
