@@ -321,15 +321,39 @@ function constructTextNObject(inputData) {
 
 function getSignDataTagObject(sign_instance) {
 
-  let display = [];
-      display = getSignData(sign_instance).display;
+  let signData = getSignData(sign_instance);
+  let display  = [];
+  let commands = [];
 
-  // Validate 'display' list's length
-  if (!(display.length > 0 && display.length <= 4)) return false;
+  display  = signData.display;
+  commands = signData.command;
+
+  // Validate 'display' and 'commands' list's length
+  if (!(display.length > 0 && display.length <= 4)
+  && !(commands.length > 0 && commands.length <= 4)) return false;
+
+  // Store sign's commands in minecraft's 'clickEvent' object
+  let clickEvents = commands.map(command => {
+    // Trim unnecessary spacing before and after command
+    command = command.replace(/\s+$/gm, '');
+    command = command.replace(/^\s+/g, '');
+
+    // Remove last "/" from first position
+    command = (command[0] === "/") ? command.slice(1) : command;
+
+    // Disclude command if empty
+    if (command.length === 0) return;
+
+    return {
+      action: 'run_command',
+      value: command
+    }
+  });
 
 
   let dataTagObj = {};
 
+  // Create 'TextN' object and include it in 'dataTagObj'
   display.map((inputData, index) => {
     let TextN = constructTextNObject(inputData);
 
@@ -340,6 +364,33 @@ function getSignDataTagObject(sign_instance) {
     dataTagObj['Text' + (index + 1)] = TextN;
   });
 
+
+  // Include clickEvents to 'dataTagObj'
+  clickEvents.map((clickEvent, index) => {
+    if (clickEvent === undefined) return;
+    
+    let txtIndex = 'Text' + (index + 1);
+    let TextN = dataTagObj[txtIndex];
+
+    // Return new 'TextN' with empty 'text' key
+    // to include 'clickEvent' key 
+    if (!TextN)
+    return dataTagObj[txtIndex] = {
+      clickEvent, text: ""
+    };
+
+    // If 'TextN' has text format(s), replace first array instance
+    // as object with 'clickEvent' and empty 'text' key  
+    if (dataTagObj[txtIndex].length > 1)
+    return dataTagObj[txtIndex][0] = {
+      text: "", clickEvent
+    }
+
+    // Include 'clickEvent' in 'TextN'
+    return dataTagObj[txtIndex].clickEvent = clickEvent;
+  });
+
+  
   return dataTagObj;
 }
 
