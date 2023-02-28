@@ -640,7 +640,7 @@ async function containerSetCode(code_array=[]) {
   editor.append(textarea);
 
   prismLiveRemoveSyncStylesEventListeners();
-  loadPrismLive();
+  loadPrismLive(); // Defined in ...lib/prism-live.js
   makeContainerFunctional();
 }
 

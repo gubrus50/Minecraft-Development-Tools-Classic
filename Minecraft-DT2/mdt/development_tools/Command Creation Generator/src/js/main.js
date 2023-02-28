@@ -73,6 +73,220 @@ let Global = {
 
 
 
+function getSummonContainerCommand() {
+  
+  let dataTagObject = {
+    Block: "stone",
+    Time: 1,
+    Passengers: [{
+      id: "falling_block",
+      Block: "redstone_block",
+      Time: 1,
+      Passengers: [{
+        id: "falling_block",
+        Block: "activator_rail",
+        Time: 1,
+        Passengers: [{
+          id: "commandblock_minecart",
+          Command: "gamerule commandBlockOutput false"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~1 ~-2 ~3 ~-2 ~6 ~12 stone_slab 13 hollow"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~1 ~-1 ~3 ~-2 ~5 ~12 stained_glass 0 0 stone_slab 13"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~3 ~2 wall_sign 2 0 " + getSignDataTag(1)
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~1 ~2 wall_sign 2 0 " + getSignDataTag(3)
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~3 ~2 wall_sign 2 0 " + getSignDataTag(2)
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~1 ~2 wall_sign 2 0 " + getSignDataTag(4)
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~-1 ~-1 ~4 ~ ~5 ~11 chain_command_block 3"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~-1 ~5 ~11 ~-1 ~5 ~4 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~5 ~11 chain_command_block 4"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~4 ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~ ~4 ~11 ~ ~4 ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~4 ~11 chain_command_block 5"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~3 ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~-1 ~3 ~11 ~-1 ~3 ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~3 ~11 chain_command_block 4"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~2 ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~ ~2 ~11 ~ ~2 ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~2 ~11 chain_command_block 5"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~1 ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~-1 ~1 ~11 ~-1 ~1 ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~1 ~11 chain_command_block 4"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~ ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~ ~ ~11 ~ ~ ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~ ~11 chain_command_block 5"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~-1 ~-1 ~4 chain_command_block 1"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~-1 ~-1 ~11 ~-1 ~-1 ~5 chain_command_block 2"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~-1 ~11 chain_command_block 4"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~-1 ~4 command_block 3"
+        },{
+          id: "commandblock_minecart",
+          Command: "fill ~1 ~6 ~3 ~-2 ~6 ~12 stone_slab 5"
+        },{
+          id: "commandblock_minecart",
+          Command: "setblock ~ ~-3 ~1 redstone_block"
+        },{
+          id: "commandblock_minecart",
+          Command: "kill @e[type=commandblock_minecart,r=1]"
+        }]
+      }]
+    }]
+  }
+
+  return 'summon falling_block ~ ~2 ~ ' + JSON.stringify(dataTagObject);
+}
+
+
+
+async function getImportCreationCommand() {
+
+  /* Note! minecraft's "blockdata" command in dataTagObject -> Passengers
+  /  replaces container's commandBlocks (generated from getSummonContainerCommand())
+  /  with container-editor's commandBlocks
+  */
+
+  const CON = (coordinate) => {
+    // Coordinate Or Nothing
+    return (coordinate === 0) ? '' : coordinate;
+  }
+
+  // From Minecraft's coordinates (X, Y, "Z")
+  let x = 0; 
+  let z = 4;
+  let y = -1;
+
+  // Get and validate 'commands'
+  let commands = await containerGetCompiledCommands();
+  if (!commands) return console.error(`'commands' are required! instead got: ${commands}`);
+
+  let dataTagObject = {
+    Block: "torch",
+    Time: 1, 
+    Passengers: [{
+      id: "commandblock_minecart",
+      Command: `blockdata ~${CON(x)} ~${CON(y)} ~${CON(z)} ` + JSON.stringify({
+        auto: 1,
+        Command: commands[0]
+      })
+    }]
+  }
+
+  let direction = "south";
+  let directionChangeCount = 0;
+
+  // Include commands to dataTagObject's key's 'Passengers'
+  commands.map((command, index) => {
+    if (index === 0) return;
+
+    // Increment / Decrement 'z' coordinate
+    (direction == "south") ? z++ : z--;
+
+    // Import 'command' to container's commandBlock
+    dataTagObject.Passengers.push({
+      id: "commandblock_minecart",
+      Command: `blockdata ~${CON(x)} ~${CON(y)} ~${CON(z)} ` + JSON.stringify({
+        auto: 1,
+        Command: command
+      })
+    });
+
+    // Change 'direction' and Increment 'z' coordinate
+    // Also, change 'x' coordinate to -1 or 0
+    if (z === 11 && direction == "south") {
+      directionChangeCount++;
+      direction = "north";
+      z++;
+
+      (x === 0) ? x-- : x++;
+    }
+    // Change 'direction' and Decrement 'z' coordinate
+    else if (z === 4 && direction == "north") {
+      directionChangeCount++;
+      direction = "south";
+      z--;
+    }
+
+    // Increment 'y' coordinate and reset 'directionChangeCount'
+    if (directionChangeCount === 2) {
+      directionChangeCount = 0;
+      y++;
+    }
+
+  });
+
+  // Include commands that will remove:
+  //  - creation's summoning commandBlocks,
+  //  - and their generated structure
+
+  commands = [
+    "setblock ~ ~ ~1 command_block 0 0 {Command:\"fill ~ ~-4 ~-1 ~ ~ ~ air\"}",
+	  "setblock ~ ~-1 ~1 redstone_block",
+	  "kill @e[type=commandblock_minecart,r=2]"
+  ]
+
+  commands.map(command => dataTagObject.Passengers.push({
+    id: "commandblock_minecart",
+    Command: command
+  }));
+
+  return `summon falling_block ~ ~2 ~ ` + JSON.stringify(dataTagObject);
+}
+
+
 function hidePopups() {
   let popup = document.querySelector('.popup');
       popup.classList.add('hide');
