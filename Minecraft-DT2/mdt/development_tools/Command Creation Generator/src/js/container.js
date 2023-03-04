@@ -148,6 +148,7 @@ async function containerWrapTextNodesWithSpan() {
 
 async function containerGetCompiledCommands() {
 
+  if (Global.isOnLoading) return false;
   let timeMultiplier = 0.75; //0.75
 
   const replaceTokens = async (token, innerText) =>
@@ -224,6 +225,8 @@ async function containerGetCompiledCommands() {
   displayEditor('container');
 
   // Show .loading
+  Global.isOnLoading = true;
+
   let loading = document.querySelector('div.loadingScreen');
       loading.style.removeProperty('display');
       loading.classList.remove('hide');
@@ -267,8 +270,9 @@ async function containerGetCompiledCommands() {
   // Show striped-form-unnecessary-spaces code
 
   
-  // Get code's content without unnecessary spacing
-  let codeString = await code.innerText.replace(/\s+/g, ' ');
+  // Get code's content without zero-width-space and unnecessary spacing
+  let codeString = await code.innerText.replace(/[\u200B-\u200D\uFEFF]/g, '');
+      codeString = await codeString.replace(/\s+/g, ' ');
       codeString = await codeString.split('>>>/');
       await codeString.shift();
 
@@ -289,7 +293,7 @@ async function containerGetCompiledCommands() {
   // Stage: 3 ---------------------------- //
   // Validate and Compress existing closed-punctuations '[...]' and '{...}'
 
-  timeMultiplier = 0.1 // 0.1
+  timeMultiplier = 0 // 0
 
   let data;
   let newCode = "";
@@ -366,6 +370,8 @@ async function containerGetCompiledCommands() {
     await sleep(1000 * timeMultiplier);
     loading.style.display = 'none';
     textarea.removeAttribute('disabled');
+
+    Global.isOnLoading = false;
 
     // Scroll code display to .error token
     let tokenY = opened_bracket.getBoundingClientRect().y;
@@ -589,6 +595,7 @@ async function containerGetCompiledCommands() {
   loading.style.display = 'none';
   textarea.removeAttribute('disabled');
 
+  Global.isOnLoading = false;
 
   newCode = newCode.split('\n');
   newCode = await Promise.all(newCode.map(command => {
@@ -699,111 +706,216 @@ function makeContainerFunctional() {
 
 
 containerSetCode([
-`// SAMPLE FOR TESTING PURPOSES ONLY!
+`// Creation Example
 
 /* Project name = MyAuto, Project ID = 14CC
-  sDF = Scoreboard for car entities. Used to identify unique-existing cars.
+  sCE = Scoreboard for car entities. Used to identify unique-existing cars.
   sCD = Scoreboard car driving. Used to check if car is moving.
-  e01 = Entity Car. Used to identify existing cars.
-  e02 = Entity Squid. Used to summon entity car (e01).
+  eC0 = Entity Car. Used to identify existing cars.
+  eS0 = Entity Squid. Used to summon entity car (eC0).
 */
 
->>>/gamerule commandBlockOutput false
+>>>//* Repeating command block's input is replaced by the container's third and fourth sign.
+   Therefore, it doesn't need to be defined because otherwise it will waste precious space. */
 
-// Summon Car Entity (e01)
->>>/execute @e[type=squid,name=MyAuto14CCe02] ~ ~ ~ summon minecart ~ ~ ~
+// Summon Car Entity (eC0)
+>>>/execute @e[type=squid,name=MyAuto14CCeS0] ~ ~ ~ summon minecart ~ ~ ~
 {
-  CustomName: "MyAuto14CCe01",
+  CustomName: "MyAuto14CCeC0",
   NoGravity: 1b,
   CustomDisplayTile: 1,
   DisplayTile: "minecraft:stone_slab",
   DisplayOffset: 2
 }
 
-// Kill Entity (e02)
->>>/kill @e[type=squid,name=MyAuto14CCe02]
+// Kill Entity (eS0)
+>>>/kill @e[type=squid,name=MyAuto14CCeS0]
+
+
 
 // Create scoreboards
->>>/scoreboard objectives add MyAuto14CCsDF dummy
+>>>/scoreboard objectives add MyAuto14CCsCE dummy
 >>>/scoreboard objectives add MyAuto14CCsCD dummy
 
-// Remove entities from scoreboards if they exceede value 1
->>>/scoreboard players set @e[score_MyAuto14CCsDF_min=2] MyAuto14CCsDF 0
->>>/scoreboard players reset @a MyAuto14CCsCD
+// Remove entities from scoreboards if they exceed value 5
+>>>/scoreboard players set @e[score_MyAuto14CCsCE_min=5] MyAuto14CCsCE 0
+>>>/scoreboard players reset @e[score_MyAuto14CCsCD_min=1] MyAuto14CCsCD
 
 // Add entities to scoreboards
->>>/scoreboard players add @e[type=minecart,name=MyAuto14CCe01] MyAuto14CCsDF 1
->>>/execute @e[type=minecart,name=MyAuto14CCe01] ~ ~ ~
-    execute @p[r=1] ~ ~ ~
+>>>/scoreboard players add @e[type=minecart,name=MyAuto14CCeC0] MyAuto14CCsCE 1
+
+
+
+// Set player in scoreboard (sCD - Car Driving):
+
+// with value 1, when they select slot 0 
+>>>/execute @e[type=minecart,name=MyAuto14CCeC0] ~ ~ ~
     scoreboard players set @p[r=1] MyAuto14CCsCD 1 {SelectedItemSlot:0}
 
-// Construct Car Entity
->>>/execute @e[score_MyAuto14CCsDF_min=1,score_MyAuto14CCsDF=1] ~ ~ ~
+// with value 2, when they select slot 1 
+>>>/execute @e[type=minecart,name=MyAuto14CCeC0] ~ ~ ~
+scoreboard players set @p[r=1] MyAuto14CCsCD 2 {SelectedItemSlot:1}
+
+// with value 3, when they select slot 2 
+>>>/execute @e[type=minecart,name=MyAuto14CCeC0] ~ ~ ~
+scoreboard players set @p[r=1] MyAuto14CCsCD 3 {SelectedItemSlot:2}
+
+
+
+// Play engine sound
+>>>/execute @e[score_MyAuto14CCsCE_min=1,score_MyAuto14CCsCE=1] ~ ~ ~
 playsound minecraft:entity.cat.purr hostile @a[r=10] ~ ~ ~ 1 0.2 1
-    
->>>/execute @e[score_MyAuto14CCsDF_min=1,score_MyAuto14CCsDF=1] ~ ~ ~
+
+>>>/execute @e[score_MyAuto14CCsCE_min=1,score_MyAuto14CCsCE=1] ~ ~ ~
 playsound minecraft:ui.toast.in ambient @a[r=10] ~ ~ ~ 0 0.2 0
 
-// Move Car North West
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=135,ry=158] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say North West
-    
-// Move Car North
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=158,ry=180] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~-1
-   
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-158,rym=-180] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~-1
-   
-// Move Car North East
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-135,rym=-158] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say North East
 
-// Move Car East North
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-113,rym=-135] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say East North
-   
-// Move Car East
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-68,rym=-113] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say East
-   
-// Move Car East South
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-45,rym=-68] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say East South
 
-// Move Car South East
->>>/execute @e[score_MyAuto14CCsCD_min=1,ry=-23,rym=-45] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say South East
-   
-// Move Car South
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=-23,ry=23] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say South
+/* Car Movement Functionality, notes:
 
-// Move Car West
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=23,ry=45] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say South West
+0. 1 >= sCD <= 3, where sCD is changed by user's slot: 0, 1, 2
+1. 1 >= sCE <= 5
 
-// Move Car West South
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=45,ry=68] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say West South
-   
-// Move Car West
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=68,ry=113] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say West
-   
-// Move Car West North
->>>/execute @e[score_MyAuto14CCsCD_min=1,rym=113,ry=135] ~ ~ ~
-tp @e[type=minecart,name=MyAuto14CCe01,r=1] ~ ~ ~
-say West North
-   `
-]);
+2. sCE_min = 4, is speed: FAST
+3. sCE_min = 5, is speed: NORMAL
+4. sCE_min = 1, is speed: SLOW
+
+*/
+
+// Move Car North --------------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,rym=158,ry=180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~ ~ ~-1
+
+>>>/execute @e[score_MyAuto14CCsCD=1,ry=-158,rym=-180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~ ~ ~-1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,rym=158,ry=180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~ ~ ~-1
+
+>>>/execute @e[score_MyAuto14CCsCD=2,ry=-158,rym=-180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~ ~ ~-1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,rym=158,ry=180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~ ~ ~-1
+
+>>>/execute @e[score_MyAuto14CCsCD=3,ry=-158,rym=-180] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~ ~ ~-1
+
+
+
+
+// Move Car North East ---------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,ry=-113,rym=-158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~1 ~ ~-1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,ry=-113,rym=-158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~1 ~ ~-1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,ry=-113,rym=-158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~1 ~ ~-1
+
+
+
+// Move Car East ---------------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,ry=-68,rym=-113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~1 ~ ~
+
+// Speed - Normal
+​>>>/execute @e[score_MyAuto14CCsCD=2,ry=-68,rym=-113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~1 ~ ~
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,ry=-68,rym=-113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~1 ~ ~
+
+
+
+
+// Move Car South East ---------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,ry=-23,rym=-68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~1 ~ ~1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,ry=-23,rym=-68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~1 ~ ~1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,ry=-23,rym=-68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~1 ~ ~1
+
+
+
+// Move Car South --------------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,rym=-23,ry=23] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~ ~ ~1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,rym=-23,ry=23] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~ ~ ~1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,rym=-23,ry=23] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~ ~ ~1
+
+
+// Move Car South West ---------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,rym=23,ry=68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~-1 ~ ~1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,rym=23,ry=68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~-1 ~ ~1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,rym=23,ry=68] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~-1 ~ ~1
+
+
+
+// Move Car West ---------------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,rym=68,ry=113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~-1 ~ ~
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,rym=68,ry=113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~-1 ~ ~
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,rym=68,ry=113] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~-1 ~ ~
+
+
+
+// Move Car North West ---------------------------------------
+
+// Speed - Fast
+>>>/execute @e[score_MyAuto14CCsCD=1,rym=113,ry=158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=4,r=1] ~-1 ~ ~-1
+
+// Speed - Normal
+>>>/execute @e[score_MyAuto14CCsCD=2,rym=113,ry=158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE_min=5,r=1] ~-1 ~ ~-1
+
+// Speed - Slow
+>>>/execute @e[score_MyAuto14CCsCD=3,rym=113,ry=158] ~ ~ ~
+tp @e[score_MyAuto14CCsCE=1,r=1] ~-1 ~ ~-1
+
+`]);

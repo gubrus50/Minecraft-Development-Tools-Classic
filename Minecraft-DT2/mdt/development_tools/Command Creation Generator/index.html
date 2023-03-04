@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<img id="cover" src="./src/img/bg3.png" alt="bg3.png">
+<img id="cover" src="./src/img/bg2.png" alt="bg3.png">
 <div class="loadingScreen">
   <span class="loading"></span>
 </div>
@@ -24,7 +24,7 @@
       <button class="exit"><i></i></button>
       <p class="title">Container settings</p>
       <p><warn>Warning!</warn> Your progress will not be saved after confirming this action. Are you sure you want to generate the creation?
-        <button class="submit" onclick="containerGetCompiledCommands(); this.setAttribute('disabled', true); hidePopups();">Confirm</button>
+        <button class="submit">Confirm</button>
       </p>
       <hr>
       <div class="settings">
@@ -36,11 +36,15 @@
   </div>
   <div class="info" style="display: none">
     <img src="./src/img/avatar.png" alt="avatar.png" draggable="false">
-    <div class="board image">
+    <div class="board">
       <button class="exit"><i></i></button>
       <p class="title">Important note</p>
       <p><warn>Warning!</warn> Remember to occasionally save your creation as your progress <strong>IS NOT</strong> saved automatically.</p>
-      <p><strong>SIGN EDITOR</strong> includes variables <u style="white-space: nowrap; color: #0000B2">$creation_name</u> and <u style="white-space: nowrap; color: #0000B2">$programmer</u>, be mindful of how you use them because your input changes are applied for <u style="white-space: nowrap; color: #A900B2">!(creation_name)</u> and <u style="white-space: nowrap; color: #A900B2">!(creation_programmer)</u></p>
+      <hr>
+      <p><strong>SIGN EDITOR</strong> includes variables <u style="white-space: nowrap; color: #0000B2">[CmdVersion]</u>, <u style="white-space: nowrap; color: #0000B2">creation_name</u> and <u style="white-space: nowrap; color: #0000B2">programmer</u>. Be mindful of how you use them because your input changes are applied for <u style="white-space: nowrap; color: #A900B2">!(creation_version)</u>, <u style="white-space: nowrap; color: #A900B2">!(creation_name)</u> and <u style="white-space: nowrap; color: #A900B2">!(creation_programmer)</u>.</p>
+      <hr>
+      <p>Variables accept: <warn style="color: #158901">. _ - 0-9 A-z</warn>. Empty variables, and variables with illegal characters, are replaced with a <warn style="color: #ce0000">null</warn> value.</p>
+      <hr>
       <p>At last, ensure that your code is valid in Minecraft's syntax, only <strong>CONTAINER EDITOR</strong> is dynamically typed.</p>
     </div>
   </div>

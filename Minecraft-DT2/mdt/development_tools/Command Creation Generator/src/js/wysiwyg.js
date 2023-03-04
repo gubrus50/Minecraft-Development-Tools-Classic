@@ -2,9 +2,9 @@ const Signs = {
   1 : {
     display: [
       "[Cmd1.12.X]",
-      "<font color=\"#0000b2\">$</font><font color=\"#5bffff\">creation_name</font>",
+      "creation_name",
       "by",
-      "<font color=\"#0000b2\">$</font><font color=\"#5bffff\">programmer</font>"
+      "programmer"
     ],
     command: [
       "/particle largeexplode ~ ~1 ~8 1.2 2.0 1.2 3 9",
@@ -334,13 +334,10 @@ function getSignDataTagObject(sign_instance) {
 
   // Store sign's commands in minecraft's 'clickEvent' object
   let clickEvents = commands.map(command => {
-    // Trim unnecessary spacing before and after command
-    command = command.replace(/\s+$/gm, '');
-    command = command.replace(/^\s+/g, '');
 
+    command = trimExternalSpacing(command);
     // Remove last "/" from first position
     command = (command[0] === "/") ? command.slice(1) : command;
-
     // Disclude command if empty
     if (command.length === 0) return;
 
@@ -406,6 +403,8 @@ function getSignDataTag(sign_instance) {
     dataTag += JSON.stringify(JSON.stringify(value));
   }
 
+  // Remove zero-width-space, and a comma from the starting position
+  dataTag = dataTag.replace(/[\u200B-\u200D\uFEFF]/g, '');
   return `{${dataTag.slice(1)}}`;
 }
 

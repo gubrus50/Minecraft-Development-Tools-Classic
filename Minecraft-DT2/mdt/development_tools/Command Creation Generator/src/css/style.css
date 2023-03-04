@@ -508,29 +508,6 @@ div.popup .settings input {
 }
 
 
-div.popup .board.image {
-  --padding: 1.5vmin;
-  padding: 0;
-  background-image: url('../img/bg2.png');
-  background-repeat: no-repeat;
-  background-position-x: var(--padding);
-  background-position-y: var(--padding);
-  background-size: calc(100% - var(--padding) * 2) calc(100% - var(--padding) * 2);
-}
-div.popup .board.image button.exit {
-  left: 0.5vmin;
-}
-div.popup .board.image p {
-  padding: 0 1.5vmin;
-  background-color: #c7c7c7;
-}
-div.popup .board.image p:last-child {
-  padding-bottom: 1.5vmin;
-}
-div.popup .board.image p:not(p:first-of-type) {
-  padding-bottom: 3vmin;
-}
-
 
 .zoomContainer {
   display: flex;
@@ -613,7 +590,7 @@ div.popup .board.image p:not(p:first-of-type) {
   border-radius: 2px;
   transform: rotate(-90deg);
   transition: 1s background-position-x, 1s transform;
-  z-index: 1;
+  z-index: 0;
 }
 
 #commands > .menu button:hover {
