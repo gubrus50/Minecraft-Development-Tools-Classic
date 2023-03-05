@@ -478,7 +478,7 @@ async function generateAndSaveCreation(fileName=false) {
           </ul>
         </li>
         <br>
-        <li>Copy the <strong>Include Commands</strong> command and insert it into  the top command block.</li>
+        <li>Copy the <strong>Import Commands</strong> command and insert it into  the top command block.</li>
         <li>Once commands are included in both of the command blocks, open the bottom command block and set it to <strong>Always Active</strong>.</li>
       </ol>
       <script type="text/javascript">${script}</script>
