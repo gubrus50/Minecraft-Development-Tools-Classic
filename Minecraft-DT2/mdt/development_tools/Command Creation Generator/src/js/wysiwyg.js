@@ -62,6 +62,34 @@ let CurrentCommand = 1;
 
 
 
+function wysiwygSetSigns(newSigns) {
+
+  for (let [key] of Object.entries(newSigns)) {
+    try {
+      // Validate 'newSigns' object's command and display key's length
+      if (!(newSigns[key].command.length == 4)) {
+        throw `'newSigns.command' has invalid length. (4 instances expected)\n ${newSigns.command}`;
+      }
+      if (!(newSigns[key].display.length == 4)) {
+        throw `'newSigns.display' has invalid length. (4 instances expected)\n ${newSigns.display}`;
+      }
+
+      // Try to initialize 'newSigns' respectively to 'Signs'
+      Signs[key].command = newSigns[key].command;
+      Signs[key].display = newSigns[key].display;
+    }
+    catch (err) {
+      return console.error(err);
+    }
+  }
+
+  displayCommand(CurrentSign, false, CurrentCommand);
+  displaySign(CurrentSign, false);
+  return true;
+}
+
+
+
 function saveCurrentSign() {
 
   let sign        = document.querySelector('#wysiwyg .sign');

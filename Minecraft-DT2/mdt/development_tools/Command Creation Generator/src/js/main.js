@@ -496,6 +496,65 @@ async function generateAndSaveCreation(fileName=false) {
 
 
 
+async function saveProject(fileName=false) {
+
+  if (Global.isOnLoading) return false;
+
+  let Code;
+  saveCurrentSign();
+  setCreationVariables();
+  await containerGetCode().then(resolve => Code = resolve);
+
+  // Define 'fileName' as creation name if false
+  if (!fileName) fileName = Global.creationVariables.name;
+
+  let projectDataObject = JSON.stringify({ Signs, Code });
+  let blob = new Blob([projectDataObject], { type: 'application/json' });
+
+  let anchor = document.createElement('a');
+      anchor.href = URL.createObjectURL(blob);
+      anchor.download = fileName + '.json';
+      anchor.click();
+}
+
+
+
+function openProject() {
+
+  // Source : https://www.w3docs.com/learn-javascript/file-and-filereader.html
+  // Access : 05/03/2023
+  const readFile = (input) => {
+    let file = input.files[0]; 
+    let fileReader = new FileReader(); 
+
+    fileReader.readAsText(file); 
+    fileReader.onload = () => {
+      try {
+        // Parse result and import container editor's code, and all signs
+        let projectDataObject = JSON.parse(fileReader.result);
+        containerSetCode(projectDataObject.Code);
+        wysiwygSetSigns(projectDataObject.Signs); 
+      }
+      // Log error
+      catch(err) {
+        console.error(err);
+      }
+    }; 
+    // Log error
+    fileReader.onerror = () => {
+      console.error(fileReader.error);
+    }; 
+  }
+
+  // Get file from user and readFile()
+  let input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.onchange = () => { readFile(input) };
+      input.click();
+}
+
+
+
 function hidePopups() {
   
   if (Global.isOnPopupAnimation) return false;
