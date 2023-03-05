@@ -24,7 +24,7 @@ const Signs = {
       "/particle instantSpell ~ ~ ~ 0.2 0.2 0.2 9 9",
       "/playsound minecraft:entity.player.levelup player @a ~ ~ ~",
       "/tellraw @a {\"text\":\"Instruction...\",\"color\":\"aqua\"}",
-      `/give @p written_book 1 0 {pages:["[\\"\\",{\\"text\\":\\"[Instruction]\\\\n\\\\n\\",\\"color\\":\\"aqua\\",\\"bold\\":true},{\\"text\\":\\"- Item recipes:\\",\\"color\\":\\"black\\",\\"bold\\":false}"],title:Book,author:!(creation_programmer)}`
+      '/give @p written_book 1 0 {pages:["[\\"\\",{\\"text\\":\\"MyAuto\\",\\"bold\\":true,\\"color\\":\\"gold\\"},{\\"text\\":\\"14CC\\",\\"bold\\":true,\\"color\\":\\"blue\\"},{\\"text\\":\\"\\\\n\\",\\"color\\":\\"reset\\"},{\\"text\\":\\"Guide Book\\",\\"bold\\":true,\\"color\\":\\"black\\"},{\\"text\\":\\"\\\\n\\\\n\\",\\"color\\":\\"reset\\"},{\\"text\\":\\"Resources:\\",\\"bold\\":true},{\\"text\\":\\"\\\\n\\\\n* \\",\\"color\\":\\"reset\\"},{\\"text\\":\\"1x \\\\\\"MyAuto: Car\\\\\\"\\",\\"color\\":\\"blue\\",\\"clickEvent\\":{\\"action\\":\\"run_command\\",\\"value\\":\\"/give @p spawn_egg 1 0 {HideFlags:33,display:{Name:\\\\\\"MyAuto: Car\\\\\\"},ench:[{id:35,lvl:0}],EntityTag:{id:\\\\\\"squid\\\\\\",CustomName:\\\\\\"MyAuto14CCeS0\\\\\\",NoGravity:1b,DeathLootTable:\\\\\\"empty\\\\\\",NoAI:1,Silent:1,ActiveEffects:[{Id:14,Amplifier:0,Duration:2147483647}]}}\\"}}]","[\\"\\",{\\"text\\":\\"How to get the car?\\",\\"bold\\":true},{\\"text\\":\\"\\\\n\\\\n1. Press the left mouse button on the \\\\\\"MyAuto: Car\\\\\\" \\",\\"color\\":\\"reset\\"},{\\"text\\":\\"resource\\",\\"underlined\\":true},{\\"text\\":\\" to get a car spawn egg.\\\\n\\\\n2. Summon your car using the \\\\\\"MyAuto: Car\\\\\\" spawn egg.\\",\\"color\\":\\"reset\\"}]","[\\"\\",{\\"text\\":\\"How to use the car?\\",\\"bold\\":true},{\\"text\\":\\"\\\\n\\\\n1. Sit in the car using the right mouse button.\\\\n\\\\n2. To exit the car, press the left shift button.\\\\n\\\\n3. While sitting in the car, select \\\\\\"slot 0\\\\\\" or press number 1 on your keyboard to start driving.\\",\\"color\\":\\"reset\\"}]","{\\"text\\":\\"4. Look horizontally at the desired destination as you drive.\\"}","[\\"\\",{\\"text\\":\\"How to remove the command creation?\\",\\"bold\\":true},{\\"text\\":\\"\\\\n\\\\nOnce decided to remove the command creation, press the top left sign using the right mouse button.\\",\\"color\\":\\"reset\\"}]"],title:"MyAuto14CC Guide Book",author:McRaZick}'
     ]
   },
   3 : {
@@ -286,22 +286,22 @@ function hexaToMinecraftColorName(string) {
 
   // Return Minecraft color
   switch (string.toUpperCase()) {
-    case "#AAAAAA": return "gray"
+    case "#787878": return "gray"
     case "#000000": return "black"
-    case "#A90400": return "dark_red"
-    case "#0000B2": return "dark_blue"
-    case "#A900B2": return "dark_purple"
-    case "#13AAAB": return "dark_aqua"
-    case "#FEAC00": return "gold"
-    case "#14AB00": return "dark_green"
-    case "#FFFFFF": return "white"
-    case "#555555": return "dark_gray"
-    case "#FD5650": return "red"
-    case "#544CFF": return "blue"
-    case "#FD4DFF": return "light_purple"
-    case "#5BFFFF": return "aqua"
-    case "#FFFF00": return "yellow"
-    case "#5CFF00": return "green"
+    case "#780000": return "dark_red"
+    case "#000078": return "dark_blue"
+    case "#780078": return "dark_purple"
+    case "#007878": return "dark_aqua"
+    case "#B77800": return "gold"
+    case "#007800": return "dark_green"
+    case "#B7B7B7": return "white"
+    case "#3E3E3E": return "dark_gray"
+    case "#B73E3E": return "red"
+    case "#3E3EB7": return "blue"
+    case "#B73EB7": return "light_purple"
+    case "#3EB7B7": return "aqua"
+    case "#B7B73E": return "yellow"
+    case "#3EB73E": return "green"
     default:
       return console.error(`Parameter string: '${string}' is not a valid minecaft color.`);
   }
@@ -463,9 +463,9 @@ function parseHtml(htmlString) {
 
     if (tag === 'STRIKE') newFormat.push('strikethrough');
     else if (tag === 'I') newFormat.push('italic');
-    else if (tag === 'U') newFormat.push('underline');
+    else if (tag === 'U') newFormat.push('underlined');
     else if (tag === 'B') newFormat.push('bold');
-    else if (tag === 'A') newFormat.push('obfuscate');
+    else if (tag === 'A') newFormat.push('obfuscated');
     else if (tag === 'FONT')
     {
       const color = node.getAttribute('color');
@@ -581,7 +581,7 @@ async function correctWysiwygFormat() {
         innerHTML += "<i>";
         closingTags.push("</i>");
       }
-      if (format === 'underline') {
+      if (format === 'underlined') {
         innerHTML += "<u>";
         closingTags.push("</u>");
       }
@@ -593,7 +593,7 @@ async function correctWysiwygFormat() {
         includesFont = true;
         color = format.substring(6);
       }
-      if (format === 'obfuscate') {
+      if (format === 'obfuscated') {
         includesObfuscate = true;
       }
     });

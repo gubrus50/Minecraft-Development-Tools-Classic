@@ -142,15 +142,13 @@ async function setContainerSettings() {
 
   // Get container setting's input value without zero-width-space and unnecessary spacing
   let settingsElement = document.querySelector('.popup > .container .settings');
-  let index = -1;
 
-  for (let [key, value] of Object.entries(Global.containerSettings)) {
-    index++;
+  for (let [key] of Object.entries(Global.containerSettings)) {
 
     // Get container setting's N input's value,
     // remove unnecessary spacing, and
     // remove zero-width-space
-    let input = settingsElement.querySelectorAll('input')[index];
+    let input = settingsElement.querySelector(`input[name="${key}"]`);
         value = trimExternalSpacing(input.value);
         value = value.replace(/[\u200B-\u200D\uFEFF]/g, '');
 
@@ -229,9 +227,9 @@ function getSummonContainerCommand() {
     // Disable logs output in the chat
     'gamerule commandBlockOutput false',
     // Create container
-    `fill ~1 ~-2 ~3 ~-2 ~6 ~12 ${Global.containerSettings.base} hollow`,
-    `fill ~1 ~-1 ~3 ~-2 ~5 ~12 ${Global.containerSettings.wall} 0`,
-    `fill ~1 ~6 ~3 ~-2 ~6 ~12 ${Global.containerSettings.ceiling} 5`,
+    `fill ~1 ~-1 ~3 ~-2 ~5 ~12 ${Global.containerSettings.wall}`, // Must be first, otherwise signs will not be displayed
+    `fill ~1 ~-2 ~3 ~-2 ~-2 ~12 ${Global.containerSettings.base}`,
+    `fill ~1 ~6 ~3 ~-2 ~6 ~12 ${Global.containerSettings.ceiling}`,
     // Apply signs on container
     'setblock ~ ~3 ~2 wall_sign 2 0 '   + getSignDataTag(1),
     'setblock ~-1 ~3 ~2 wall_sign 2 0 ' + getSignDataTag(2),
@@ -354,16 +352,15 @@ async function generateAndSaveCreation(fileName=false) {
   let creationProgrammer = Global.creationVariables.programmer;
   
   if (!fileName) fileName = creationName;
-
   let command_importCreation = await getImportCreationCommand();
-      command_importCreation = command_importCreation.replace('!(creation_name)',       creationName);
-      command_importCreation = command_importCreation.replace('!(creation_version)',    creationVersion);
-      command_importCreation = command_importCreation.replace('!(creation_programmer)', creationProgrammer);
+      command_importCreation = command_importCreation.replaceAll('!(creation_name)',       creationName);
+      command_importCreation = command_importCreation.replaceAll('!(creation_version)',    creationVersion);
+      command_importCreation = command_importCreation.replaceAll('!(creation_programmer)', creationProgrammer);
 
   let command_summonContainer = getSummonContainerCommand();
-      command_summonContainer = command_summonContainer.replace('!(creation_name)',       creationName);
-      command_summonContainer = command_summonContainer.replace('!(creation_version)',    creationVersion);
-      command_summonContainer = command_summonContainer.replace('!(creation_programmer)', creationProgrammer);
+      command_summonContainer = command_summonContainer.replaceAll('!(creation_name)',       creationName);
+      command_summonContainer = command_summonContainer.replaceAll('!(creation_version)',    creationVersion);
+      command_summonContainer = command_summonContainer.replaceAll('!(creation_programmer)', creationProgrammer);
 
   // Return error if required commands are false or undefined
   if (!command_importCreation || !command_summonContainer) {
