@@ -521,6 +521,8 @@ async function saveProject(fileName=false) {
 
 function openProject() {
 
+  if (Global.isOnLoading) return false;
+
   // Source : https://www.w3docs.com/learn-javascript/file-and-filereader.html
   // Access : 05/03/2023
   const readFile = (input) => {
