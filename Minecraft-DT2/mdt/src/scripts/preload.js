@@ -29,7 +29,7 @@ const capitalize = (string) => {
 }
 
 
-const getAndRemoveFotoersMenu = async () => {
+const removeFootersMenu = async () => {
 
   let parser = new DOMParser();
 
@@ -37,7 +37,6 @@ const getAndRemoveFotoersMenu = async () => {
   let buttons = [...document.querySelectorAll('footer > div')].splice(1);
   buttons.map(btn => btn.remove());
 
-  return buttons; // Removed buttons
 } 
 
 
@@ -53,7 +52,7 @@ const importDevToolsMenu = async (dtMenuData) => {
     frag.appendChild(item);
   });
 
-  await document.querySelector('footer').append(frag);
+  document.querySelector('footer').append(frag);
 }
 
 
@@ -155,7 +154,7 @@ const launchDevTool = async (args) => {
 
 
   // Hide navigation bar & footer's menu
-  let removedButtons = await getAndRemoveFotoersMenu();
+  removeFootersMenu();
   displayNavigationBar(false);
   importDevToolsMenu(args.dtMenuData);
 
@@ -176,23 +175,15 @@ const launchDevTool = async (args) => {
 
     winTitle.innerHTML = 'Minecraft-DT2';
     displayNavigationBar();
-    getAndRemoveFotoersMenu();
+    removeFootersMenu();
 
-    // Include original footer's buttons
-    let frag = document.createDocumentFragment();
-  
-    removedButtons.forEach(item => {
-      frag.appendChild(item);
-    });
-
-    // Appen original foote's buttons
-    // and hide <help-tag>
-    document.querySelector('footer').append(frag);
+    // Include original footer's buttons and hide <help-tag>
+    importDevToolsMenu(args.appMenuData);
     document.querySelector('help-tag').classList.add('hide');
 
   }, { once: true });
   
-  // ---- YOU NEEEEEEEED TO SPLIT THIS IN TO A SEPARATE FUNCTION!!!!! ----- //
+  // ---- YOU NEEEEEEEED TO SPLIT THIS INTO A SEPARATE FUNCTION!!!!! ----- //
 }
 
 
@@ -207,17 +198,16 @@ ipcRenderer.on('importDevTool', (event, args) => {
 
   // Create development tool's onClick event
   let ifrBody = document.querySelector('main-display #iframeBody');
-  let ifrFooter = document.querySelector('main-display #iframeFooter');
-  let buttonLaunch = document.querySelector('.buttonLaunch > button'); 
+  let ifrFooter = document.querySelector('main-display #iframeFooter'); 
 
+  const launchButtonEventFunction = () => { launchDevTool(args) };
   const updateFootersButtonLaunch = () =>
   {
     // Set launch button's onClick event so
     // that it can start Development Tool in <main-display>
-
-    buttonLaunch.addEventListener('click', () => {
-      launchDevTool(args);
-    }, { once: true });
+    let buttonLaunch = document.querySelector('.buttonLaunch > button');
+        buttonLaunch.removeEventListener('click', launchButtonEventFunction);
+        buttonLaunch.addEventListener('click', launchButtonEventFunction, { once: true });
   }
 
   const updateMainDisplayIframes = () =>
@@ -228,9 +218,6 @@ ipcRenderer.on('importDevTool', (event, args) => {
     ifrBody.removeAttribute('data-isDevTool');
     ifrBody.setAttribute('src', args.__devTool + '/' + args.dtConfig.body_page);
     ifrFooter.setAttribute('src', args.__devTool + '/' + args.dtConfig.footer_page);
-
-    const updateIframeBodyTags   = () => setIframesDevToolsTags(ifrBody, args.dtConfig);
-    const updateIframeFooterTags = () => setIframesDevToolsTags(ifrFooter, args.dtConfig);
 
     ifrBody.addEventListener('load', () => {
       setIframesDevToolsTags(ifrBody, args.dtConfig);

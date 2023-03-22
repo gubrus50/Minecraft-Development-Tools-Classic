@@ -9,7 +9,8 @@ const path = require('path');
 const fs   = require('fs');
 const { resolve } = require('path');
 const { DefaultDeserializer } = require('v8');
-const __devTools = './development_tools';
+const __devTools  = './development_tools';
+
 
 let appWindow;
 const createWindow = () => {
@@ -128,13 +129,15 @@ const importDevTools = async () => {
           let __dtMenu = __devTool + '/' + dtConfig.menu;
           console.log(__dtMenu);
 
-          let dtMenuData = await fs.promises.readFile(__dtMenu, 'utf8');
+          const dtMenuData  = await fs.promises.readFile(__dtMenu, 'utf8');
+          const appMenuData = await fs.promises.readFile('./menu.html', 'utf8');
 
           // Build and append development tool component
           appWindow.webContents.send('importDevTool', {
-            __devTool: __devTool,
-            dtConfig: dtConfig,
-            dtMenuData: dtMenuData,
+            __devTool,
+            dtConfig,
+            dtMenuData,
+            appMenuData,
           });
         }
       });

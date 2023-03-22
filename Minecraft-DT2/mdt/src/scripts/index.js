@@ -180,6 +180,11 @@ window.onload = async () => {
 
     let ifrFooter = document.querySelector('main-display #iframeFooter');
     ifrFooter.setAttribute('src', ifrFooterSrc);
+
+    // Remove launch button's onClickEvent(s)
+    let buttonLaunch = document.querySelector('.buttonLaunch > button');
+        buttonLaunchClone = buttonLaunch.cloneNode(true);
+        buttonLaunch.parentNode.replaceChild(buttonLaunchClone, buttonLaunch);
   });
 
   // Initialize Navigation-bar's buttons
