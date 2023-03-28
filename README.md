@@ -13,8 +13,10 @@ Minecraft-DT is a simple launcher for special development tools. Development too
   <li>A new window should appear on your screen.</li>
   <li>What you need to do next is to simply drag and drop your tool into this window.</li>
   <li>The last thing you need to do is to restart the application.</li>
+</ul>
 
-  ## HOW TO CREATE MY OWN TOOL?
+## HOW TO CREATE MY OWN TOOL?
+<ul>
   <li>To create your own tool, you must learn the following programming languages; HTML-HTA and JavaScript-jQuery.</li>
   <li>Now you need a template for your tool which is located in your tools inventory.</li>
   <li>To access the inventory, go to main screen of Minecraft-DT and press "My Tools" button.</li>
