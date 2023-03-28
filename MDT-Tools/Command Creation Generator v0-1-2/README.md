@@ -13,4 +13,4 @@ Command creations are usually summoned by one or more command blocks. They are f
 
 ## Preview
 
-<img src="https://github.com/gubrus50/Minecraft-Development-Tools/blob/master/Minecraft-DT/MDT-Tools/Command%20Creation%20Generator%20v0-1-2/images/CommandCreationGenerator.gif">
+<img src="https://github.com/gubrus50/Minecraft-Development-Tools-Classic/blob/master/MDT-Tools/Command%20Creation%20Generator%20v0-1-2/images/CommandCreationGenerator.gif">
