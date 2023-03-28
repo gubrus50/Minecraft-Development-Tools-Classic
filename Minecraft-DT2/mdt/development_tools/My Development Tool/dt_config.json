@@ -1,9 +1,0 @@
-{
-  "title": "My development tool name",
-  "icon": "default.png",
-  "index": "index.html",
-  "body_page": "body_page.html",
-  "footer_page": "footer_page.html",
-  "version": 0,
-  "author": "author name"
-}
